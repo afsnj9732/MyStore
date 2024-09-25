@@ -66,13 +66,13 @@
                 this.post = null;
                 this.loading = true;
 
-                fetch('weatherforecast')
-                    .then(r => r.json())
-                    .then(json => {
-                        this.post = json as Forecasts;
-                        this.loading = false;
-                        return;
-                    });
+                //fetch('weatherforecast')
+                //    .then(r => r.json())
+                //    .then(json => {
+                //        this.post = json as Forecasts;
+                //        this.loading = false;
+                //        return;
+                //    });
             }
         },
     });
