@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using MyStore.Server.Models.DbEntity;
+using MyStore.Server.Models.Repository.Implements;
+using MyStore.Server.Models.Repository.Interfaces;
+using MyStore.Server.Models.Service.Implements;
+using MyStore.Server.Models.Service.Interfaces;
+using MyStore.Server.Models.UnitOfWork;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +13,20 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<DbStoreContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddScoped<IProductRepository, ProductRepository>()
+                .AddScoped<IProductService, ProductService>()
+                .AddScoped<IMemberRepository, MemberRepository>()
+                .AddScoped<IMemberService, MemberService>()
+                .AddScoped<ICartRepository, CartRepository>()
+                .AddScoped<ICartService, CartService>()
+                .AddScoped<IOrderRepository, OrderRepository>()
+                .AddScoped<IOrderService, OrderService>()
+                .AddScoped<IUnitOfWork, UnitOfWork>()
+                .AddScoped<IStripeService, StripeService>()
+                .AddHttpClient<IRecaptchaService, RecaptchaService>();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
