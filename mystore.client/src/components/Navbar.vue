@@ -10,26 +10,26 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/home">Home</router-link>
+                            <router-link class="nav-link text-dark" to="/">Home</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/home">商品</router-link>
+                            <router-link class="nav-link text-dark" to="/products">商品</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/home">登出</router-link>
+                            <router-link class="nav-link text-dark" to="/">登出</router-link>
                         </li>
                         <li class="nav-item  d-flex align-items-center">
-                            <router-link class="nav-link text-dark" to="/home">購物車</router-link>
+                            <router-link class="nav-link text-dark" to="/cart">購物車</router-link>
                             <a id="CartItemCount"></a>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/home">訂單</router-link>
+                            <router-link class="nav-link text-dark" to="/orders">訂單</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/home">登入</router-link>
+                            <router-link class="nav-link text-dark" to="/login">登入</router-link>
                         </li>
                         <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/home">註冊</router-link>
+                            <router-link class="nav-link text-dark" to="/register">註冊</router-link>
                         </li>
                     </ul>
                 </div>
