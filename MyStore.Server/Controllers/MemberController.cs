@@ -112,15 +112,15 @@ namespace MyStore.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegisterParameter memberInfo)
         {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "資料不符規定，或Recaptcha尚未回應，請重新嘗試");
-                return ReturnRegisterView(memberInfo);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    ModelState.AddModelError("", "資料不符規定，或Recaptcha尚未回應，請重新嘗試");
+            //    return ReturnRegisterView(memberInfo);
+            //}
             var isHuman = await  _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
             if (!isHuman)
             {
-                ModelState.AddModelError("", "Recaptcha判定您為機器人，請重新嘗試");
+                //ModelState.AddModelError("", "Recaptcha判定您為機器人，請重新嘗試");
                 return ReturnRegisterView(memberInfo);
             }
             var registerInfo = new MemberAuthInfo
@@ -131,7 +131,7 @@ namespace MyStore.Server.Controllers
             bool success = await _memberService.CreateMemberAsync(registerInfo);
             if (!success)
             {
-                ModelState.AddModelError("", "註冊失敗，Email已被註冊");
+                //ModelState.AddModelError("", "註冊失敗，Email已被註冊");
                 return ReturnRegisterView(memberInfo);
             }
             return Ok("註冊成功");
