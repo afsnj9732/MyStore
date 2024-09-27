@@ -1,5 +1,4 @@
 <template>
-    <div>
         <div v-if="data&&data.products">
             <button v-for="page in data.totalPage" :key="page" @click="getProductData(page)">
                 {{page}}
@@ -10,9 +9,9 @@
                 <p>{{product.price}}</p>
                 <img :src="`/images/${product.imageUrl}.jpg`" width="200" height="200">
                 <p>{{product.stockQuantity}}</p>
+                <router-link :to="`/products/detail/${product.productId}`">詳細資訊</router-link>
             </a>
         </div>
-    </div>
 </template>
 
 <script setup>
@@ -33,4 +32,5 @@
 
     onMounted(() => {
         getProductData(1);
-    });</script>
+    });
+</script>
