@@ -1,11 +1,9 @@
 <script setup lang="ts">
-    import NavBar from './components/NavBar.vue'
+    
 </script>
 
 <template>
-    <nav>
-        <NavBar />
-    </nav>
+
     <main >
         <div class="container" style="min-height: 80vh;">
             <router-view></router-view>

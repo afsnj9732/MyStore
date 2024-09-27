@@ -1,20 +1,24 @@
 <template>
-        <div v-if="data&&data.products">
-            <button v-for="page in data.totalPage" :key="page" @click="getProductData(page)">
-                {{page}}
-            </button>
-            <a v-for="product in data.products" :key="product.productId">
-                <p>{{product.name}}</p>
-                <p>{{product.description}}</p>
-                <p>{{product.price}}</p>
-                <img :src="`/images/${product.imageUrl}.jpg`" width="200" height="200">
-                <p>{{product.stockQuantity}}</p>
-                <router-link :to="`/products/detail/${product.productId}`">詳細資訊</router-link>
-            </a>
-        </div>
+    <nav>
+        <NavBar />
+    </nav>
+    <div v-if="data&&data.products">
+        <button v-for="page in data.totalPage" :key="page" @click="getProductData(page)">
+            {{page}}
+        </button>
+        <a v-for="product in data.products" :key="product.productId">
+            <p>{{product.name}}</p>
+            <p>{{product.description}}</p>
+            <p>{{product.price}}</p>
+            <img :src="`/images/${product.imageUrl}.jpg`" width="200" height="200">
+            <p>{{product.stockQuantity}}</p>
+            <router-link :to="`/products/detail/${product.productId}`">詳細資訊</router-link>
+        </a>
+    </div>
 </template>
 
 <script setup>
+    import NavBar from './NavBar.vue'
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
 

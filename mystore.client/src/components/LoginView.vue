@@ -1,4 +1,7 @@
 <template>
+    <nav>
+        <NavBar />
+    </nav>
     <div>
         Email:<input type="text" v-model="email" /><br />
         密碼:<input type="text" v-model="password" />
@@ -7,6 +10,7 @@
 </template>
 
 <script setup>
+    import NavBar from './NavBar.vue'
     import { ref } from 'vue';
     import axios from 'axios';
 
