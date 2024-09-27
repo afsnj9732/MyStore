@@ -15,37 +15,53 @@
                         <li class="nav-item">
                             <router-link class="nav-link text-dark" to="/products">商品</router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/">登出</router-link>
+
+                        <li v-if="isLogIn" class="nav-item">
+                            <router-link class="nav-link text-dark" @click="logout()">登出</router-link>
                         </li>
-                        <li class="nav-item  d-flex align-items-center">
+                        <li v-if="isLogIn" class="nav-item  d-flex align-items-center">
                             <router-link class="nav-link text-dark" to="/cart">購物車</router-link>
                             <a id="CartItemCount"></a>
                         </li>
-                        <li class="nav-item">
+                        <li v-if="isLogIn" class="nav-item">
                             <router-link class="nav-link text-dark" to="/orders">訂單</router-link>
                         </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/login">登入</router-link>
-                        </li>
-                        <li class="nav-item">
-                            <router-link class="nav-link text-dark" to="/register">註冊</router-link>
-                        </li>
-                    </ul>
-                </div>
-            </div>
+
+            <li v-if="!isLogIn" class="nav-item">
+              <router-link class="nav-link text-dark" to="/login">登入</router-link>
+            </li>
+            <li v-if="!isLogIn" class="nav-item">
+              <router-link class="nav-link text-dark" to="/register">註冊</router-link>
+            </li>
+
+
+        </ul>
+        </div>
+        </div>
         </nav>
     </header>
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, watch } from 'vue';
     import axios from 'axios'
-    const data = ref(null);
-    const getCartCount = (memberId) => {
+    const token = ref(localStorage.getItem('jwtToken'));
+    const isLogIn = ref(!!token.value);
+    const checkLoginStatus = () => {
+        isLogIn.value = !!token.value;
+    };
 
+    const logout = () => {
+        localStorage.removeItem("jwtToken");
+        //重整頁面
     }
-    onMounted(() => {
-        getCartCount();
+    watch(token, (newValue, oldValue) => {
+        checkLoginStatus();
     });
+    //const getCartCount = (memberId) => {
+
+    //}
+    //onMounted(() => {
+    //    getCartCount();
+    //});
 </script>

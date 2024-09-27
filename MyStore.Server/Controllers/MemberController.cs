@@ -28,15 +28,15 @@ namespace MyStore.Server.Controllers
         }
 
 
-        [AutoValidateAntiforgeryToken]
+        //[AutoValidateAntiforgeryToken]
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginParameter memberInfo)
         {
-            if (!ModelState.IsValid)
-            {
-                ModelState.AddModelError("", "資料不符規定，或Recaptcha尚未回應，請重新嘗試");
-                return ReturnLoginView(memberInfo);
-            }
+            //if (!ModelState.IsValid)
+            //{
+            //    ModelState.AddModelError("", "資料不符規定，或Recaptcha尚未回應，請重新嘗試");
+            //    return ReturnLoginView(memberInfo);
+            //}
 
             var info = new MemberAuthInfo
             {
@@ -49,14 +49,14 @@ namespace MyStore.Server.Controllers
             var isHuman = await isHumanTask;//非同步並行
             if (!isHuman)
             {
-                ModelState.AddModelError("", "Recaptcha判定您為機器人，請再嘗試一次");
+                //ModelState.AddModelError("", "Recaptcha判定您為機器人，請再嘗試一次");
                 return ReturnLoginView(memberInfo);
             }
 
             var loginResult = await loginTask;
             if (loginResult == null)
             {
-                ModelState.AddModelError("", "密碼錯誤或會員不存在");
+                //ModelState.AddModelError("", "密碼錯誤或會員不存在");
                 return ReturnLoginView(memberInfo);
             }
             var token = GetJwtToken(loginResult);
@@ -99,16 +99,16 @@ namespace MyStore.Server.Controllers
             return BadRequest(loginViewModel);
         }
 
-        [Authorize]
-        [HttpPost("logout")]
-        public IActionResult Logout()
-        {
-            HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok("登出成功");
-        }
+        //[Authorize]
+        //[HttpPost("logout")]
+        //public IActionResult Logout()
+        //{
+        //    HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+        //    return Ok("登出成功");
+        //}
 
 
-        [AutoValidateAntiforgeryToken]
+        //[AutoValidateAntiforgeryToken]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegisterParameter memberInfo)
         {
