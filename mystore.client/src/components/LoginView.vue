@@ -42,7 +42,9 @@
                 localStorage.setItem("jwtToken", response.data.token);
             })
             .catch(error => {
-                console.error("登入失敗");
+                if (error.response) {
+                    alert(error.response.data);
+                }
             });
     }
 </script>

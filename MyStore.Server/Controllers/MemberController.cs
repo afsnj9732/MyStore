@@ -28,16 +28,10 @@ namespace MyStore.Server.Controllers
         }
 
 
-        //[AutoValidateAntiforgeryToken]
+
         [HttpPost("login")]
         public async Task<IActionResult> LoginAsync(LoginParameter memberInfo)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    ModelState.AddModelError("", "資料不符規定，或Recaptcha尚未回應，請重新嘗試");
-            //    return ReturnLoginView(memberInfo);
-            //}
-
             var info = new MemberAuthInfo
             {
                 Email = memberInfo.Email,
@@ -49,15 +43,13 @@ namespace MyStore.Server.Controllers
             var isHuman = await isHumanTask;//非同步並行
             if (!isHuman)
             {
-                //ModelState.AddModelError("", "Recaptcha判定您為機器人，請再嘗試一次");
-                return ReturnLoginView(memberInfo);
+                return BadRequest("Recaptcha判定您為機器人，請再嘗試一次");
             }
 
             var loginResult = await loginTask;
             if (loginResult == null)
             {
-                //ModelState.AddModelError("", "密碼錯誤或會員不存在");
-                return ReturnLoginView(memberInfo);
+                return BadRequest("密碼錯誤或會員不存在");
             }
             var token = GetJwtToken(loginResult);
 
@@ -71,7 +63,6 @@ namespace MyStore.Server.Controllers
                   new Claim(ClaimTypes.Name, memberResultModel.UserName),
                   new Claim(ClaimTypes.Email, memberResultModel.Email),
                   new Claim(ClaimTypes.NameIdentifier,memberResultModel.MemberId.ToString())
-                  //new Claim(ClaimTypes.Role, "Customer")
                  };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKey"));
@@ -89,39 +80,14 @@ namespace MyStore.Server.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private IActionResult ReturnLoginView(LoginParameter memberInfo)
-        {
-            var loginViewModel = new LoginViewModel
-            {
-                Email = memberInfo.Email,
-                Password = memberInfo.Password
-            };
-            return BadRequest(loginViewModel);
-        }
 
-        //[Authorize]
-        //[HttpPost("logout")]
-        //public IActionResult Logout()
-        //{
-        //    HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-        //    return Ok("登出成功");
-        //}
-
-
-        //[AutoValidateAntiforgeryToken]
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegisterParameter memberInfo)
         {
-            //if (!ModelState.IsValid)
-            //{
-            //    ModelState.AddModelError("", "資料不符規定，或Recaptcha尚未回應，請重新嘗試");
-            //    return ReturnRegisterView(memberInfo);
-            //}
             var isHuman = await  _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
             if (!isHuman)
             {
-                //ModelState.AddModelError("", "Recaptcha判定您為機器人，請重新嘗試");
-                return ReturnRegisterView(memberInfo);
+                return BadRequest("Recaptcha判定您為機器人，請重新嘗試");
             }
             var registerInfo = new MemberAuthInfo
             {
@@ -131,21 +97,9 @@ namespace MyStore.Server.Controllers
             bool success = await _memberService.CreateMemberAsync(registerInfo);
             if (!success)
             {
-                //ModelState.AddModelError("", "註冊失敗，Email已被註冊");
-                return ReturnRegisterView(memberInfo);
+                return BadRequest("註冊失敗，Email已被註冊");
             }
             return Ok("註冊成功");
-        }
-
-        private IActionResult ReturnRegisterView(RegisterParameter memberInfo)
-        {
-            var registerViewModel = new RegisterViewModel
-            {
-                Email = memberInfo.Email,
-                Password = memberInfo.Password,
-                ConfirmPassword = memberInfo.ConfirmPassword
-            };
-            return BadRequest(registerViewModel);
         }
 
     }
