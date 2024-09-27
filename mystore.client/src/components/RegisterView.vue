@@ -26,6 +26,10 @@
 
 
     const register = () => {
+        if (!recaptchaToken) {
+        console.error("recaptcha token 尚未獲取");
+        return; 
+        }
         axios.post("https://localhost:7266/api/Member/register",
             {
                 "Email": email.value,
