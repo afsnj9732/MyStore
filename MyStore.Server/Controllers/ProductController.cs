@@ -15,12 +15,12 @@ namespace MyStore.Server.Controllers
             _productService = productService;
         }
 
-        [HttpGet("count")]
-        public async Task<IActionResult> GetProductTotalPageAsync()
-        {
-            var result = await _productService.GetProductTotalPageAsync();
-            return Ok(result);
-        }
+        //[HttpGet("count")]
+        //public async Task<IActionResult> GetProductTotalPageAsync()
+        //{
+        //    var result = await _productService.GetProductTotalPageAsync();
+        //    return Ok(result);
+        //}
 
         [HttpGet("list/{page:int}")]
         public async Task<IActionResult> ProductListAsync([FromRoute] int page = 1)
