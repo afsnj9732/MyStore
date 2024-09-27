@@ -17,7 +17,7 @@
                         </li>
 
                         <li v-if="isLogIn" class="nav-item">
-                            <router-link class="nav-link text-dark" @click="logout()">登出</router-link>
+                            <button class="nav-link text-dark" @click="logout()">登出</button>
                         </li>
                         <li v-if="isLogIn" class="nav-item  d-flex align-items-center">
                             <router-link class="nav-link text-dark" to="/cart">購物車</router-link>
@@ -27,41 +27,35 @@
                             <router-link class="nav-link text-dark" to="/orders">訂單</router-link>
                         </li>
 
-            <li v-if="!isLogIn" class="nav-item">
-              <router-link class="nav-link text-dark" to="/login">登入</router-link>
-            </li>
-            <li v-if="!isLogIn" class="nav-item">
-              <router-link class="nav-link text-dark" to="/register">註冊</router-link>
-            </li>
+                        <li v-if="!isLogIn" class="nav-item">
+                            <router-link class="nav-link text-dark" to="/login">登入</router-link>
+                        </li>
+                        <li v-if="!isLogIn" class="nav-item">
+                            <router-link class="nav-link text-dark" to="/register">註冊</router-link>
+                        </li>
 
 
-        </ul>
-        </div>
-        </div>
+                    </ul>
+                </div>
+            </div>
         </nav>
     </header>
 </template>
 
 <script setup>
-    import { ref, watch } from 'vue';
+    import { ref } from 'vue';
     import axios from 'axios'
-    const token = ref(localStorage.getItem('jwtToken'));
-    const isLogIn = ref(!!token.value);
-    const checkLoginStatus = () => {
-        isLogIn.value = !!token.value;
-    };
+    import { useRouter } from 'vue-router'
+
+    const token = localStorage.getItem('jwtToken');
+    const isLogIn = ref(!!token);
+    const router = useRouter();
 
     const logout = () => {
         localStorage.removeItem("jwtToken");
-        //重整頁面
+        alert("登出成功");
+        isLogIn.value = !isLogIn.value;
+        router.push({ name: "Home" });
     }
-    watch(token, (newValue, oldValue) => {
-        checkLoginStatus();
-    });
-    //const getCartCount = (memberId) => {
 
-    //}
-    //onMounted(() => {
-    //    getCartCount();
-    //});
 </script>

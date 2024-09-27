@@ -9,7 +9,7 @@ import Register from './components/RegisterView.vue';
 
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', component: Home,name:"Home" },
     { path: '/products', component: Product },
     { path: '/products/detail/:productId', component: ProductDetail },
     { path: '/cart', component: Cart },

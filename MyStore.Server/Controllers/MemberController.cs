@@ -65,7 +65,7 @@ namespace MyStore.Server.Controllers
                   new Claim(ClaimTypes.NameIdentifier,memberResultModel.MemberId.ToString())
                  };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKey"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecretKeyMySuperSecretKeyMySuperSecretKey"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var expires = DateTime.Now.AddDays(7); 

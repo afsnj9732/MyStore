@@ -13,7 +13,9 @@
     import NavBar from './NavBar.vue'
     import { ref } from 'vue';
     import axios from 'axios';
+    import { useRouter } from 'vue-router'; 
 
+    const router = useRouter();
     const email = ref(null);
     const password = ref(null);
     let recaptchaToken;
@@ -40,6 +42,8 @@
             })
             .then(response => {
                 localStorage.setItem("jwtToken", response.data.token);
+                alert("登入成功");
+                router.push({ name:"Home" });
             })
             .catch(error => {
                 if (error.response) {
