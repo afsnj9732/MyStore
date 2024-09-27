@@ -7,6 +7,10 @@ using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using Microsoft.AspNetCore.Authorization;
+using MyStore.Server.Models.Service.Dtos.ResultModels;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Text;
 
 
 namespace MyStore.Server.Controllers
@@ -55,19 +59,35 @@ namespace MyStore.Server.Controllers
                 ModelState.AddModelError("", "密碼錯誤或會員不存在");
                 return ReturnLoginView(memberInfo);
             }
-            var claims = new List<Claim>
-                {
-                  new Claim(ClaimTypes.Name, loginResult.UserName),
-                  new Claim(ClaimTypes.Email, loginResult.Email),
-                  new Claim(ClaimTypes.NameIdentifier,loginResult.MemberId.ToString())
-                  //new Claim(ClaimTypes.Role, "Customer")
-                 };
-            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(claimsIdentity));
-            return Ok("登入成功");
+            var token = GetJwtToken(loginResult);
+
+            return Ok(new {token});
         }
 
+        private string GetJwtToken(MemberResultModel memberResultModel)
+        {
+            var claims = new List<Claim>
+                {
+                  new Claim(ClaimTypes.Name, memberResultModel.UserName),
+                  new Claim(ClaimTypes.Email, memberResultModel.Email),
+                  new Claim(ClaimTypes.NameIdentifier,memberResultModel.MemberId.ToString())
+                  //new Claim(ClaimTypes.Role, "Customer")
+                 };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKey"));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var expires = DateTime.Now.AddDays(7); 
+
+            var token = new JwtSecurityToken(
+                issuer: "https://localhost:7266/",
+                audience: "https://localhost:5173/",
+                claims: claims,
+                expires: expires,
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
 
         private IActionResult ReturnLoginView(LoginParameter memberInfo)
         {

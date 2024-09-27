@@ -1,10 +1,10 @@
 <script setup lang="ts">
-    import Navbar from './components/Navbar.vue'
+    import NavBar from './components/NavBar.vue'
 </script>
 
 <template>
     <nav>
-        <Navbar />
+        <NavBar />
     </nav>
     <main >
         <div class="container" style="min-height: 80vh;">

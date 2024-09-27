@@ -1,11 +1,14 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using MyStore.Server.Models.DbEntity;
 using MyStore.Server.Models.Repository.Implements;
 using MyStore.Server.Models.Repository.Interfaces;
 using MyStore.Server.Models.Service.Implements;
 using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.UnitOfWork;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,8 +28,29 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>()
                 .AddScoped<IStripeService, StripeService>()
                 .AddHttpClient<IRecaptchaService, RecaptchaService>();
 
-builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie();
+//builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+//                .AddCookie();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "https://localhost:7266/",
+        ValidAudience = "https://localhost:5173/",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySecretKey"))
+    };
+});
+
+
 
 builder.Services.AddCors(options =>
 {

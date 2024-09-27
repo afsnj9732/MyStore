@@ -37,3 +37,15 @@
         </nav>
     </header>
 </template>
+
+<script setup>
+    import { ref, onMounted } from 'vue';
+    import axios from 'axios'
+    const data = ref(null);
+    const getCartCount = (memberId) => {
+
+    }
+    onMounted(() => {
+        getCartCount();
+    });
+</script>
