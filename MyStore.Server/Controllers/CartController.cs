@@ -88,9 +88,8 @@ namespace MyStore.Server.Controllers
 
 
         [Authorize]
-        [ValidateAntiForgeryToken]
-        [HttpPost("delete")]
-        public async Task<IActionResult> DeleteItemAsync(int productId)
+        [HttpPost("delete/{productId:int}")]
+        public async Task<IActionResult> DeleteItemAsync([FromRoute]int productId)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var itemInfo = new CartItemInfo
