@@ -21,7 +21,7 @@
                         </li>
                         <li v-if="isLogIn" class="nav-item  d-flex align-items-center">
                             <router-link class="nav-link text-dark" to="/cart">購物車</router-link>
-                            <a id="CartItemCount"></a>
+                            <a>{{data}}</a>
                         </li>
                         <li v-if="isLogIn" class="nav-item">
                             <router-link class="nav-link text-dark" to="/orders">訂單</router-link>
@@ -43,13 +43,14 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue';
+    import { ref,onMounted } from 'vue';
     import axios from 'axios'
     import { useRouter } from 'vue-router'
 
     const token = localStorage.getItem('jwtToken');
     const isLogIn = ref(!!token);
     const router = useRouter();
+    const data = ref(null);
 
     const logout = () => {
         localStorage.removeItem("jwtToken");
@@ -58,4 +59,19 @@
         router.push('/');
     }
 
+    const getCartCount = () => {
+        if (token) {
+            axios.get("https://localhost:7266/api/Cart/count", { headers: { "Authorization": `Bearer ${token}` } })
+                .then(response => {
+                    data.value = response.data;
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        }
+    }
+
+    onMounted(() => {
+        getCartCount();
+    })
 </script>

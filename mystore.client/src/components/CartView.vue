@@ -20,7 +20,7 @@
     const token = localStorage.getItem('jwtToken');
 
     const getCartData = () => {
-        axios.get("https://localhost:7266/api/Cart/get/", { headers: { "Authorization": `Bearer ${token}` } })
+        axios.get("https://localhost:7266/api/Cart/get", { headers: { "Authorization": `Bearer ${token}` } })
             .then(response => {
                 data.value = response.data;
             })

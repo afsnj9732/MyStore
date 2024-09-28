@@ -44,11 +44,7 @@ namespace MyStore.Server.Controllers
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var itemCount = await _cartService.GetCartItemCountAsync(memberId);
-            var result = new
-            {
-                cartItemCount = itemCount
-            };
-            return Ok(result);
+            return Ok(itemCount);
         }
 
         [Authorize]
