@@ -48,7 +48,6 @@ namespace MyStore.Server.Controllers
         }
 
         [Authorize]
-        [ValidateAntiForgeryToken]
         [HttpPost("add")]
         public async Task<IActionResult> AddToCartAsync(CartItemParameter info)
         {
