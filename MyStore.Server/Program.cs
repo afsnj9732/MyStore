@@ -25,7 +25,6 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>()
                 .AddScoped<IOrderRepository, OrderRepository>()
                 .AddScoped<IOrderService, OrderService>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
-                .AddScoped<IStripeService, StripeService>()
                 .AddHttpClient<IRecaptchaService, RecaptchaService>();
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

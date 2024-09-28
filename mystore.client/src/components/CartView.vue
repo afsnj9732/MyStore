@@ -32,11 +32,12 @@
     const token = localStorage.getItem('jwtToken');
 
 
-    const placeOrder = (stripeToken) => {
-        axios.post("https://localhost:7266/api/Order/place/" + stripeToken,
+    const placeOrder = () => {
+        axios.post("https://localhost:7266/api/Order/place/",
             {},
             { headers: { "Authorization": `Bearer ${token}` } })
             .then(response => {
+                alert("訂購成功")
                 router.push('/orders');
             })
             .catch(error => {

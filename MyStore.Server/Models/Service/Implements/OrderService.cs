@@ -11,11 +11,10 @@ namespace MyStore.Server.Models.Service.Implements
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IStripeService _stripeService;
-        public OrderService(IUnitOfWork unitOfWork,  IStripeService stripeService)
+
+        public OrderService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _stripeService = stripeService;
         }
 
         public async Task<List<OrderResultModel>> GetOrdersAsync(int memberId)
@@ -60,9 +59,6 @@ namespace MyStore.Server.Models.Service.Implements
                     await _unitOfWork.OrderRepository.CreateOrderItemAsync(orderItems);
                     await _unitOfWork.CartRepository.RemoveUserAllCartItemsAsync(orderInfo.MemberId);
                     await _unitOfWork.Save();
-
-                    var stripeInfo = new StripeInfo { TotalPrice=newOrder.TotalPrice, StripeToken = orderInfo.StripeToken };
-                    _stripeService.CreateOrder(stripeInfo);
 
                     await transaction.CommitAsync();
 
