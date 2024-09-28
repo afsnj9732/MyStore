@@ -31,6 +31,7 @@ namespace MyStore.Server.Controllers
                 TOrderItems = order.TOrderItems.Select(item => new OrderItemViewModel
                 {
                     ProductId = item.ProductId,
+                    ProductName = item.ProductName,
                     Quantity = item.Quantity
                 }).ToList()
             });

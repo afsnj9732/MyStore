@@ -28,6 +28,7 @@ namespace MyStore.Server.Models.Service.Implements
                 TOrderItems = order.TOrderItems.Select(item => new OrderItemResultModel
                 {
                     ProductId = item.ProductId,
+                    ProductName = item.ProductName,
                     Quantity = item.Quantity
                 }).ToList()
             }).ToList();

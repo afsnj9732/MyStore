@@ -41,7 +41,10 @@ namespace MyStore.Server.Models.Repository.Implements
 
         public async Task<IEnumerable<OrderDataModel>> GetOrderEnumAsync(int memberId)
         {
-            var Orders = await _db.TOrders.Where(order => order.MemberId == memberId).ToListAsync();
+            var Orders = await _db.TOrders.Where(order => order.MemberId == memberId)
+                .Include(order => order.TOrderItems)
+                .ThenInclude(orderItem => orderItem.Product)
+                .ToListAsync();
             var result = Orders.Select(order => new OrderDataModel
             {
                 TotalPrice = order.TotalPrice,
@@ -49,6 +52,7 @@ namespace MyStore.Server.Models.Repository.Implements
                 TOrderItems = order.TOrderItems.Select(item => new OrderItemDataModel
                 {
                     ProductId = item.ProductId,
+                    ProductName = item.Product.Name,
                     Quantity = item.Quantity
                 }).ToList()
             });

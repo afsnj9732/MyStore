@@ -52,7 +52,10 @@ namespace MyStore.Server.Models.Repository.Implements
         public async Task<IEnumerable<CartItemDataModel>> GetCartItemsEnumByUserIdAsync(int memberId)
         {
             var cart = await _db.TCarts.Where(cart=>cart.MemberId == memberId).FirstOrDefaultAsync();
-            var cartItemsEnum = await _db.TCartItems.Include(cartItem=>cartItem.Product).Where(cartItem => cartItem.CartId == cart.CartId).ToListAsync();
+            var cartItemsEnum = await _db.TCartItems
+                .Where(cartItem => cartItem.CartId == cart.CartId)
+                .Include(cartItem => cartItem.Product)
+                .ToListAsync();
 
             var result = cartItemsEnum.Select(item => new CartItemDataModel
             {

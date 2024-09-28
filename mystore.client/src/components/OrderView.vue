@@ -3,10 +3,14 @@
         <NavBar />
     </nav>
     <div v-if="data">
-        <a v-for="orderItem in data" :key="orderItem.orderDate">
-            訂購日期:<p>{{orderItem.orderDate}}</p>
-            總金額:<p>{{orderItem.totalPrice}}</p>
-        </a>
+        <div v-for="order in data" :key="order.orderDate">
+            訂購日期:<p>{{order.orderDate}}</p><br />
+            <span v-for="orderItem in order.tOrderItems" :key="orderItem.productId">
+                商品名稱:<span>{{orderItem.productName}}</span><br/>
+                商品數量:<span>{{orderItem.quantity}}</span><br />
+            </span>
+            總金額:<p>{{order.totalPrice}}</p><br />
+        </div>
     </div>
 </template>
 
