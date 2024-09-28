@@ -39,9 +39,8 @@ namespace MyStore.Server.Controllers
         }
 
         [Authorize]
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PlaceOrderAsync([FromBody]string stripeToken)
+        [HttpPost("place")]
+        public async Task<IActionResult> PlaceOrderAsync([FromRoute]string stripeToken)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var orderInfo = new CreateOrderInfo { MemberId = memberId,StripeToken = stripeToken };

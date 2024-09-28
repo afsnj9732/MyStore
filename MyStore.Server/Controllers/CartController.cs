@@ -23,18 +23,24 @@ namespace MyStore.Server.Controllers
         public async Task<IActionResult> CartItemListAsync()
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var totalPrice = await _cartService.GetTotalPriceAsync(memberId);
             var itemList = await _cartService.GetCartItemsAsync(memberId);
             if(itemList == null)
             {
                 return Ok();
             }
-            var result = itemList.Select(item => new CartViewModel {
+            var cartItems = itemList.Select(item => new CartItemViewModel {
               ProductId = item.ProductId,
               ProductName = item.ProductName,
               ProductStockQuantity = item.ProductStockQuantity,
               Quantity = item.Quantity,
               Price = item.Price
-            });
+            }).ToList();
+            var result = new CartViewModel
+            {
+                TotalPrice = totalPrice,
+                CartItems = cartItems
+            };
             return Ok(result);
         }
 
@@ -62,14 +68,14 @@ namespace MyStore.Server.Controllers
             return Ok();
         }
 
-        [Authorize]
-        [HttpGet("price")]
-        public async Task<IActionResult> GetTotalPriceAsync()
-        {
-            var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var result = await _cartService.GetTotalPriceAsync(memberId);
-            return Ok(result);
-        }
+        //[Authorize]
+        //[HttpGet("price")]
+        //public async Task<IActionResult> GetTotalPriceAsync()
+        //{
+        //    var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+        //    var result = await _cartService.GetTotalPriceAsync(memberId);
+        //    return Ok(result);
+        //}
 
         [Authorize]
         [HttpPost("update")]
