@@ -55,7 +55,7 @@
         localStorage.removeItem("jwtToken");
         alert("登出成功");
         isLogIn.value = !isLogIn.value;
-        router.push({ name: "Home" });
+        router.push('/');
     }
 
 </script>

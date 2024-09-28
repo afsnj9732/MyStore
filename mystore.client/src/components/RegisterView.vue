@@ -14,11 +14,13 @@
     import NavBar from './NavBar.vue'
     import { ref } from 'vue';
     import axios from 'axios';
+    import { useRouter } from 'vue-router';
 
     const email = ref(null);
     const password = ref(null);
     const confirmPassword = ref(null);
     let recaptchaToken;
+    const router = useRouter();
 
     grecaptcha.ready(function () {
         grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
@@ -42,10 +44,15 @@
                 "RecaptchaToken": recaptchaToken
             })
             .then(response => {
-                //localStorage.setItem("jwtToken", response.data.token);
+                alert("註冊成功");
+                router.push('/login');
             })
             .catch(error => {
-                console.error("註冊失敗");
+                if (error.response) {
+                    alert(error.response.data);
+                } else {
+                    alert("資料格式不符規定，請重新輸入");
+                }
             });
     }
 </script>

@@ -43,11 +43,13 @@
             .then(response => {
                 localStorage.setItem("jwtToken", response.data.token);
                 alert("登入成功");
-                router.push({ name:"Home" });
+                router.push('/');
             })
             .catch(error => {
                 if (error.response) {
                     alert(error.response.data);
+                } else {
+                    alert("資料格式不符規定，請重新輸入");
                 }
             });
     }
