@@ -18,7 +18,7 @@ namespace MyStore.Server.Controllers
             _cartService = cartService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("get")]
         public async Task<IActionResult> CartItemListAsync()
         {

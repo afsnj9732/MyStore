@@ -68,7 +68,7 @@ namespace MyStore.Server.Controllers
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecretKeyMySuperSecretKeyMySuperSecretKey"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expires = DateTime.Now.AddDays(7); 
+            var expires = DateTime.Now.AddDays(1); 
 
             var token = new JwtSecurityToken(
                 issuer: "https://localhost:7266/",

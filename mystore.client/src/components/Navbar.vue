@@ -47,12 +47,12 @@
     import axios from 'axios'
     import { useRouter } from 'vue-router'
 
-    const token = sessionStorage.getItem('jwtToken');
+    const token = localStorage.getItem('jwtToken');
     const isLogIn = ref(!!token);
     const router = useRouter();
 
     const logout = () => {
-        sessionStorage.removeItem("jwtToken");
+        localStorage.removeItem("jwtToken");
         alert("登出成功");
         isLogIn.value = !isLogIn.value;
         router.push('/');

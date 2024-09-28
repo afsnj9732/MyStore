@@ -32,7 +32,7 @@
                         "RecaptchaToken": recaptchaToken
                     })
                     .then(response => {
-                        sessionStorage.setItem("jwtToken", response.data.token);
+                        localStorage.setItem("jwtToken", response.data.token);
                         alert("登入成功");
                         router.push('/');
                     })
