@@ -22,37 +22,31 @@
     let recaptchaToken;
     const router = useRouter();
 
-    grecaptcha.ready(function () {
-        grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
-            recaptchaToken = token;
-        });
-    });
-
-
-
 
     const register = () => {
-        if (!recaptchaToken) {
-        console.error("recaptcha token 尚未獲取");
-        return; 
-        }
-        axios.post("https://localhost:7266/api/Member/register",
-            {
-                "Email": email.value,
-                "Password": password.value,
-                "ConfirmPassword":confirmPassword.value,
-                "RecaptchaToken": recaptchaToken
-            })
-            .then(response => {
-                alert("註冊成功");
-                router.push('/login');
-            })
-            .catch(error => {
-                if (error.response) {
-                    alert(error.response.data);
-                } else {
-                    alert("資料格式不符規定，請重新輸入");
-                }
+        grecaptcha.ready(function () {
+            grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
+                recaptchaToken = token;
+                axios.post("https://localhost:7266/api/Member/register",
+                    {
+                        "Email": email.value,
+                        "Password": password.value,
+                        "ConfirmPassword": confirmPassword.value,
+                        "RecaptchaToken": recaptchaToken
+                    })
+                    .then(response => {
+                        alert("註冊成功");
+                        router.push('/login');
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            alert(error.response.data);
+                        } else {
+                            alert("資料格式不符規定，請重新輸入");
+                        }
+                    });
             });
+        });
+
     }
 </script>

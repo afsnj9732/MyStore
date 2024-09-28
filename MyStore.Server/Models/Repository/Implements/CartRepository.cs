@@ -58,6 +58,7 @@ namespace MyStore.Server.Models.Repository.Implements
             {
                 CartId = item.CartId,
                 ProductId = item.ProductId,
+                ProductName = item.Product?.Name ?? "",
                 Quantity = item.Quantity,
                 Price = item.Product?.Price ?? 0 
             });

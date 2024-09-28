@@ -4,9 +4,10 @@
     </nav>
     <div v-if="data">
         <a v-for="cartItem in data" :key="cartItem.productId">
-            <p>{{cartItem.name}}</p>
+            <p>{{cartItem.productId}}</p>
+            <p>{{cartItem.productName}}</p>
             <p>{{cartItem.price}}</p>
-            <p>{{cartItem.stockQuantity}}</p>
+            <p>{{cartItem.quantity}}</p>
         </a>
     </div>
 </template>
@@ -29,6 +30,6 @@
     }
 
     onMounted(() => {
-        getProductData();
+        getCartData();
     });
 </script>

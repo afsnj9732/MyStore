@@ -29,6 +29,7 @@ namespace MyStore.Server.Models.Service.Implements
             {
                 CartId = item.CartId,
                 ProductId = item.ProductId,
+                ProductName = item.ProductName,
                 Quantity = item.Quantity,
                 Price = item.Price
             }).ToList();

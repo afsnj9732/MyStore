@@ -18,7 +18,7 @@ namespace MyStore.Server.Controllers
             _cartService = cartService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("get")]
         public async Task<IActionResult> CartItemListAsync()
         {
@@ -31,6 +31,7 @@ namespace MyStore.Server.Controllers
             var result = itemList.Select(item => new CartViewModel {
               CartId = item.CartId,
               ProductId = item.ProductId,
+              ProductName = item.ProductName,
               Quantity = item.Quantity,
               Price = item.Price
             });
