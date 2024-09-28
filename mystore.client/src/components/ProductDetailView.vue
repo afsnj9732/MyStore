@@ -9,7 +9,7 @@
         <img :src="`/images/${data.imageUrl}.jpg`" width="200" height="200">
         <p>{{data.stockQuantity}}</p>
         <div v-if="token">
-            購買數量:<input type="number" v-model="quantity" @input="validateQuantity()">
+            購買數量:<input type="number" v-model="quantity" @blur="validateQuantity()">
             <button type="button" @click="addProductToCart()">加入購物車</button>
         </div>
         <router-link to="/products">返回商品列表</router-link>
@@ -53,12 +53,6 @@
                 })
                 .catch(error => {
                     alert("加入購物車失敗");
-                    //router.go(0);
-                    //if (error.response) {
-                    //    alert(error.response.data);
-                    //} else {
-                    //    alert("資料格式不符規定，請重新輸入");
-                    //}
                 });
         }
     }

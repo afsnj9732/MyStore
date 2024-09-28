@@ -29,9 +29,9 @@ namespace MyStore.Server.Controllers
                 return Ok();
             }
             var result = itemList.Select(item => new CartViewModel {
-              CartId = item.CartId,
               ProductId = item.ProductId,
               ProductName = item.ProductName,
+              ProductStockQuantity = item.ProductStockQuantity,
               Quantity = item.Quantity,
               Price = item.Price
             });
@@ -72,7 +72,6 @@ namespace MyStore.Server.Controllers
         }
 
         [Authorize]
-        [ValidateAntiForgeryToken]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateItemAsync(CartItemParameter info)
         {

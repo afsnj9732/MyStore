@@ -27,9 +27,9 @@ namespace MyStore.Server.Models.Service.Implements
             var cartItemsList = await _unitOfWork.CartRepository.GetCartItemsEnumByUserIdAsync(memberId);
             var result = cartItemsList.Select(item => new CartResultModel
             {
-                CartId = item.CartId,
                 ProductId = item.ProductId,
                 ProductName = item.ProductName,
+                ProductStockQuantity = item.ProductStockQuantity,
                 Quantity = item.Quantity,
                 Price = item.Price
             }).ToList();

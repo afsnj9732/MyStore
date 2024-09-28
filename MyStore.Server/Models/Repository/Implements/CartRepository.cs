@@ -59,9 +59,9 @@ namespace MyStore.Server.Models.Repository.Implements
 
             var result = cartItemsEnum.Select(item => new CartItemDataModel
             {
-                CartId = item.CartId,
                 ProductId = item.ProductId,
                 ProductName = item.Product?.Name ?? "",
+                ProductStockQuantity = item.Product?.StockQuantity ?? 0,
                 Quantity = item.Quantity,
                 Price = item.Product?.Price ?? 0 
             });
