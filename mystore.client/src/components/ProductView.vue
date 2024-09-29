@@ -25,7 +25,7 @@
                         <td>{{product.name}}</td>
                         <td>{{product.price}}</td>
                         <td>
-                            <img :src="`/images/${product.imageUrl}.jpg`" class="img-fluid" width="200" style="width:100px">
+                            <img :src="`/images/${product.imageUrl}.jpg`" class="img-fluid"  style="width:100px">
                         </td>
                         <td>{{product.stockQuantity}}</td>
                         <td>

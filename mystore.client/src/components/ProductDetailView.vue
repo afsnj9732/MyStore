@@ -2,22 +2,26 @@
     <nav>
         <NavBar />
     </nav>
-    <div v-if="data">
-        <div class="card" style="width:30rem" >
-            <img :src="`/images/${data.imageUrl}.jpg`" class="img-fluid">
-            <div class="card-body">
-                <h5 class="card-title">商品名稱:{{data.name}}</h5>
-                <p class="card-text">商品說明:{{data.description}}</p>
-                <p>商品價格:{{data.price}}</p>
-                <p>商品庫存:{{data.stockQuantity}}</p>
-                <span v-if="token">
-                    <span>購買數量:</span>
-                    <input type="number" v-model="quantity" @blur="validateQuantity()">
-                </span>
-                <br />
-                <button type="button" class="btn btn-primary" @click="addProductToCart()">加入購物車</button>
-                <br />
-                <router-link class="btn btn-secondary" to="/products">返回商品列</router-link>
+    <div class="container">
+        <div v-if="data" class="row justify-content-center">
+            <div class="card" style="width: 25rem;">
+                <img :src="`/images/${data.imageUrl}.jpg`" class="card-img-top img-fluid">
+                <div class="card-body">
+                    <h5 class="card-title">商品名稱:{{data.name}}</h5>
+                    <p class="card-text">商品說明:{{data.description}}</p>
+                    <p>商品價格:{{data.price}}</p>
+                    <p>商品庫存:{{data.stockQuantity}}</p>
+                    <span v-if="token">
+                        <span>購買數量:</span>
+                        <input type="number" v-model="quantity" @blur="validateQuantity()">
+                    </span>
+                    <br />
+                    <br />
+                    <span class="d-flex justify-content-between">
+                        <button type="button" class="btn btn-primary p-2" @click="addProductToCart()">加入購物車</button>
+                        <router-link class="btn btn-secondary p-2" to="/products">返回商品列</router-link>
+                    </span>
+                </div>
             </div>
         </div>
     </div>

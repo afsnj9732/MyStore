@@ -11,6 +11,7 @@ using MyStore.Server.Models.Service.Dtos.ResultModels;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using Microsoft.AspNetCore.SignalR.Protocol;
 
 
 namespace MyStore.Server.Controllers
@@ -43,13 +44,13 @@ namespace MyStore.Server.Controllers
             var isHuman = await isHumanTask;//非同步並行
             if (!isHuman)
             {
-                return BadRequest("Recaptcha判定您為機器人，請再嘗試一次");
+                return BadRequest(new { apiMessage ="Recaptcha判定您為機器人，請再嘗試一次" });
             }
 
             var loginResult = await loginTask;
             if (loginResult == null)
             {
-                return BadRequest("密碼錯誤或會員不存在");
+                return BadRequest(new { apiMessage = "密碼錯誤或會員不存在"});
             }
             var token = GetJwtToken(loginResult);
 
@@ -87,7 +88,7 @@ namespace MyStore.Server.Controllers
             var isHuman = await  _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
             if (!isHuman)
             {
-                return BadRequest("Recaptcha判定您為機器人，請重新嘗試");
+                return BadRequest(new { apiMessage = "Recaptcha判定您為機器人，請重新嘗試"});
             }
             var registerInfo = new MemberAuthInfo
             {
@@ -97,9 +98,9 @@ namespace MyStore.Server.Controllers
             bool success = await _memberService.CreateMemberAsync(registerInfo);
             if (!success)
             {
-                return BadRequest("註冊失敗，Email已被註冊");
+                return BadRequest(new { apiMessage = "註冊失敗，Email已被註冊"});
             }
-            return Ok("註冊成功");
+            return Ok();
         }
 
     }
