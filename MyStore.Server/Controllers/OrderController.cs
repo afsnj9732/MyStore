@@ -47,9 +47,9 @@ namespace MyStore.Server.Controllers
             var isSuccess = await _orderService.CreateOrderAsync(orderInfo);
             if (isSuccess)
             {
-                return RedirectToAction("OrderList");
+                return Ok();
             }
-            return RedirectToAction("CartItemList", "Cart");        
+            return BadRequest("訂購失敗，請確認庫存或連線");        
         }
     }
 
