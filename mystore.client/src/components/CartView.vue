@@ -20,7 +20,7 @@
                         <input type="number" v-model="cartItem.quantity" @blur="updateQuantity(cartItem)">
                     </td>
                     <td>
-                        <button type="button" class="btn btn-primary" @click="deleteItem(cartItem)">移除</button><br />
+                        <button type="button" class="btn btn-danger" @click="deleteItem(cartItem)">移除</button><br />
 
                     </td>
                 </tr>

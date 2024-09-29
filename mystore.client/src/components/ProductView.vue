@@ -4,7 +4,7 @@
     </nav>
     <div v-if="data&&data.products">
         <div class="btn-toolbar" role="toolbar">
-            <span>商品頁數:</span>
+            <h4 class="m-1 p-1">商品頁數:</h4>
             <button v-for="page in data.totalPage" :key="page" class="btn btn-outline-primary" @click="getProductData(page)">
                 {{page}}
             </button>

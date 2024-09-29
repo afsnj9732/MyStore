@@ -6,15 +6,15 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>訂購日期</th>
+                    <th>訂購日期(點擊顯示訂單項目)</th>
                     <th>總金額</th>
                 </tr>
             </thead>
             <tbody v-for="order in data" :key="order.orderDate">
                 <tr>
-                    <td>
+                    <td>                        
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" :href="`#${order.orderDate}`" role="button" aria-expanded="false" :aria-controls="`${order.orderDate}`">
-                            {{order.orderDate}}
+                                {{order.orderDate}}
                         </button>
                         <div class="collapse multi-collapse" :id="`${order.orderDate}`">
                             <div class="card card-body">
