@@ -40,21 +40,21 @@ namespace MyStore.Server.Controllers
             };
             var loginTask = _memberService.LoginAsync(info);//非同步並行
 
-            var isHumanTask =  _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
+            var isHumanTask = _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
             var isHuman = await isHumanTask;//非同步並行
             if (!isHuman)
             {
-                return BadRequest(new { apiMessage ="Recaptcha判定您為機器人，請再嘗試一次" });
+                return BadRequest(new { apiMessage = "Recaptcha判定您為機器人，請再嘗試一次" });
             }
 
             var loginResult = await loginTask;
             if (loginResult == null)
             {
-                return BadRequest(new { apiMessage = "密碼錯誤或會員不存在"});
+                return BadRequest(new { apiMessage = "密碼錯誤或會員不存在" });
             }
             var token = GetJwtToken(loginResult);
 
-            return Ok(new {token});
+            return Ok(new { token });
         }
 
         private string GetJwtToken(MemberResultModel memberResultModel)
@@ -65,11 +65,19 @@ namespace MyStore.Server.Controllers
                   new Claim(ClaimTypes.Email, memberResultModel.Email),
                   new Claim(ClaimTypes.NameIdentifier,memberResultModel.MemberId.ToString())
                  };
+            if (memberResultModel.Email == "afsnj9732@gmail.com")
+            {
+                claims.Add(new Claim("role", "Admin"));
+            }
+            else
+            {
+                claims.Add(new Claim("role", "Customer"));
+            }
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("MySuperSecretKeyMySuperSecretKeyMySuperSecretKey"));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expires = DateTime.Now.AddDays(1); 
+            var expires = DateTime.Now.AddDays(1);
 
             var token = new JwtSecurityToken(
                 issuer: "https://localhost:7266/",
@@ -85,10 +93,10 @@ namespace MyStore.Server.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> RegisterAsync(RegisterParameter memberInfo)
         {
-            var isHuman = await  _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
+            var isHuman = await _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
             if (!isHuman)
             {
-                return BadRequest(new { apiMessage = "Recaptcha判定您為機器人，請重新嘗試"});
+                return BadRequest(new { apiMessage = "Recaptcha判定您為機器人，請重新嘗試" });
             }
             var registerInfo = new MemberAuthInfo
             {
@@ -98,7 +106,7 @@ namespace MyStore.Server.Controllers
             bool success = await _memberService.CreateMemberAsync(registerInfo);
             if (!success)
             {
-                return BadRequest(new { apiMessage = "註冊失敗，Email已被註冊"});
+                return BadRequest(new { apiMessage = "註冊失敗，Email已被註冊" });
             }
             return Ok();
         }

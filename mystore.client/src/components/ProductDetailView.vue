@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-    import NavBar from './NavBar.vue'
+    import NavBar from './NavbarView.vue'
     import { ref, onMounted } from 'vue';
     import { useRoute,useRouter } from 'vue-router';
     import axios from 'axios';

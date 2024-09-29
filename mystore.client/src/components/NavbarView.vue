@@ -33,7 +33,9 @@
                         <li v-if="!isLogIn" class="nav-item">
                             <router-link class="nav-link text-dark" to="/register">註冊</router-link>
                         </li>
-
+                        <li v-show="role === 'Admin'" class="nav-item">
+                            <router-link class="nav-link text-dark" to="/dashboard">後臺</router-link>
+                        </li>
 
                     </ul>
                 </div>
@@ -46,8 +48,12 @@
     import { ref,onMounted } from 'vue';
     import axios from 'axios'
     import { useRouter } from 'vue-router'
+    import { jwtDecode } from 'jwt-decode';
+
 
     const token = localStorage.getItem('jwtToken');
+    const role = ref(null);
+
     const isLogIn = ref(!!token);
     const router = useRouter();
     const data = ref(null);
@@ -73,5 +79,11 @@
 
     onMounted(() => {
         getCartCount();
+        if (token) {
+            const decoded = jwtDecode(token);
+            if (decoded) {
+                role.value = decoded.role;
+            }
+        }
     })
 </script>

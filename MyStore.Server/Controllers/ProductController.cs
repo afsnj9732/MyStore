@@ -15,8 +15,8 @@ namespace MyStore.Server.Controllers
             _productService = productService;
         }
 
-        [HttpGet("list/{page:int}")]
-        public async Task<IActionResult> ProductListAsync([FromRoute] int page = 1)
+        [HttpGet("list/{page:int=1}")]
+        public async Task<IActionResult> ProductListAsync([FromRoute] int page)
         {
             var products = await _productService.GetCurrentPageProductAsync(page);
             var totalPage = await _productService.GetProductTotalPageAsync();

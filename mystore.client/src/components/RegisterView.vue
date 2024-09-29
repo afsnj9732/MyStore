@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-    import NavBar from './NavBar.vue'
+    import NavBar from './NavbarView.vue'
     import { ref } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
