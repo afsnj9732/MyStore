@@ -44,6 +44,7 @@ namespace MyStore.Server.Models.Repository.Implements
             var Orders = await _db.TOrders.Where(order => order.MemberId == memberId)
                 .Include(order => order.TOrderItems)
                 .ThenInclude(orderItem => orderItem.Product)
+                .OrderByDescending(orderItem => orderItem.OrderDate)
                 .ToListAsync();
             var result = Orders.Select(order => new OrderDataModel
             {

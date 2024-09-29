@@ -3,14 +3,42 @@
         <NavBar />
     </nav>
     <div v-if="data">
-        <div v-for="order in data" :key="order.orderDate">
-            訂購日期:<p>{{order.orderDate}}</p><br />
-            <span v-for="orderItem in order.tOrderItems" :key="orderItem.productId">
-                商品名稱:<span>{{orderItem.productName}}</span><br/>
-                商品數量:<span>{{orderItem.quantity}}</span><br />
-            </span>
-            總金額:<p>{{order.totalPrice}}</p><br />
-        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>訂購日期</th>
+                    <th>總金額</th>
+                </tr>
+            </thead>
+            <tbody v-for="order in data" :key="order.orderDate">
+                <tr>
+                    <td>
+                        <button type="button" class="accordion-button" data-bs-toggle="collapse" :href="`#${order.orderDate}`" role="button" aria-expanded="false" :aria-controls="`${order.orderDate}`">
+                            {{order.orderDate}}
+                        </button>
+                        <div class="collapse multi-collapse" :id="`${order.orderDate}`">
+                            <div class="card card-body">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>商品名稱</th>
+                                            <th>商品數量</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody v-for="orderItem in order.tOrderItems" :key="orderItem.productId">
+                                        <tr>
+                                            <td>{{orderItem.productName}}</td>
+                                            <td>{{orderItem.quantity}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{order.totalPrice}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 

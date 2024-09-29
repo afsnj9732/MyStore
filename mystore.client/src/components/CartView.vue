@@ -3,20 +3,35 @@
         <NavBar />
     </nav>
     <div v-if="data">
-        <span v-for="cartItem in data.cartItems" :key="cartItem.productId">
-            商品名稱:<span>{{cartItem.productName}}</span>
-            商品價格:<span>{{cartItem.price}}</span>
-            購買數量:
-            <input type="number" v-model="cartItem.quantity" @blur="updateQuantity(cartItem)">
-            <button type="button" class="btn btn-primary" @click="deleteItem(cartItem)">移除</button><br />
-        </span>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>商品名稱</th>
+                    <th>商品價格</th>
+                    <th>購買數量</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody v-for="cartItem in data.cartItems" :key="cartItem.productId">
+                <tr>
+                    <td>{{cartItem.productName}}</td>
+                    <td>{{cartItem.price}}</td>
+                    <td>
+                        <input type="number" v-model="cartItem.quantity" @blur="updateQuantity(cartItem)">
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-primary" @click="deleteItem(cartItem)">移除</button><br />
 
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <br />
         總金額:{{data.totalPrice}}
     </div>
     <br />
     <br />
-    <button @click="placeOrder">訂購</button>
+    <button class="btn btn-primary"  @click="placeOrder">訂購</button>
 
 </template>
 <script setup>
