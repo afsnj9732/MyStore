@@ -24,6 +24,7 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>()
                 .AddScoped<ICartService, CartService>()
                 .AddScoped<IOrderRepository, OrderRepository>()
                 .AddScoped<IOrderService, OrderService>()
+                .AddScoped<IStripeService, StripeService>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddHttpClient<IRecaptchaService, RecaptchaService>();
 

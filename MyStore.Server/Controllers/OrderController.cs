@@ -39,11 +39,11 @@ namespace MyStore.Server.Controllers
         }
 
         [Authorize]
-        [HttpPost("place")]
-        public async Task<IActionResult> PlaceOrderAsync()
+        [HttpPost("place/{stripeToken}")]
+        public async Task<IActionResult> PlaceOrderAsync([FromRoute]string stripeToken)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var orderInfo = new CreateOrderInfo { MemberId = memberId};
+            var orderInfo = new CreateOrderInfo { MemberId = memberId, StripeToken = stripeToken };
             var isSuccess = await _orderService.CreateOrderAsync(orderInfo);
             if (isSuccess)
             {

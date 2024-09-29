@@ -46,7 +46,6 @@
                             router.push('/');
                         })
                         .catch(error => {
-                            console.log("axios error");
                             if (error.response.data.apiMessage) {
                                 alert(error.response.data.apiMessage);
                             } else {

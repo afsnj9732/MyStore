@@ -47,18 +47,7 @@
     const token = localStorage.getItem('jwtToken');
 
 
-    const placeOrder = () => {
-        axios.post("https://localhost:7266/api/Order/place/",
-            {},
-            { headers: { "Authorization": `Bearer ${token}` } })
-            .then(response => {
-                alert("訂購成功")
-                router.push('/orders');
-            })
-            .catch(error => {
-                alert(error.response.data)
-            });
-    }
+
 
     const deleteItem = (item) => {
         axios.post("https://localhost:7266/api/Cart/delete/" + item.productId,
@@ -104,7 +93,48 @@
             });
     }
 
+
+        const placeOrder = () => {
+        const handler = window.StripeCheckout.configure({
+            key: 'pk_test_51Pesm02La0H5PIYutJuIiEkUXFXagRryVad9x9fhP4WDFqjjzPhO0shoZqRQMhdXxvtEfGxmb7gruzpjkVCKDXA00012AZZjHg',
+            locale: 'auto',
+            token: (stripeToken) => {
+
+                        axios.post("https://localhost:7266/api/Order/place/"+stripeToken.id,
+            {},
+            { headers: { "Authorization": `Bearer ${token}` } })
+            .then(response => {
+                alert("訂購成功")
+                router.push('/orders');
+            })
+            .catch(error => {
+                alert(error.response.data)
+            });
+            }
+        });
+
+        handler.open({
+            name: 'Stripe金流API測試',
+            description: '測試卡號4242 4242 4242 4242',
+            amount: data.value.totalPrice*100,
+            currency: 'twd'
+        });
+    };
+
+    const loadStripeScript = () => {
+        return new Promise((resolve) => {
+            const script = document.createElement('script');
+            script.src = 'https://checkout.stripe.com/checkout.js';
+            script.onload = () => {
+                resolve();
+            };
+            document.body.appendChild(script);
+        });
+    };
+
+
     onMounted(() => {
+        loadStripeScript();
         getCartData();
     });
 </script>

@@ -1,8 +1,8 @@
 ﻿namespace MyStore.Server.Models.Service.Dtos.Infos
 {
-    public class CreateOrderInfo
+    public class StripeInfo
     {
-        public int MemberId { get; set; }
+        public int TotalPrice { get; set; }
         public string StripeToken { get; set; }
     }
 }
