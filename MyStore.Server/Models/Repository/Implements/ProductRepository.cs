@@ -2,6 +2,7 @@
 using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using MyStore.Server.Models.Repository.Dtos.Conditions;
 
 namespace MyStore.Server.Models.Repository.Implements
 {
@@ -25,6 +26,21 @@ namespace MyStore.Server.Models.Repository.Implements
                 StockQuantity = product.StockQuantity,
             });
             return result;
+        }
+
+        public async Task ReduceProductQuantityAsync(List<ProductReduceQuantityCondition> productsCondition)
+        {
+            var products = await _db.TProducts.ToListAsync();
+            foreach (var product in productsCondition)
+            {
+                var target = products.Where(p => p.ProductId == product.ProductId).FirstOrDefault();
+                target.StockQuantity -= product.ReduceQuantity;
+                if (target.StockQuantity < 0)
+                {
+                    throw new Exception();
+                }
+            }
+
         }
 
         public async Task<ProductDataModel?> GetProductByIdAsync(int productId)

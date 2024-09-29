@@ -57,6 +57,13 @@ namespace MyStore.Server.Models.Service.Implements
                         Quantity = item.Quantity,
                     });
                     await _unitOfWork.OrderRepository.CreateOrderItemAsync(orderItems);
+
+                    var productsCondition = orderItems.Select(item => new ProductReduceQuantityCondition
+                    {
+                        ProductId = item.ProductId,
+                        ReduceQuantity = item.Quantity
+                    }).ToList();
+                    await _unitOfWork.ProductRepository.ReduceProductQuantityAsync(productsCondition);
                     await _unitOfWork.CartRepository.RemoveUserAllCartItemsAsync(orderInfo.MemberId);
                     await _unitOfWork.Save();
 
