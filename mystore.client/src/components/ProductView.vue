@@ -9,7 +9,7 @@
                 {{page}}
             </button>
         </div>
-        <div v-for="product in data.products" :key="product.productId">
+        <div >
             <table class="table">
                 <thead>
                     <tr>
@@ -20,7 +20,7 @@
                         <th scope="col" width="20%"></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody v-for="product in data.products" :key="product.productId">
                     <tr>
                         <td>{{product.name}}</td>
                         <td>{{product.price}}</td>
