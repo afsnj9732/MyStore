@@ -8,7 +8,7 @@
             商品價格:<span>{{cartItem.price}}</span>
             購買數量:
             <input type="number" v-model="cartItem.quantity" @blur="updateQuantity(cartItem)">
-            <button type="button" @click="deleteItem(cartItem)">移除</button><br />
+            <button type="button" class="btn btn-primary" @click="deleteItem(cartItem)">移除</button><br />
         </span>
 
         <br />

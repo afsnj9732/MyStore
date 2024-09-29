@@ -3,17 +3,38 @@
         <NavBar />
     </nav>
     <div v-if="data&&data.products">
-        <button v-for="page in data.totalPage" :key="page" @click="getProductData(page)">
-            {{page}}
-        </button>
-        <a v-for="product in data.products" :key="product.productId">
-            <p>{{product.name}}</p>
-            <p>{{product.description}}</p>
-            <p>{{product.price}}</p>
-            <img :src="`/images/${product.imageUrl}.jpg`" width="200" height="200">
-            <p>{{product.stockQuantity}}</p>
-            <router-link :to="`/products/detail/${product.productId}`">詳細資訊</router-link>
-        </a>
+        <div class="btn-toolbar" role="toolbar">
+            <span>商品頁數:</span>
+            <button v-for="page in data.totalPage" :key="page" class="btn btn-outline-primary" @click="getProductData(page)">
+                {{page}}
+            </button>
+        </div>
+        <div v-for="product in data.products" :key="product.productId">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col" width="20%">商品名稱</th>
+                        <th scope="col" width="20%">商品價格</th>
+                        <th scope="col" width="20%">商品圖片</th>
+                        <th scope="col" width="20%">剩餘庫存</th>
+                        <th scope="col" width="20%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{{product.name}}</td>
+                        <td>{{product.price}}</td>
+                        <td>
+                            <img :src="`/images/${product.imageUrl}.jpg`" class="img-fluid" width="200" style="width:100px">
+                        </td>
+                        <td>{{product.stockQuantity}}</td>
+                        <td>
+                            <router-link class="btn btn-primary" :to="`/products/detail/${product.productId}`">詳細資訊</router-link>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 

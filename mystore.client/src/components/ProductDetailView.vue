@@ -3,16 +3,23 @@
         <NavBar />
     </nav>
     <div v-if="data">
-        <p>{{data.name}}</p>
-        <p>{{data.description}}</p>
-        <p>{{data.price}}</p>
-        <img :src="`/images/${data.imageUrl}.jpg`" width="200" height="200">
-        <p>{{data.stockQuantity}}</p>
-        <div v-if="token">
-            購買數量:<input type="number" v-model="quantity" @blur="validateQuantity()">
-            <button type="button" @click="addProductToCart()">加入購物車</button>
+        <div class="card" style="width:30rem" >
+            <img :src="`/images/${data.imageUrl}.jpg`" class="img-fluid">
+            <div class="card-body">
+                <h5 class="card-title">商品名稱:{{data.name}}</h5>
+                <p class="card-text">商品說明:{{data.description}}</p>
+                <p>商品價格:{{data.price}}</p>
+                <p>商品庫存:{{data.stockQuantity}}</p>
+                <span v-if="token">
+                    <span>購買數量:</span>
+                    <input type="number" v-model="quantity" @blur="validateQuantity()">
+                </span>
+                <br />
+                <button type="button" class="btn btn-primary" @click="addProductToCart()">加入購物車</button>
+                <br />
+                <router-link class="btn btn-secondary" to="/products">返回商品列</router-link>
+            </div>
         </div>
-        <router-link to="/products">返回商品列表</router-link>
     </div>
 </template>
 
