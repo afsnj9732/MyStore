@@ -1,6 +1,6 @@
-﻿namespace MyStore.Server.Models.Service.Dtos.Infos
+﻿namespace MyStore.Server.Models.Repository.Dtos.Conditions
 {
-    public class ProductInfo
+    public class ProductCondition
     {
         public int ProductId { get; set; }
 

@@ -14,6 +14,17 @@ namespace MyStore.Server.Models.Repository.Implements
         {
             _db = db;
         }
+        public async Task UpdateAsync(ProductCondition productCondition)
+        {
+            var target = await _db.TProducts.Where(product=>product.ProductId==productCondition.ProductId).FirstOrDefaultAsync();
+            if (target != null) {
+                target.Price = productCondition.Price ?? target.Price;
+                target.Name = productCondition.Name ?? target.Name;
+                target.Description = productCondition.Description ?? target.Description;
+                target.StockQuantity = productCondition.StockQuantity ?? target.StockQuantity;
+                target.ImageUrl = productCondition.ImageUrl ?? target.ImageUrl;
+            }
+        } 
         public async Task<IEnumerable<ProductDataModel>> GetProductEnumBySearchWordAsync(string searchWord)
         {
             var products = await _db.TProducts.FromSqlRaw("EXEC usp_GetAllProducts @SearchWord",

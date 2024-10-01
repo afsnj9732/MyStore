@@ -3,6 +3,7 @@ using MyStore.Server.Models.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Models.Service.Dtos.Infos;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MyStore.Server.Controllers
 {
@@ -20,7 +21,7 @@ namespace MyStore.Server.Controllers
         [HttpGet("list")]
         public async Task<IActionResult> ProductListAsync([FromQuery]ProductViewParameter productParameter)
         {
-            var productInfo = new ProductInfo
+            var productInfo = new ProductViewInfo
             {
                 Page = productParameter.Page,
                 SearchWord = productParameter.SearchWord
@@ -43,10 +44,20 @@ namespace MyStore.Server.Controllers
             return Ok(result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("update")]
         public async Task<IActionResult> UpdateProduct(ProductParameter productParameter)
         {
-
+            var productInfo = new ProductInfo
+            {
+                ProductId = productParameter.ProductId,
+                Price = productParameter.Price,
+                ImageUrl = productParameter.ImageUrl,
+                Name = productParameter.Name,
+                StockQuantity = productParameter.StockQuantity,
+                Description = productParameter.Description
+            };
+            await _productService.UpdateProductAsync(productInfo);
             return Ok();
         }
 
