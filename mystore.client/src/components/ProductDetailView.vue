@@ -18,7 +18,7 @@
                     <br />
                     <br />
                     <span class="d-flex justify-content-between">
-                        <button type="button" class="btn btn-primary p-2" @click="addProductToCart()">加入購物車</button>
+                        <button v-show="data.stockQuantity > 0" type="button" class="btn btn-primary p-2" @click="addProductToCart()">加入購物車</button>
                         <router-link class="btn btn-secondary p-2" to="/products">返回商品列</router-link>
                     </span>
                 </div>
@@ -65,6 +65,9 @@
                 .catch(error => {
                     alert("加入購物車失敗");
                 });
+        }else{
+            router.push('/login');
+
         }
     }
 
