@@ -49,12 +49,15 @@
     const searchWord = ref(null);
 
     const getProductData = (page) => {
-        axios.get("https://localhost:7266/api/Product/list",
+        axios.get("https://mystoreserverapi.azure-api.net/api/Product/list",
             {
                 params: {
                         "Page": page,
                     "SearchWord": searchWord.value ? searchWord.value : null
                     //參數可以接受null，但不接受""空字串
+                },
+                headers: {
+                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805' 
                 }
             })
             .then(response => {

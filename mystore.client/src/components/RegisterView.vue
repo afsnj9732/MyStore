@@ -37,13 +37,19 @@
             grecaptcha.ready(function () {
                 grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
                     recaptchaToken = token;
-                    axios.post("https://localhost:7266/api/Member/register",
+                    axios.post("https://mystoreserverapi.azure-api.net/api/Member/register",
                         {
                             "Email": email.value,
                             "Password": password.value,
                             "ConfirmPassword": confirmPassword.value,
                             "RecaptchaToken": recaptchaToken
-                        })
+                        }, {
+                            headers: {
+                                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                            }
+                        }
+
+                    )
                         .then(response => {
                             alert("註冊成功");
                             router.push('/login');

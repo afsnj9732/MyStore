@@ -39,12 +39,17 @@
     const token = sessionStorage.getItem('jwtToken');
 
     const updateProduct = (item) => {
-        axios.post("https://localhost:7266/api/Product/update",
+        axios.post("https://mystoreserverapi.azure-api.net/api/Product/update",
             {
                 "StockQuantity": item.stockQuantity,
                 "ProductId":item.productId
             },
-            { headers: { "Authorization": `Bearer ${token}` } })
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                }
+            })
             .then(response => {
                 alert("修改成功")
             })
@@ -54,11 +59,14 @@
     }
 
     const getProductData = () => {
-        axios.get("https://localhost:7266/api/Product/list",
+        axios.get("https://mystoreserverapi.azure-api.net/api/Product/list",
             {
                 params: {
                     "Page": 0,
                     "SearchWord": null
+                },
+                headers: {
+                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
                 }
             })
             .then(response => {

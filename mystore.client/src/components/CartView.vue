@@ -49,9 +49,14 @@
 
 
     const deleteItem = (item) => {
-        axios.post("https://localhost:7266/api/Cart/delete/" + item.productId,
+        axios.post("https://mystoreserverapi.azure-api.net/api/Cart/delete/" + item.productId,
             {},
-            { headers: { "Authorization": `Bearer ${token}` } })
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                }
+            })
             .then(response => {
                 alert("移除成功");
                 router.go(0);
@@ -67,12 +72,17 @@
         } else if (item.quantity > item.productStockQuantity) {
             item.quantity = item.productStockQuantity;
         } else {
-            axios.post("https://localhost:7266/api/Cart/update",
+            axios.post("https://mystoreserverapi.azure-api.net/api/Cart/update",
                 {
                     "ProductId": item.productId,
                     "Quantity": item.quantity
                 },
-                { headers: { "Authorization": `Bearer ${token}` } })
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                    }
+                })
                 .then(response => {
                     router.go(0);
                 })
@@ -83,7 +93,12 @@
     }
 
     const getCartData = () => {
-        axios.get("https://localhost:7266/api/Cart/get", { headers: { "Authorization": `Bearer ${token}` } })
+        axios.get("https://mystoreserverapi.azure-api.net/api/Cart/get", {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+            }
+        })
             .then(response => {
                 data.value = response.data;
             })
@@ -99,9 +114,14 @@
             locale: 'auto',
             token: (stripeToken) => {
 
-                axios.post("https://localhost:7266/api/Order/place/" + stripeToken.id,
+                axios.post("https://mystoreserverapi.azure-api.net/api/Order/place/" + stripeToken.id,
                     {},
-                    { headers: { "Authorization": `Bearer ${token}` } })
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`,
+                            'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                        }
+                    })
                     .then(response => {
                         alert("訂購成功")
                         router.push('/orders');

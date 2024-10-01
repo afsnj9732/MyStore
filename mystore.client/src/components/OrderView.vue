@@ -51,7 +51,12 @@
     const token = sessionStorage.getItem('jwtToken');
 
     const getOrderData = () => {
-        axios.get("https://localhost:7266/api/Order/get/", { headers: { "Authorization": `Bearer ${token}` } })
+        axios.get("https://mystoreserverapi.azure-api.net/api/Order/get/", {
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+            }
+        })
             .then(response => {
                 data.value = response.data;
             })

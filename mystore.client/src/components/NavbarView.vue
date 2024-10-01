@@ -67,7 +67,12 @@
 
     const getCartCount = () => {
         if (token) {
-            axios.get("https://localhost:7266/api/Cart/count", { headers: { "Authorization": `Bearer ${token}` } })
+            axios.get("https://mystoreserverapi.azure-api.net/api/Cart/count", {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                }
+            })
                 .then(response => {
                     data.value = response.data;
                 })
