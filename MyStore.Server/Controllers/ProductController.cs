@@ -1,6 +1,8 @@
 ﻿using MyStore.Server.Controllers.Dtos.ViewModels;
 using MyStore.Server.Models.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using MyStore.Server.Controllers.Dtos.Parameters;
+using MyStore.Server.Models.Service.Dtos.Infos;
 
 namespace MyStore.Server.Controllers
 {
@@ -15,28 +17,40 @@ namespace MyStore.Server.Controllers
             _productService = productService;
         }
 
-        [HttpGet("list/{page:int=1}")]
-        public async Task<IActionResult> ProductListAsync([FromRoute] int page)
+        [HttpGet("list")]
+        public async Task<IActionResult> ProductListAsync([FromQuery]ProductViewParameter productParameter)
         {
-            var products = await _productService.GetCurrentPageProductAsync(page);
-            var totalPage = await _productService.GetProductTotalPageAsync();
-            var productViewModel = products.Select(product => new ProductViewModel
+            var productInfo = new ProductInfo
             {
-                Description = product.Description,
-                ProductId = product.ProductId,
-                Price = product.Price,
-                ImageUrl = product.ImageUrl,
-                Name = product.Name,
-                StockQuantity = product.StockQuantity,
-            });
-            var result = new ProductListViewModel
-            {
-                TotalPage = totalPage,
-                Products = productViewModel
+                Page = productParameter.Page,
+                SearchWord = productParameter.SearchWord
             };
+            var products = await _productService.GetCurrentPageProductAsync(productInfo);
+            var result =  new ProductsViewModel
+            {
+                TotalPage = products.TotalPage,
+                Products = products.Products.Select(product=>new ProductViewModel
+                {
+                    Description = product.Description,
+                    ProductId = product.ProductId,
+                    Price = product.Price,
+                    ImageUrl = product.ImageUrl,
+                    Name = product.Name,
+                    StockQuantity = product.StockQuantity,
+                }).ToList()
+            };
+
             return Ok(result);
         }
-        [HttpGet("list/detail/{productId:int}")]
+
+        [HttpPost("update")]
+        public async Task<IActionResult> UpdateProduct(ProductParameter productParameter)
+        {
+
+            return Ok();
+        }
+
+        [HttpGet("detail/{productId:int}")]
         public async Task<IActionResult> ProductDetailAsync([FromRoute]int productId)
         {
             var product = await _productService.GetProductDetailByIdAsync(productId);

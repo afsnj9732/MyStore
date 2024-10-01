@@ -1,12 +1,12 @@
 ﻿using MyStore.Server.Models.DbEntity;
+using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Dtos.ResultModels;
 
 namespace MyStore.Server.Models.Service.Interfaces
 {
     public interface IProductService
     {
-        Task<int> GetProductTotalPageAsync();
-        Task<List<ProductResultModel>> GetCurrentPageProductAsync(int page);
+        Task<ProductsResultModel> GetCurrentPageProductAsync(ProductInfo productInfo);
         Task<ProductResultModel?> GetProductDetailByIdAsync(int id);
     }
 }

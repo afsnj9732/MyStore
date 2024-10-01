@@ -6,7 +6,7 @@ import Cart from './components/CartView.vue';
 import Order from './components/OrderView.vue';
 import Login from './components/LoginView.vue';
 import Register from './components/RegisterView.vue';
-import Dashboard from './components/AdminDashboardVue.vue';
+import Dashboard from './components/DashboardVue.vue';
 
 
 const routes = [

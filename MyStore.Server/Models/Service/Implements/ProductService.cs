@@ -1,4 +1,5 @@
-﻿using MyStore.Server.Models.Service.Dtos.ResultModels;
+﻿using MyStore.Server.Models.Service.Dtos.Infos;
+using MyStore.Server.Models.Service.Dtos.ResultModels;
 using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.UnitOfWork;
 
@@ -11,29 +12,26 @@ namespace MyStore.Server.Models.Service.Implements
         {
             _unitOfWork = unitOfWork;
         }
-        public async Task<int> GetProductTotalPageAsync()
-        {
-            var products = await _unitOfWork.ProductRepository.GetAllProductEnumAsync();
-            var result = (int)Math.Ceiling(products.Count() / 5.0);
-            return result;
 
-        }
-        public async Task<List<ProductResultModel>> GetCurrentPageProductAsync(int page)
+        public async Task<ProductsResultModel> GetCurrentPageProductAsync(ProductInfo productInfo)
         {
-            var products = await _unitOfWork.ProductRepository.GetAllProductEnumAsync();
-            var productList = products.Skip((page - 1) * 5).Take(5);
-            var result =
-                productList.Select(product => new ProductResultModel
+            var products = await _unitOfWork.ProductRepository.GetProductEnumBySearchWordAsync(productInfo.SearchWord);
+            var totalPage = (int)Math.Ceiling(products.Count() / 5.0);
+            var productList = products.Skip((productInfo.Page - 1) * 5).Take(5);
+            var result = new ProductsResultModel
+            {
+                TotalPage = totalPage,
+                Products = productList.Select(product => new ProductResultModel
                 {
                     ProductId = product.ProductId,
                     Name = product.Name,
                     Price = product.Price,
                     ImageUrl = product.ImageUrl,
                     Description = product.Description,
-                    StockQuantity = product.StockQuantity
+                    StockQuantity = product.StockQuantity,
                 }
-            ).ToList();
-
+            ).ToList()
+            };
             return result;
         }
 

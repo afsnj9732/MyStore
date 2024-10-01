@@ -3,6 +3,7 @@ using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Repository.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MyStore.Server.Models.Repository.Dtos.Conditions;
+using Microsoft.Data.SqlClient;
 
 namespace MyStore.Server.Models.Repository.Implements
 {
@@ -13,9 +14,12 @@ namespace MyStore.Server.Models.Repository.Implements
         {
             _db = db;
         }
-        public async Task<IEnumerable<ProductDataModel>> GetAllProductEnumAsync()
+        public async Task<IEnumerable<ProductDataModel>> GetProductEnumBySearchWordAsync(string searchWord)
         {
-            var products = await _db.TProducts.FromSqlRaw("EXEC usp_GetAllProducts").ToListAsync();
+            var products = await _db.TProducts.FromSqlRaw("EXEC usp_GetAllProducts @SearchWord",
+                new SqlParameter("SearchWord", searchWord))
+                .ToListAsync();
+
             var result = products.Select(product => new ProductDataModel
             {
                 ProductId = product.ProductId,

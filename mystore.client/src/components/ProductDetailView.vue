@@ -38,7 +38,7 @@
     const route = useRoute();
     const router = useRouter();
     const data = ref(null);
-    const token = localStorage.getItem("jwtToken");
+    const token = sessionStorage.getItem("jwtToken");
     const productId = route.params.productId;
 
     const validateQuantity = () => {
@@ -69,7 +69,7 @@
     }
 
     const getProductData = () => {
-        axios.get("https://localhost:7266/api/Product/list/detail/" + productId)
+        axios.get("https://localhost:7266/api/Product/detail/" + productId)
             .then(response => {
                 data.value = response.data;
             })

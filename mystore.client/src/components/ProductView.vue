@@ -8,6 +8,8 @@
             <button v-for="page in data.totalPage" :key="page" class="btn btn-outline-primary" @click="getProductData(page)">
                 {{page}}
             </button>
+            <input type="text" v-model="searchWord" />
+            <button type="button" class="btn btn-primary" @click="getProductData(1)">查詢</button>
         </div>
         <div >
             <table class="table">
@@ -44,9 +46,17 @@
     import axios from 'axios';
 
     const data = ref(null);
+    const searchWord = ref(null);
 
     const getProductData = (page) => {
-        axios.get("https://localhost:7266/api/Product/list/"+page)
+        axios.get("https://localhost:7266/api/Product/list",
+            {
+                params: {
+                        "Page": page,
+                    "SearchWord": searchWord.value ? searchWord.value : null
+                    //參數可以接受null，但不接受""空字串
+                }
+            })
             .then(response => {
                 data.value = response.data;
             })

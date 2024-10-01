@@ -41,7 +41,7 @@
                             "RecaptchaToken": recaptchaToken
                         })
                         .then(response => {
-                            localStorage.setItem("jwtToken", response.data.token);
+                            sessionStorage.setItem("jwtToken", response.data.token);
                             alert("登入成功");
                             router.push('/');
                         })

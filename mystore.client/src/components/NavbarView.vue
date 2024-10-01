@@ -51,7 +51,7 @@
     import { jwtDecode } from 'jwt-decode';
 
 
-    const token = localStorage.getItem('jwtToken');
+    const token = sessionStorage.getItem('jwtToken');
     const role = ref(null);
 
     const isLogIn = ref(!!token);
@@ -59,7 +59,7 @@
     const data = ref(null);
 
     const logout = () => {
-        localStorage.removeItem("jwtToken");
+        sessionStorage.removeItem("jwtToken");
         alert("登出成功");
         isLogIn.value = !isLogIn.value;
         router.push('/');

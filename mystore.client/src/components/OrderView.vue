@@ -48,7 +48,7 @@
     import axios from 'axios';
 
     const data = ref(null);
-    const token = localStorage.getItem('jwtToken');
+    const token = sessionStorage.getItem('jwtToken');
 
     const getOrderData = () => {
         axios.get("https://localhost:7266/api/Order/get/", { headers: { "Authorization": `Bearer ${token}` } })

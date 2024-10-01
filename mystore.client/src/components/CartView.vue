@@ -43,7 +43,7 @@
     const router = useRouter();
     const quantity = ref(null);
     const data = ref(null);
-    const token = localStorage.getItem('jwtToken');
+    const token = sessionStorage.getItem('jwtToken');
 
 
 
