@@ -75,8 +75,8 @@ namespace MyStore.Server.Controllers
             var expires = DateTime.Now.AddDays(1);
 
             var token = new JwtSecurityToken(
-                issuer: "https://localhost:7266/",
-                audience: "https://localhost:5173/",
+                //issuer: "https://localhost:7266/",
+                //audience: "https://localhost:5173/",
                 claims: claims,
                 expires: expires,
                 signingCredentials: creds);

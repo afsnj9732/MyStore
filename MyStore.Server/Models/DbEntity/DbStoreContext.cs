@@ -28,7 +28,7 @@ public partial class DbStoreContext : DbContext
     public virtual DbSet<TProduct> TProducts { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DefaultConnection");
+        => optionsBuilder.UseSqlServer("Name=ConnectionStrings:AzureConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
