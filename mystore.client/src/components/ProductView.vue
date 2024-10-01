@@ -49,7 +49,7 @@
     const searchWord = ref(null);
 
     const getProductData = (page) => {
-        axios.get("https://localhost:7266/api/Product/list",
+        axios.get("https://mystoreserverapi.azure-api.net/api/Product/list",
             {
                 params: {
                         "Page": page,

@@ -39,7 +39,7 @@
     const token = sessionStorage.getItem('jwtToken');
 
     const updateProduct = (item) => {
-        axios.post("https://localhost:7266/api/Product/update",
+        axios.post("https://mystoreserverapi.azure-api.net/api/Product/update",
             {
                 "StockQuantity": item.stockQuantity,
                 "ProductId":item.productId
@@ -54,7 +54,7 @@
     }
 
     const getProductData = () => {
-        axios.get("https://localhost:7266/api/Product/list",
+        axios.get("https://mystoreserverapi.azure-api.net/api/Product/list",
             {
                 params: {
                     "Page": 0,

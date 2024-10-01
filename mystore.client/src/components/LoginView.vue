@@ -34,7 +34,7 @@
             grecaptcha.ready(function () {
                 grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
                     recaptchaToken = token;
-                    axios.post("https://localhost:7266/api/Member/login",
+                    axios.post("https://mystoreserverapi.azure-api.net/api/Member/login",
                         {
                             "Email": email.value,
                             "Password": password.value,

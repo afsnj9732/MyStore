@@ -67,7 +67,7 @@
 
     const getCartCount = () => {
         if (token) {
-            axios.get("https://localhost:7266/api/Cart/count", { headers: { "Authorization": `Bearer ${token}` } })
+            axios.get("https://mystoreserverapi.azure-api.net/api/Cart/count", { headers: { "Authorization": `Bearer ${token}` } })
                 .then(response => {
                     data.value = response.data;
                 })

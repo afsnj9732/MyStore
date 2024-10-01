@@ -51,7 +51,7 @@
 
     const addProductToCart = () => {
         if (token) {
-            axios.post("https://localhost:7266/api/Cart/add",
+            axios.post("https://mystoreserverapi.azure-api.net/api/Cart/add",
                 {
                     "ProductId": productId,
                     "Quantity": quantity.value
@@ -72,7 +72,7 @@
     }
 
     const getProductData = () => {
-        axios.get("https://localhost:7266/api/Product/detail/" + productId)
+        axios.get("https://mystoreserverapi.azure-api.net/api/Product/detail/" + productId)
             .then(response => {
                 data.value = response.data;
             })

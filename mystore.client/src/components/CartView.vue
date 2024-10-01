@@ -49,7 +49,7 @@
 
 
     const deleteItem = (item) => {
-        axios.post("https://localhost:7266/api/Cart/delete/" + item.productId,
+        axios.post("https://mystoreserverapi.azure-api.net/api/Cart/delete/" + item.productId,
             {},
             { headers: { "Authorization": `Bearer ${token}` } })
             .then(response => {
@@ -67,7 +67,7 @@
         } else if (item.quantity > item.productStockQuantity) {
             item.quantity = item.productStockQuantity;
         } else {
-            axios.post("https://localhost:7266/api/Cart/update",
+            axios.post("https://mystoreserverapi.azure-api.net/api/Cart/update",
                 {
                     "ProductId": item.productId,
                     "Quantity": item.quantity
@@ -83,7 +83,7 @@
     }
 
     const getCartData = () => {
-        axios.get("https://localhost:7266/api/Cart/get", { headers: { "Authorization": `Bearer ${token}` } })
+        axios.get("https://mystoreserverapi.azure-api.net/api/Cart/get", { headers: { "Authorization": `Bearer ${token}` } })
             .then(response => {
                 data.value = response.data;
             })
@@ -99,7 +99,7 @@
             locale: 'auto',
             token: (stripeToken) => {
 
-                axios.post("https://localhost:7266/api/Order/place/" + stripeToken.id,
+                axios.post("https://mystoreserverapi.azure-api.net/api/Order/place/" + stripeToken.id,
                     {},
                     { headers: { "Authorization": `Bearer ${token}` } })
                     .then(response => {
