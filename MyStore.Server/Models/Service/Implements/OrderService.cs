@@ -3,7 +3,6 @@ using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Dtos.ResultModels;
 using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.UnitOfWork;
-using Stripe;
 
 
 namespace MyStore.Server.Models.Service.Implements
@@ -19,7 +18,7 @@ namespace MyStore.Server.Models.Service.Implements
             _stripeService = stripeService;
         }
 
-        public async Task<List<OrderResultModel>> GetOrdersAsync(int memberId)
+        public async Task<IEnumerable<OrderResultModel>> GetOrdersAsync(int memberId)
         {
             var orderEnum = await _unitOfWork.OrderRepository.GetOrderEnumAsync(memberId);
             var result = orderEnum.Select(order => new OrderResultModel
@@ -31,8 +30,8 @@ namespace MyStore.Server.Models.Service.Implements
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Quantity = item.Quantity
-                }).ToList()
-            }).ToList();
+                })
+            });
             return result;
         }
 
@@ -64,7 +63,7 @@ namespace MyStore.Server.Models.Service.Implements
                     {
                         ProductId = item.ProductId,
                         ReduceQuantity = item.Quantity
-                    }).ToList();
+                    });
                     await _unitOfWork.ProductRepository.ReduceProductQuantityAsync(productsCondition);
                     await _unitOfWork.CartRepository.RemoveUserAllCartItemsAsync(orderInfo.MemberId);
                     await _unitOfWork.Save();

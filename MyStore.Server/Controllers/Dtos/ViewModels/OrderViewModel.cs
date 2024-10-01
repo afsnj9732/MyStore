@@ -7,6 +7,6 @@ namespace MyStore.Server.Controllers.Dtos.ViewModels
 
         public DateTime OrderDate { get; set; }
 
-        public virtual ICollection<OrderItemViewModel> TOrderItems { get; set; } = new List<OrderItemViewModel>();
+        public IEnumerable<OrderItemViewModel> TOrderItems { get; set; }
     }
 }

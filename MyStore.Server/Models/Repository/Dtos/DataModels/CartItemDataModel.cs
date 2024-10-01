@@ -1,5 +1,4 @@
-﻿
-namespace MyStore.Server.Models.Repository.Dtos.DataModels
+﻿namespace MyStore.Server.Models.Repository.Dtos.DataModels
 {
     public class CartItemDataModel
     {

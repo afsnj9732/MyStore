@@ -1,6 +1,5 @@
-﻿using MyStore.Server.Models.Repository.Interfaces;
-using MyStore.Server.Models.Service.Interfaces;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Microsoft.EntityFrameworkCore.Storage;
+using MyStore.Server.Models.Repository.Interfaces;
 
 
 namespace MyStore.Server.Models.UnitOfWork

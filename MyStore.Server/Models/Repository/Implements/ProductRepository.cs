@@ -1,9 +1,9 @@
-﻿using MyStore.Server.Models.DbEntity;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using MyStore.Server.Models.DbEntity;
+using MyStore.Server.Models.Repository.Dtos.Conditions;
 using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Repository.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using MyStore.Server.Models.Repository.Dtos.Conditions;
-using Microsoft.Data.SqlClient;
 
 namespace MyStore.Server.Models.Repository.Implements
 {
@@ -43,7 +43,7 @@ namespace MyStore.Server.Models.Repository.Implements
             return result;
         }
 
-        public async Task ReduceProductQuantityAsync(List<ProductReduceQuantityCondition> productsCondition)
+        public async Task ReduceProductQuantityAsync(IEnumerable<ProductReduceQuantityCondition> productsCondition)
         {
             var products = await _db.TProducts.ToListAsync();
             foreach (var product in productsCondition)

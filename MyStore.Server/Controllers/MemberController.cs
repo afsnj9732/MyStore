@@ -1,17 +1,12 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using MyStore.Server.Controllers.Dtos.ViewModels;
-using MyStore.Server.Controllers.Dtos.Parameters;
-using MyStore.Server.Models.Service.Interfaces;
-using MyStore.Server.Models.Service.Dtos.Infos;
-using Microsoft.AspNetCore.Authorization;
-using MyStore.Server.Models.Service.Dtos.ResultModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MyStore.Server.Controllers.Dtos.Parameters;
+using MyStore.Server.Models.Service.Dtos.Infos;
+using MyStore.Server.Models.Service.Dtos.ResultModels;
+using MyStore.Server.Models.Service.Interfaces;
 using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
-using Microsoft.AspNetCore.SignalR.Protocol;
 
 
 namespace MyStore.Server.Controllers

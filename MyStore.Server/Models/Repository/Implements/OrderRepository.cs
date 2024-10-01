@@ -1,9 +1,8 @@
-﻿using MyStore.Server.Models.DbEntity;
+﻿using Microsoft.EntityFrameworkCore;
+using MyStore.Server.Models.DbEntity;
 using MyStore.Server.Models.Repository.Dtos.Conditions;
 using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Repository.Interfaces;
-using Microsoft.CodeAnalysis;
-using Microsoft.EntityFrameworkCore;
 
 
 namespace MyStore.Server.Models.Repository.Implements
@@ -55,7 +54,7 @@ namespace MyStore.Server.Models.Repository.Implements
                     ProductId = item.ProductId,
                     ProductName = item.Product.Name,
                     Quantity = item.Quantity
-                }).ToList()
+                })
             });
             return result;
         }

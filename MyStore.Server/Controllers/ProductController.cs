@@ -1,9 +1,9 @@
-﻿using MyStore.Server.Controllers.Dtos.ViewModels;
-using MyStore.Server.Models.Service.Interfaces;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyStore.Server.Controllers.Dtos.Parameters;
+using MyStore.Server.Controllers.Dtos.ViewModels;
 using MyStore.Server.Models.Service.Dtos.Infos;
-using Microsoft.AspNetCore.Authorization;
+using MyStore.Server.Models.Service.Interfaces;
 
 namespace MyStore.Server.Controllers
 {
@@ -38,7 +38,7 @@ namespace MyStore.Server.Controllers
                     ImageUrl = product.ImageUrl,
                     Name = product.Name,
                     StockQuantity = product.StockQuantity,
-                }).ToList()
+                })
             };
 
             return Ok(result);

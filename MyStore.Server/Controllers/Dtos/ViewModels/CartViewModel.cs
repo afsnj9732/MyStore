@@ -3,6 +3,6 @@
     public class CartViewModel
     {
         public int TotalPrice { get; set; }
-        public List<CartItemViewModel> CartItems { get; set; }
+        public IEnumerable<CartItemViewModel> CartItems { get; set; }
     }
 }

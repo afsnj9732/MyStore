@@ -1,5 +1,4 @@
-﻿
-namespace MyStore.Server.Models.Service.Dtos.ResultModels
+﻿namespace MyStore.Server.Models.Service.Dtos.ResultModels
 {
     public class ProductResultModel
     {

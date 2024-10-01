@@ -1,5 +1,4 @@
-﻿
-namespace MyStore.Server.Models.Service.Dtos.ResultModels
+﻿namespace MyStore.Server.Models.Service.Dtos.ResultModels
 {
     public class OrderResultModel
     {
@@ -7,6 +6,6 @@ namespace MyStore.Server.Models.Service.Dtos.ResultModels
 
         public DateTime OrderDate { get; set; }
 
-        public virtual ICollection<OrderItemResultModel> TOrderItems { get; set; } = new List<OrderItemResultModel>();
+        public  IEnumerable<OrderItemResultModel> TOrderItems { get; set; }
     }
 }

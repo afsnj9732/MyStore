@@ -1,8 +1,8 @@
-﻿using MyStore.Server.Controllers.Dtos.ViewModels;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyStore.Server.Controllers.Dtos.ViewModels;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace MyStore.Server.Controllers
@@ -33,7 +33,7 @@ namespace MyStore.Server.Controllers
                     ProductId = item.ProductId,
                     ProductName = item.ProductName,
                     Quantity = item.Quantity
-                }).ToList()
+                })
             });
             return Ok(result);
         }

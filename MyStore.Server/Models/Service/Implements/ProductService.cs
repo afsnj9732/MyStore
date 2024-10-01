@@ -47,7 +47,7 @@ namespace MyStore.Server.Models.Service.Implements
                     Description = product.Description,
                     StockQuantity = product.StockQuantity,
                 }
-            ).ToList()
+            )
             };
             return result;
         }

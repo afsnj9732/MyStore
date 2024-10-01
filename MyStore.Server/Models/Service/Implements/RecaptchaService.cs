@@ -1,7 +1,5 @@
 ﻿using MyStore.Server.Models.Service.Interfaces;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System.Net.Http;
 
 namespace MyStore.Server.Models.Service.Implements
 {

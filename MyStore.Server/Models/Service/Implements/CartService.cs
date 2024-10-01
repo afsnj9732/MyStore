@@ -22,7 +22,7 @@ namespace MyStore.Server.Models.Service.Implements
                 .Sum(item=>item.Price*item.Quantity);
             return result;
         }
-        public async Task<List<CartResultModel>?> GetCartItemsAsync(int memberId)
+        public async Task<IEnumerable<CartResultModel>?> GetCartItemsAsync(int memberId)
         {
             var cartItemsList = await _unitOfWork.CartRepository.GetCartItemsEnumByUserIdAsync(memberId);
             var result = cartItemsList.Select(item => new CartResultModel
@@ -32,7 +32,7 @@ namespace MyStore.Server.Models.Service.Implements
                 ProductStockQuantity = item.ProductStockQuantity,
                 Quantity = item.Quantity,
                 Price = item.Price
-            }).ToList();
+            });
             return result;
         }
 

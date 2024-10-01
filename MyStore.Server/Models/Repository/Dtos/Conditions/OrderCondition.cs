@@ -1,5 +1,4 @@
-﻿
-namespace MyStore.Server.Models.Repository.Dtos.Conditions
+﻿namespace MyStore.Server.Models.Repository.Dtos.Conditions
 {
     public class OrderCondition
     {

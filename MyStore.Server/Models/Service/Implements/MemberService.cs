@@ -1,7 +1,7 @@
 ﻿using MyStore.Server.Models.Repository.Dtos.Conditions;
 using MyStore.Server.Models.Service.Dtos.Infos;
-using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.Service.Dtos.ResultModels;
+using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.UnitOfWork;
 
 namespace MyStore.Server.Models.Service.Implements

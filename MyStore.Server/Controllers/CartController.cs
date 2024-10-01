@@ -1,9 +1,9 @@
-﻿using MyStore.Server.Controllers.Dtos.Parameters;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Controllers.Dtos.ViewModels;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
 namespace MyStore.Server.Controllers
@@ -35,7 +35,7 @@ namespace MyStore.Server.Controllers
               ProductStockQuantity = item.ProductStockQuantity,
               Quantity = item.Quantity,
               Price = item.Price
-            }).ToList();
+            });
             var result = new CartViewModel
             {
                 TotalPrice = totalPrice,
@@ -67,15 +67,6 @@ namespace MyStore.Server.Controllers
             await _cartService.AddCartItemAsync(itemInfo);
             return Ok();
         }
-
-        //[Authorize]
-        //[HttpGet("price")]
-        //public async Task<IActionResult> GetTotalPriceAsync()
-        //{
-        //    var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-        //    var result = await _cartService.GetTotalPriceAsync(memberId);
-        //    return Ok(result);
-        //}
 
         [Authorize]
         [HttpPost("update")]

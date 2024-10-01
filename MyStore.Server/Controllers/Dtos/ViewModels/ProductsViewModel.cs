@@ -3,6 +3,6 @@
     public class ProductsViewModel
     {
         public int TotalPage { get; set; }
-        public List<ProductViewModel> Products { get; set; }
+        public IEnumerable<ProductViewModel> Products { get; set; }
     }
 }
