@@ -6,8 +6,8 @@ namespace MyStore.Server.Models.Repository.Interfaces
 {
     public interface IMemberRepository
     {
-        Task<MemberDataModel?> GetMemberAsync(string email);
-        Task<MemberDataModel?> CheckMemberAsync(MemberCondition memberCondition);
-        Task<TMember> AddMemberAsync(MemberCondition member);
+        Task<MemberDataModel?> GetAsync(string email);
+        Task<MemberDataModel?> CheckAsync(MemberCondition memberCondition);
+        Task<TMember> AddAsync(MemberCondition member);
     }
 }

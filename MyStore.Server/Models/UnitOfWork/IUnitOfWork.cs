@@ -11,6 +11,6 @@ namespace MyStore.Server.Models.UnitOfWork
         ICartRepository CartRepository { get; }
         IOrderRepository OrderRepository { get; }
         Task<IDbContextTransaction> BeginTransactionAsync();
-        Task Save();
+        Task SaveChangeAsync();
     }
 }

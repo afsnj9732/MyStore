@@ -34,7 +34,7 @@ namespace MyStore.Server.Models.UnitOfWork
         {
             return await _db.Database.BeginTransactionAsync();
         }
-        public async Task Save()
+        public async Task SaveChangeAsync()
         {
             await _db.SaveChangesAsync();
         }

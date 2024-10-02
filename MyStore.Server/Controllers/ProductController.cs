@@ -64,7 +64,7 @@ namespace MyStore.Server.Controllers
         [HttpGet("detail/{productId:int}")]
         public async Task<IActionResult> ProductDetailAsync([FromRoute]int productId)
         {
-            var product = await _productService.GetProductDetailByIdAsync(productId);
+            var product = await _productService.GetProductDetailAsync(productId);
             if (product == null) { return RedirectToAction("ProductList"); }
             var result = new ProductViewModel
             {

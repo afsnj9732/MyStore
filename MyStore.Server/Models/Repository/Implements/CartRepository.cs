@@ -15,13 +15,13 @@ namespace MyStore.Server.Models.Repository.Implements
         {
             _db = db;
         }
-        public async Task<int> GetCartIdAsync(int memberId)
+        public async Task<int> GetIdAsync(int memberId)
         {
             var cart = await _db.TCarts.Where(cart => cart.MemberId == memberId).FirstOrDefaultAsync();
             var result = cart.CartId;
             return result;
         }
-        public async Task AddCartItemAsync(CartItemCondition cartItem)
+        public async Task AddItemAsync(CartItemCondition cartItem)
         {
             var target = await _db.TCartItems.Where(item => item.ProductId == cartItem.ProductId
             && item.CartId == cartItem.CartId).FirstOrDefaultAsync();
@@ -42,13 +42,13 @@ namespace MyStore.Server.Models.Repository.Implements
 
         }
 
-        public async Task CreateCartAsync(int memberId)
+        public async Task CreateAsync(int memberId)
         {
             var cart = new TCart { MemberId = memberId };
             await _db.TCarts.AddAsync(cart);
         }
 
-        public async Task<IEnumerable<CartItemDataModel>> GetCartItemsEnumByUserIdAsync(int memberId)
+        public async Task<IEnumerable<CartItemDataModel>> GetItemsEnumAsync(int memberId)
         {
             var cart = await _db.TCarts.Where(cart=>cart.MemberId == memberId).FirstOrDefaultAsync();
             var cartItemsEnum = await _db.TCartItems
@@ -67,7 +67,7 @@ namespace MyStore.Server.Models.Repository.Implements
             return result;
         }
 
-        public async Task UpdateCartItemAsync(CartItemCondition cartItem)
+        public async Task UpdateItemAsync(CartItemCondition cartItem)
         {
             var getUspUpdateItem = await _db.TCartItems.FromSqlRaw("EXEC usp_FindUpdateCartItem @CartId,@ProductId",
                 new SqlParameter("@CartId", cartItem.CartId),
@@ -75,14 +75,14 @@ namespace MyStore.Server.Models.Repository.Implements
             var updateItem = getUspUpdateItem.FirstOrDefault();
             updateItem.Quantity = cartItem.Quantity;
         }
-        public async Task RemoveCartItemAsync(CartItemCondition cartItem)
+        public async Task RemoveItemAsync(CartItemCondition cartItem)
         {
             var RemoveItem = await _db.TCartItems.Where(item=>item.CartId==cartItem.CartId
             && item.ProductId==cartItem.ProductId).FirstOrDefaultAsync();
             _db.TCartItems.Remove(RemoveItem);
         }
 
-        public async Task RemoveUserAllCartItemsAsync(int memberId)
+        public async Task RemoveAllItemsAsync(int memberId)
         {
             var RemoveItems = await _db.TCartItems.Where(item => item.Cart.MemberId == memberId).ToListAsync();
             _db.TCartItems.RemoveRange(RemoveItems);

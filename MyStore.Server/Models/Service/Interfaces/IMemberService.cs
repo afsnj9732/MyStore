@@ -6,7 +6,7 @@ namespace MyStore.Server.Models.Service.Interfaces
     public interface IMemberService
     {
         Task<bool> CreateMemberAsync(MemberAuthInfo member);
-        Task<MemberResultModel?> LoginAsync(MemberAuthInfo memberAuthInfo);
+        Task<MemberResultModel?> GetMemberAsync(MemberAuthInfo memberAuthInfo);
 
     }
 }

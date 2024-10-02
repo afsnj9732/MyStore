@@ -23,7 +23,7 @@ namespace MyStore.Server.Controllers
         public async Task<IActionResult> CartItemListAsync()
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var totalPrice = await _cartService.GetTotalPriceAsync(memberId);
+            var totalPrice = await _cartService.GetCartTotalPriceAsync(memberId);
             var itemList = await _cartService.GetCartItemsAsync(memberId);
             if(itemList == null)
             {
@@ -49,7 +49,7 @@ namespace MyStore.Server.Controllers
         public async Task<IActionResult> GetCartItemCountAsync()
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var itemCount = await _cartService.GetCartItemCountAsync(memberId);
+            var itemCount = await _cartService.GetCartItemsCountAsync(memberId);
             return Ok(itemCount);
         }
 

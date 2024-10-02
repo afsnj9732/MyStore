@@ -25,7 +25,7 @@ namespace MyStore.Server.Models.Repository.Implements
                 target.ImageUrl = productCondition.ImageUrl ?? target.ImageUrl;
             }
         } 
-        public async Task<IEnumerable<ProductDataModel>> GetProductEnumBySearchWordAsync(string searchWord)
+        public async Task<IEnumerable<ProductDataModel>> GetEnumAsync(string searchWord)
         {
             var products = await _db.TProducts.FromSqlRaw("EXEC usp_GetAllProducts @SearchWord",
                 new SqlParameter("SearchWord", searchWord))
@@ -43,7 +43,7 @@ namespace MyStore.Server.Models.Repository.Implements
             return result;
         }
 
-        public async Task ReduceProductQuantityAsync(IEnumerable<ProductReduceQuantityCondition> productsCondition)
+        public async Task ReduceStockAsync(IEnumerable<ProductReduceQuantityCondition> productsCondition)
         {
             var products = await _db.TProducts.ToListAsync();
             foreach (var product in productsCondition)
@@ -58,7 +58,7 @@ namespace MyStore.Server.Models.Repository.Implements
 
         }
 
-        public async Task<ProductDataModel?> GetProductByIdAsync(int productId)
+        public async Task<ProductDataModel?> GetAsync(int productId)
         {
             var product = await _db.TProducts.Where(product => product.ProductId == productId).FirstOrDefaultAsync();
 

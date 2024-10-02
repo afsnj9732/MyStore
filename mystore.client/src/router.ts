@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import Home from './components/HomeView.vue';
 import Product from './components/ProductView.vue';
 import ProductDetail from './components/ProductDetailView.vue';
 import Cart from './components/CartView.vue';
@@ -10,7 +9,7 @@ import Dashboard from './components/DashboardVue.vue';
 
 
 const routes = [
-    { path: '/', component: Home },
+    { path: '/', redirect: '/products' },
     { path: '/products', component: Product },
     { path: '/products/detail/:productId', component: ProductDetail },
     { path: '/cart', component: Cart },

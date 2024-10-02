@@ -15,7 +15,7 @@ namespace MyStore.Server.Models.Repository.Implements
         {
             _db = db;
         }
-        public async Task CreateOrderItemAsync(IEnumerable<OrderItemCondition> orderItems)
+        public async Task CreateItemsAsync(IEnumerable<OrderItemCondition> orderItems)
         {
             var  AddItems = orderItems.Select(item=> new TOrderItem 
             {
@@ -25,7 +25,7 @@ namespace MyStore.Server.Models.Repository.Implements
             });
             await _db.TOrderItems.AddRangeAsync(AddItems);
         }
-        public async Task<TOrder> CreateOrderAsync(OrderCondition condition)
+        public async Task<TOrder> CreateAsync(OrderCondition condition)
         {
             var createOrder = new TOrder
             {
@@ -38,7 +38,7 @@ namespace MyStore.Server.Models.Repository.Implements
         }
 
 
-        public async Task<IEnumerable<OrderDataModel>> GetOrderEnumAsync(int memberId)
+        public async Task<IEnumerable<OrderDataModel>> GetEnumAsync(int memberId)
         {
             var Orders = await _db.TOrders.Where(order => order.MemberId == memberId)
                 .Include(order => order.TOrderItems)

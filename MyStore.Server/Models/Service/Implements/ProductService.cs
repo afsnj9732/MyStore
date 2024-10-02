@@ -25,11 +25,11 @@ namespace MyStore.Server.Models.Service.Implements
                 StockQuantity = productInfo.StockQuantity
             };
             await _unitOfWork.ProductRepository.UpdateAsync(productCondition);
-            await _unitOfWork.Save();
+            await _unitOfWork.SaveChangeAsync();
         }
         public async Task<ProductsResultModel> GetCurrentPageProductAsync(ProductViewInfo productInfo)
         {
-            var products = await _unitOfWork.ProductRepository.GetProductEnumBySearchWordAsync(productInfo.SearchWord);
+            var products = await _unitOfWork.ProductRepository.GetEnumAsync(productInfo.SearchWord);
             var totalPage = (int)Math.Ceiling(products.Count() / 5.0);
             if (productInfo.Page != 0) { 
                 products = products.Skip((productInfo.Page - 1) * 5).Take(5); 
@@ -52,9 +52,9 @@ namespace MyStore.Server.Models.Service.Implements
             return result;
         }
 
-        public async Task<ProductResultModel?> GetProductDetailByIdAsync(int id)
+        public async Task<ProductResultModel?> GetProductDetailAsync(int id)
         {
-            var product = await _unitOfWork.ProductRepository.GetProductByIdAsync(id);
+            var product = await _unitOfWork.ProductRepository.GetAsync(id);
             if (product == null)
             {
                 return null;

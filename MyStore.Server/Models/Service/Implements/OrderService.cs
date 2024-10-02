@@ -20,7 +20,7 @@ namespace MyStore.Server.Models.Service.Implements
 
         public async Task<IEnumerable<OrderResultModel>> GetOrdersAsync(int memberId)
         {
-            var orderEnum = await _unitOfWork.OrderRepository.GetOrderEnumAsync(memberId);
+            var orderEnum = await _unitOfWork.OrderRepository.GetEnumAsync(memberId);
             var result = orderEnum.Select(order => new OrderResultModel
             {
                 OrderDate = order.OrderDate,
@@ -41,15 +41,15 @@ namespace MyStore.Server.Models.Service.Implements
             {
                 try
                 {
-                    var cartItems = await _unitOfWork.CartRepository.GetCartItemsEnumByUserIdAsync(orderInfo.MemberId);
+                    var cartItems = await _unitOfWork.CartRepository.GetItemsEnumAsync(orderInfo.MemberId);
                     var orderCondition = new OrderCondition
                     {
                         MemberId = orderInfo.MemberId,
                         TotalPrice = cartItems.Sum(item =>  item.Price* item.Quantity),
                         OrderDate = DateTime.Now
                     };
-                    var newOrder = await _unitOfWork.OrderRepository.CreateOrderAsync(orderCondition);
-                    await _unitOfWork.Save();//關聯式資料庫需先透過SaveChanges()才能獲得識別項主鍵
+                    var newOrder = await _unitOfWork.OrderRepository.CreateAsync(orderCondition);
+                    await _unitOfWork.SaveChangeAsync();//關聯式資料庫需先透過SaveChanges()才能獲得識別項主鍵
 
                     var orderItems = cartItems.Select(item => new OrderItemCondition
                     {
@@ -57,18 +57,18 @@ namespace MyStore.Server.Models.Service.Implements
                         ProductId = item.ProductId,
                         Quantity = item.Quantity,
                     });
-                    await _unitOfWork.OrderRepository.CreateOrderItemAsync(orderItems);
+                    await _unitOfWork.OrderRepository.CreateItemsAsync(orderItems);
 
                     var productsCondition = orderItems.Select(item => new ProductReduceQuantityCondition
                     {
                         ProductId = item.ProductId,
                         ReduceQuantity = item.Quantity
                     });
-                    var reduceTask = _unitOfWork.ProductRepository.ReduceProductQuantityAsync(productsCondition);
-                    var removeTask = _unitOfWork.CartRepository.RemoveUserAllCartItemsAsync(orderInfo.MemberId);
+                    var reduceTask = _unitOfWork.ProductRepository.ReduceStockAsync(productsCondition);
+                    var removeTask = _unitOfWork.CartRepository.RemoveAllItemsAsync(orderInfo.MemberId);
                     await reduceTask;//非同步並行
                     await removeTask;
-                    await _unitOfWork.Save();
+                    await _unitOfWork.SaveChangeAsync();
 
                     var stripeInfo = new StripeInfo { TotalPrice = newOrder.TotalPrice, StripeToken = orderInfo.StripeToken };
                     _stripeService.CreateOrder(stripeInfo);

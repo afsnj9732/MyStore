@@ -6,8 +6,8 @@ namespace MyStore.Server.Models.Repository.Interfaces
     public interface IProductRepository
     {
         Task UpdateAsync(ProductCondition productCondition);
-        Task<IEnumerable<ProductDataModel>> GetProductEnumBySearchWordAsync(string searchWord);
-        Task<ProductDataModel?> GetProductByIdAsync(int productId);
-        Task ReduceProductQuantityAsync(IEnumerable<ProductReduceQuantityCondition> productsCondition);
+        Task<IEnumerable<ProductDataModel>> GetEnumAsync(string searchWord);
+        Task<ProductDataModel?> GetAsync(int productId);
+        Task ReduceStockAsync(IEnumerable<ProductReduceQuantityCondition> productsCondition);
     }
 }

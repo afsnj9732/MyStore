@@ -17,7 +17,7 @@ namespace MyStore.Server.Models.Service.Implements
 
         public async Task<bool> CreateMemberAsync(MemberAuthInfo memberInfo)
         {
-            var member = await _unitOfWork.MemberRepository.GetMemberAsync(memberInfo.Email);
+            var member = await _unitOfWork.MemberRepository.GetAsync(memberInfo.Email);
             if (member != null)
             {
                 return false;
@@ -31,10 +31,10 @@ namespace MyStore.Server.Models.Service.Implements
             {
                 try
                 {
-                    var newMember = await _unitOfWork.MemberRepository.AddMemberAsync(memberCondition);
-                    await _unitOfWork.Save();//關聯式資料庫需先透過SaveChanges()才能獲得識別項主鍵
-                    await _unitOfWork.CartRepository.CreateCartAsync(newMember.MemberId);//透過SaveChange()返回的主鍵
-                    await _unitOfWork.Save();
+                    var newMember = await _unitOfWork.MemberRepository.AddAsync(memberCondition);
+                    await _unitOfWork.SaveChangeAsync();//關聯式資料庫需先透過SaveChanges()才能獲得識別項主鍵
+                    await _unitOfWork.CartRepository.CreateAsync(newMember.MemberId);//透過SaveChange()返回的主鍵
+                    await _unitOfWork.SaveChangeAsync();
                     await transaction.CommitAsync();
                     return true;
                 }
@@ -46,14 +46,14 @@ namespace MyStore.Server.Models.Service.Implements
             }
 
         }
-        public async Task<MemberResultModel?> LoginAsync(MemberAuthInfo memberAuthInfo)
+        public async Task<MemberResultModel?> GetMemberAsync(MemberAuthInfo memberAuthInfo)
         {
             var condition = new MemberCondition
             {
                 Email = memberAuthInfo.Email,
                 Password = memberAuthInfo.Password
             };
-            var checkResult = await _unitOfWork.MemberRepository.CheckMemberAsync(condition);
+            var checkResult = await _unitOfWork.MemberRepository.CheckAsync(condition);
             if (checkResult == null)
             {
                 return null;

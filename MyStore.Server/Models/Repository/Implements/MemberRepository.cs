@@ -14,7 +14,7 @@ namespace MyStore.Server.Models.Repository.Implements
             _db = db;
         }
 
-        public async Task<TMember> AddMemberAsync(MemberCondition memberInfo)
+        public async Task<TMember> AddAsync(MemberCondition memberInfo)
         {
             var member = new TMember
             {
@@ -26,7 +26,7 @@ namespace MyStore.Server.Models.Repository.Implements
             return member;
         }
 
-        public async Task<MemberDataModel?> CheckMemberAsync(MemberCondition memberCondition)
+        public async Task<MemberDataModel?> CheckAsync(MemberCondition memberCondition)
         {
             var member = await _db.TMembers
                 .Where(member => member.Email == memberCondition.Email).FirstOrDefaultAsync();
@@ -42,7 +42,7 @@ namespace MyStore.Server.Models.Repository.Implements
             return result;
         }
 
-        public async Task<MemberDataModel?> GetMemberAsync(string email)
+        public async Task<MemberDataModel?> GetAsync(string email)
         {
             var member = await _db.TMembers.Where(member =>member.Email == email).FirstOrDefaultAsync();
             if (member == null) { return null; }

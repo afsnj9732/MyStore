@@ -5,12 +5,12 @@ namespace MyStore.Server.Models.Repository.Interfaces
 {
     public interface ICartRepository
     {
-        Task AddCartItemAsync(CartItemCondition cartItem);
-        Task RemoveCartItemAsync(CartItemCondition cartItem);
-        Task UpdateCartItemAsync(CartItemCondition cartItem);
-        Task CreateCartAsync(int memberId);
-        Task<int> GetCartIdAsync(int memberId);
-        Task RemoveUserAllCartItemsAsync(int memberId);
-        Task<IEnumerable<CartItemDataModel>> GetCartItemsEnumByUserIdAsync(int id);
+        Task AddItemAsync(CartItemCondition cartItem);
+        Task RemoveItemAsync(CartItemCondition cartItem);
+        Task UpdateItemAsync(CartItemCondition cartItem);
+        Task CreateAsync(int memberId);
+        Task<int> GetIdAsync(int memberId);
+        Task RemoveAllItemsAsync(int memberId);
+        Task<IEnumerable<CartItemDataModel>> GetItemsEnumAsync(int id);
     }
 }

@@ -6,8 +6,8 @@ namespace MyStore.Server.Models.Repository.Interfaces
 {
     public interface IOrderRepository
     {
-        Task<IEnumerable<OrderDataModel>> GetOrderEnumAsync(int memberId);
-        Task CreateOrderItemAsync(IEnumerable<OrderItemCondition> orderItems);
-        Task<TOrder> CreateOrderAsync(OrderCondition condition);
+        Task<IEnumerable<OrderDataModel>> GetEnumAsync(int memberId);
+        Task CreateItemsAsync(IEnumerable<OrderItemCondition> orderItems);
+        Task<TOrder> CreateAsync(OrderCondition condition);
     }
 }

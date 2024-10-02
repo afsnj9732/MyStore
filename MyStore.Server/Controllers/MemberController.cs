@@ -33,7 +33,7 @@ namespace MyStore.Server.Controllers
                 Email = memberInfo.Email,
                 Password = memberInfo.Password
             };
-            var loginTask = _memberService.LoginAsync(info);//非同步並行
+            var loginTask = _memberService.GetMemberAsync(info);//非同步並行
 
             var isHumanTask = _recaptchaService.VerifyRecaptchaAsync(memberInfo.RecaptchaToken);
             var isHuman = await isHumanTask;//非同步並行

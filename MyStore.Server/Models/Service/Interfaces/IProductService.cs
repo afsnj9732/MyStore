@@ -7,6 +7,6 @@ namespace MyStore.Server.Models.Service.Interfaces
     {
         Task UpdateProductAsync(ProductInfo productCondition);
         Task<ProductsResultModel> GetCurrentPageProductAsync(ProductViewInfo productInfo);
-        Task<ProductResultModel?> GetProductDetailByIdAsync(int id);
+        Task<ProductResultModel?> GetProductDetailAsync(int id);
     }
 }

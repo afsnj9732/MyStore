@@ -6,8 +6,8 @@ namespace MyStore.Server.Models.Service.Interfaces
     public interface ICartService
     {
         Task<IEnumerable<CartResultModel>?> GetCartItemsAsync(int id);
-        Task<int> GetTotalPriceAsync(int memberId);
-        Task<int> GetCartItemCountAsync(int id);
+        Task<int> GetCartTotalPriceAsync(int memberId);
+        Task<int> GetCartItemsCountAsync(int id);
 
         Task AddCartItemAsync(CartItemInfo cartItem);
 

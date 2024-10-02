@@ -15,16 +15,16 @@ namespace MyStore.Server.Models.Service.Implements
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<int> GetTotalPriceAsync(int memberId)
+        public async Task<int> GetCartTotalPriceAsync(int memberId)
         {
-            var cartItemsList = await _unitOfWork.CartRepository.GetCartItemsEnumByUserIdAsync(memberId);
+            var cartItemsList = await _unitOfWork.CartRepository.GetItemsEnumAsync(memberId);
             var result = cartItemsList
                 .Sum(item=>item.Price*item.Quantity);
             return result;
         }
         public async Task<IEnumerable<CartResultModel>?> GetCartItemsAsync(int memberId)
         {
-            var cartItemsList = await _unitOfWork.CartRepository.GetCartItemsEnumByUserIdAsync(memberId);
+            var cartItemsList = await _unitOfWork.CartRepository.GetItemsEnumAsync(memberId);
             var result = cartItemsList.Select(item => new CartResultModel
             {
                 ProductId = item.ProductId,
@@ -36,47 +36,47 @@ namespace MyStore.Server.Models.Service.Implements
             return result;
         }
 
-        public async Task<int> GetCartItemCountAsync(int memberId)
+        public async Task<int> GetCartItemsCountAsync(int memberId)
         {
-            var CartItems = await _unitOfWork.CartRepository.GetCartItemsEnumByUserIdAsync(memberId);
+            var CartItems = await _unitOfWork.CartRepository.GetItemsEnumAsync(memberId);
             var result = CartItems?.Sum(item => item.Quantity) ?? 0;
             return result;
         }
 
         public async Task AddCartItemAsync(CartItemInfo cartItem)
         {
-            var cartId = await _unitOfWork.CartRepository.GetCartIdAsync(cartItem.MemberId);
+            var cartId = await _unitOfWork.CartRepository.GetIdAsync(cartItem.MemberId);
             var condition = new CartItemCondition
             {
                 CartId = cartId,
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity
             };
-            await _unitOfWork.CartRepository.AddCartItemAsync(condition);
-            await _unitOfWork.Save();
+            await _unitOfWork.CartRepository.AddItemAsync(condition);
+            await _unitOfWork.SaveChangeAsync();
         }
         public async Task UpdateCartItemAsync(CartItemInfo cartItem)
         {
-            var cartId = await _unitOfWork.CartRepository.GetCartIdAsync(cartItem.MemberId);
+            var cartId = await _unitOfWork.CartRepository.GetIdAsync(cartItem.MemberId);
             var condition = new CartItemCondition
             {
                 CartId = cartId,
                 ProductId = cartItem.ProductId,
                 Quantity = cartItem.Quantity
             };
-            await _unitOfWork.CartRepository.UpdateCartItemAsync(condition);
-            await _unitOfWork.Save();
+            await _unitOfWork.CartRepository.UpdateItemAsync(condition);
+            await _unitOfWork.SaveChangeAsync();
         }
         public async Task RemoveCartItemAsync(CartItemInfo cartItem)
         {
-            var cartId = await _unitOfWork.CartRepository.GetCartIdAsync(cartItem.MemberId);
+            var cartId = await _unitOfWork.CartRepository.GetIdAsync(cartItem.MemberId);
             var condition = new CartItemCondition
             {
                 CartId = cartId,
                 ProductId = cartItem.ProductId
             };
-            await _unitOfWork.CartRepository.RemoveCartItemAsync(condition);
-            await _unitOfWork.Save();
+            await _unitOfWork.CartRepository.RemoveItemAsync(condition);
+            await _unitOfWork.SaveChangeAsync();
         }
     }
 }
