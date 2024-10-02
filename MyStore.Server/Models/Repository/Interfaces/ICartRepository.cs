@@ -9,8 +9,8 @@ namespace MyStore.Server.Models.Repository.Interfaces
         Task RemoveItemAsync(CartItemCondition cartItem);
         Task UpdateItemAsync(CartItemCondition cartItem);
         Task CreateAsync(int memberId);
-        Task<int> GetIdAsync(int memberId);
+        Task<int?> GetIdAsync(int memberId);
         Task RemoveAllItemsAsync(int memberId);
-        Task<IEnumerable<CartItemDataModel>> GetItemsEnumAsync(int id);
+        Task<IEnumerable<CartItemDataModel>?> GetItemsEnumAsync(int id);
     }
 }

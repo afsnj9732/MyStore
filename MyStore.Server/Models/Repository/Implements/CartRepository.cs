@@ -15,9 +15,12 @@ namespace MyStore.Server.Models.Repository.Implements
         {
             _db = db;
         }
-        public async Task<int> GetIdAsync(int memberId)
+        public async Task<int?> GetIdAsync(int memberId)
         {
             var cart = await _db.TCarts.Where(cart => cart.MemberId == memberId).FirstOrDefaultAsync();
+            if (cart == null) {
+                return null;
+            }
             var result = cart.CartId;
             return result;
         }
@@ -48,9 +51,13 @@ namespace MyStore.Server.Models.Repository.Implements
             await _db.TCarts.AddAsync(cart);
         }
 
-        public async Task<IEnumerable<CartItemDataModel>> GetItemsEnumAsync(int memberId)
+        public async Task<IEnumerable<CartItemDataModel>?> GetItemsEnumAsync(int memberId)
         {
             var cart = await _db.TCarts.Where(cart=>cart.MemberId == memberId).FirstOrDefaultAsync();
+            if(cart == null)
+            {
+                return null;
+            }
             var cartItemsEnum = await _db.TCartItems
                 .Where(cartItem => cartItem.CartId == cart.CartId)
                 .Include(cartItem => cartItem.Product)
@@ -73,13 +80,18 @@ namespace MyStore.Server.Models.Repository.Implements
                 new SqlParameter("@CartId", cartItem.CartId),
                 new SqlParameter("@ProductId", cartItem.ProductId)).ToListAsync();
             var updateItem = getUspUpdateItem.FirstOrDefault();
-            updateItem.Quantity = cartItem.Quantity;
+            if (updateItem != null)
+            {
+                updateItem.Quantity = cartItem.Quantity;
+            }
         }
         public async Task RemoveItemAsync(CartItemCondition cartItem)
         {
             var RemoveItem = await _db.TCartItems.Where(item=>item.CartId==cartItem.CartId
             && item.ProductId==cartItem.ProductId).FirstOrDefaultAsync();
-            _db.TCartItems.Remove(RemoveItem);
+            if (RemoveItem != null) {
+                _db.TCartItems.Remove(RemoveItem);
+            }
         }
 
         public async Task RemoveAllItemsAsync(int memberId)

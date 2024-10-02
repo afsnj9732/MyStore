@@ -2,7 +2,7 @@
 {
     public class CartItemCondition
     {
-        public int CartId { get; set; }
+        public int? CartId { get; set; }
 
         public int ProductId { get; set; }
 

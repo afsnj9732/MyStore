@@ -49,6 +49,10 @@ namespace MyStore.Server.Models.Repository.Implements
             foreach (var product in productsCondition)
             {
                 var target = products.Where(p => p.ProductId == product.ProductId).FirstOrDefault();
+                if(target == null)
+                {
+                    continue;
+                }
                 target.StockQuantity -= product.ReduceQuantity;
                 if (target.StockQuantity < 0)
                 {
@@ -62,7 +66,10 @@ namespace MyStore.Server.Models.Repository.Implements
         {
             var product = await _db.TProducts.Where(product => product.ProductId == productId).FirstOrDefaultAsync();
 
-            if (product == null) { return null; }
+            if (product == null) 
+            { 
+                return null; 
+            }
 
             var result = new ProductDataModel
             {

@@ -140,7 +140,7 @@
         });
     };
 
-    const loadStripeScript = () => {
+    const loadStripeScript = ():Promise<void> => {
         return new Promise((resolve) => {
             const script = document.createElement('script');
             script.src = 'https://checkout.stripe.com/checkout.js';

@@ -47,12 +47,12 @@ namespace MyStore.Server.Controllers
             {
                 return BadRequest(new { apiMessage = "密碼錯誤或會員不存在" });
             }
-            var token = GetJwtToken(loginResult);
+            var token = CreateJwtToken(loginResult);
 
             return Ok(new { token });
         }
 
-        private string GetJwtToken(MemberResultModel memberResultModel)
+        private string CreateJwtToken(MemberResultModel memberResultModel)
         {
             var claims = new List<Claim>
                 {
