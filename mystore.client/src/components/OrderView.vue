@@ -12,9 +12,9 @@
             </thead>
             <tbody v-for="order in data" :key="order.orderDate">
                 <tr>
-                    <td>                        
+                    <td>
                         <button type="button" class="accordion-button" data-bs-toggle="collapse" :href="`#${order.orderDate}`" role="button" aria-expanded="false" :aria-controls="`${order.orderDate}`">
-                                {{order.orderDate}}
+                            {{order.orderDate}}
                         </button>
                         <div class="collapse multi-collapse" :id="`${order.orderDate}`">
                             <div class="card card-body">
@@ -51,12 +51,13 @@
     const token = sessionStorage.getItem('jwtToken');
 
     const getOrderData = () => {
-        axios.get("https://mystoreserverapi.azure-api.net/api/Order/get/", {
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
-            }
-        })
+        axios.get(import.meta.env.VITE_API_LOCAL + "api/Order/get/",
+            {
+                headers: {
+                    "Authorization": `Bearer ${token}`,
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
+                }
+            })
             .then(response => {
                 data.value = response.data;
             })

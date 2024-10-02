@@ -35,9 +35,9 @@
     const register = () => {
         if (email.value && password.value && confirmPassword.value) {
             grecaptcha.ready(function () {
-                grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
+                grecaptcha.execute(import.meta.env.VITE_RECAPTCHA).then(function (token) {
                     recaptchaToken = token;
-                    axios.post("https://mystoreserverapi.azure-api.net/api/Member/register",
+                    axios.post(import.meta.env.VITE_API_LOCAL +"api/Member/register",
                         {
                             "Email": email.value,
                             "Password": password.value,
@@ -45,7 +45,7 @@
                             "RecaptchaToken": recaptchaToken
                         }, {
                             headers: {
-                                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                                'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                             }
                         }
 

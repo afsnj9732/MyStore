@@ -32,16 +32,16 @@
     const login = () => {
         if (email.value && password.value) {
             grecaptcha.ready(function () {
-                grecaptcha.execute('6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN').then(function (token) {
+                grecaptcha.execute(import.meta.env.VITE_RECAPTCHA).then(function (token) {
                     recaptchaToken = token;
-                    axios.post("https://mystoreserverapi.azure-api.net/api/Member/login",
+                    axios.post(import.meta.env.VITE_API_LOCAL+"api/Member/login",
                         {
                             "Email": email.value,
                             "Password": password.value,
                             "RecaptchaToken": recaptchaToken
                         }, {
                             headers: {
-                                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                                'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                             }
                         })
                         .then(response => {

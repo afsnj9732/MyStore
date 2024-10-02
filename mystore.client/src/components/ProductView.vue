@@ -49,7 +49,7 @@
     const searchWord = ref(null);
 
     const getProductData = (page) => {
-        axios.get("https://mystoreserverapi.azure-api.net/api/Product/list",
+        axios.get(import.meta.env.VITE_API_LOCAL+"api/Product/list",
             {
                 params: {
                         "Page": page,
@@ -57,7 +57,7 @@
                     //參數可以接受null，但不接受""空字串
                 },
                 headers: {
-                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805' 
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             })
             .then(response => {

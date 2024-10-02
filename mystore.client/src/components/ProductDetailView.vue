@@ -51,7 +51,7 @@
 
     const addProductToCart = () => {
         if (token) {
-            axios.post("https://mystoreserverapi.azure-api.net/api/Cart/add",
+            axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/add",
                 {
                     "ProductId": productId,
                     "Quantity": quantity.value
@@ -59,7 +59,7 @@
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
-                        'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                        'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                     }
                 }
             )
@@ -77,10 +77,10 @@
     }
 
     const getProductData = () => {
-        axios.get("https://mystoreserverapi.azure-api.net/api/Product/detail/" + productId,
+        axios.get(import.meta.env.VITE_API_LOCAL+"api/Product/detail/" + productId,
             {
                 headers: {
-                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             }
         )

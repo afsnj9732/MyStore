@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Controllers.Dtos.ViewModels;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Interfaces;
@@ -39,11 +40,11 @@ namespace MyStore.Server.Controllers
         }
 
         [Authorize]
-        [HttpPost("place/{stripeToken}")]
-        public async Task<IActionResult> PlaceOrderAsync([FromRoute]string stripeToken)
+        [HttpPost("place")]
+        public async Task<IActionResult> PlaceOrderAsync(PlaceOrderParameter placeOrderParameter)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var orderInfo = new CreateOrderInfo { MemberId = memberId, StripeToken = stripeToken };
+            var orderInfo = new CreateOrderInfo { MemberId = memberId, StripeToken = placeOrderParameter.StripeToken };
             var isSuccess = await _orderService.CreateOrderAsync(orderInfo);
             if (isSuccess)
             {

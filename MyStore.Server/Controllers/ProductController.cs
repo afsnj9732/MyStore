@@ -46,7 +46,7 @@ namespace MyStore.Server.Controllers
 
         [Authorize(Roles = "Admin")]
         [HttpPost("update")]
-        public async Task<IActionResult> UpdateProduct(ProductParameter productParameter)
+        public async Task<IActionResult> UpdateProductAsync(ProductParameter productParameter)
         {
             var productInfo = new ProductInfo
             {

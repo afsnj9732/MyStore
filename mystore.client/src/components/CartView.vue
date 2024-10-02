@@ -49,12 +49,12 @@
 
 
     const deleteItem = (item) => {
-        axios.post("https://mystoreserverapi.azure-api.net/api/Cart/delete/" + item.productId,
+        axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/delete/" + item.productId,
             {},
             {
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             })
             .then(response => {
@@ -72,7 +72,7 @@
         } else if (item.quantity > item.productStockQuantity) {
             item.quantity = item.productStockQuantity;
         } else {
-            axios.post("https://mystoreserverapi.azure-api.net/api/Cart/update",
+            axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/update",
                 {
                     "ProductId": item.productId,
                     "Quantity": item.quantity
@@ -80,7 +80,7 @@
                 {
                     headers: {
                         "Authorization": `Bearer ${token}`,
-                        'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                        'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                     }
                 })
                 .then(response => {
@@ -93,10 +93,10 @@
     }
 
     const getCartData = () => {
-        axios.get("https://mystoreserverapi.azure-api.net/api/Cart/get", {
+        axios.get(import.meta.env.VITE_API_LOCAL+"api/Cart/get", {
             headers: {
                 "Authorization": `Bearer ${token}`,
-                'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
             }
         })
             .then(response => {
@@ -110,16 +110,16 @@
 
     const placeOrder = () => {
         const handler = window.StripeCheckout.configure({
-            key: 'pk_test_51Pesm02La0H5PIYutJuIiEkUXFXagRryVad9x9fhP4WDFqjjzPhO0shoZqRQMhdXxvtEfGxmb7gruzpjkVCKDXA00012AZZjHg',
+            key: import.meta.env.VITE_STRIPE_PK,
             locale: 'auto',
             token: (stripeToken) => {
 
-                axios.post("https://mystoreserverapi.azure-api.net/api/Order/place/" + stripeToken.id,
-                    {},
+                axios.post(import.meta.env.VITE_API_LOCAL +"api/Order/place",
+                    { "StripeToken":stripeToken.id },
                     {
                         headers: {
                             "Authorization": `Bearer ${token}`,
-                            'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                            'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                         }
                     })
                     .then(response => {

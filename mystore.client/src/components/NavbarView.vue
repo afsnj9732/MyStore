@@ -45,7 +45,7 @@
 </template>
 
 <script setup>
-    import { ref,onMounted } from 'vue';
+    import { ref, onMounted } from 'vue';
     import axios from 'axios'
     import { useRouter } from 'vue-router'
     import { jwtDecode } from 'jwt-decode';
@@ -67,12 +67,13 @@
 
     const getCartCount = () => {
         if (token) {
-            axios.get("https://mystoreserverapi.azure-api.net/api/Cart/count", {
-                headers: {
-                    "Authorization": `Bearer ${token}`,
-                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
-                }
-            })
+            axios.get(import.meta.env.VITE_API_LOCAL + "api/Cart/count",
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
+                    }
+                })
                 .then(response => {
                     data.value = response.data;
                 })

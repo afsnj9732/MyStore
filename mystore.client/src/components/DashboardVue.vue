@@ -39,7 +39,7 @@
     const token = sessionStorage.getItem('jwtToken');
 
     const updateProduct = (item) => {
-        axios.post("https://mystoreserverapi.azure-api.net/api/Product/update",
+        axios.post(import.meta.env.VITE_API_LOCAL+"api/Product/update",
             {
                 "StockQuantity": item.stockQuantity,
                 "ProductId":item.productId
@@ -47,7 +47,7 @@
             {
                 headers: {
                     "Authorization": `Bearer ${token}`,
-                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             })
             .then(response => {
@@ -59,14 +59,14 @@
     }
 
     const getProductData = () => {
-        axios.get("https://mystoreserverapi.azure-api.net/api/Product/list",
+        axios.get(import.meta.env.VITE_API_LOCAL+"api/Product/list",
             {
                 params: {
                     "Page": 0,
                     "SearchWord": null
                 },
                 headers: {
-                    'Ocp-Apim-Subscription-Key': 'ffbbcbcdf59542a7bec95f9ea8de0805'
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             })
             .then(response => {
