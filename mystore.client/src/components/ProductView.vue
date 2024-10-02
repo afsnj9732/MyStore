@@ -2,6 +2,8 @@
     <nav>
         <Navbar />
     </nav>
+    <div v-if="loading">資料讀取中...</div>
+    <div v-if="loadFailed">讀取失敗，請嘗試重新整理</div>
     <div v-if="data&&data.products">
         <div class="btn-toolbar" role="toolbar">
             <h4 class="m-1 p-1">商品頁數:</h4>
@@ -47,7 +49,8 @@
 
     const data = ref(null);
     const searchWord = ref(null);
-
+    const loading = ref(true);
+    const loadFailed = ref(false);
 
     const getProductData = (page) => {
         axios.get(import.meta.env.VITE_API_LOCAL+"api/Product/list",
@@ -66,6 +69,10 @@
             })
             .catch(error => {
                 console.error(error);
+                loadFailed.value = true;
+            })
+            .finally(() => {
+                loading.value = false;
             });
     }
 

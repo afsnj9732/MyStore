@@ -68,10 +68,8 @@ namespace MyStore.Server.Models.Service.Implements
                         ProductId = item.ProductId,
                         ReduceQuantity = item.Quantity
                     });
-                    var reduceTask = _unitOfWork.ProductRepository.ReduceStockAsync(productsCondition);
-                    var removeTask = _unitOfWork.CartRepository.RemoveAllItemsAsync(orderInfo.MemberId);
-                    await reduceTask;//非同步並行
-                    await removeTask;
+                    await _unitOfWork.ProductRepository.ReduceStockAsync(productsCondition);
+                    await _unitOfWork.CartRepository.RemoveAllItemsAsync(orderInfo.MemberId);
                     await _unitOfWork.SaveChangeAsync();
 
                     var stripeInfo = new StripeInfo { TotalPrice = newOrder.TotalPrice, StripeToken = orderInfo.StripeToken };

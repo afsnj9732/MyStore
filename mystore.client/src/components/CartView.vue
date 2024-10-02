@@ -20,7 +20,7 @@
                         <input type="number" v-model="cartItem.quantity" @blur="updateQuantity(cartItem)">
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" @click="deleteItem(cartItem)">移除</button><br />
+                        <button :disabled="isDisabled" type="button" class="btn btn-danger" @click="deleteItem(cartItem)">移除</button><br />
 
                     </td>
                 </tr>
@@ -30,7 +30,7 @@
         總金額:{{data.totalPrice}}
         <br />
         <br />
-        <button v-if="data && data.totalPrice > 0" class="btn btn-primary" @click="placeOrder">訂購</button>
+        <button :disabled="isDisabled" v-if="data && data.totalPrice > 0" class="btn btn-primary" @click="placeOrder">訂購</button>
     </div>
 </template>
 <script setup>
@@ -44,11 +44,12 @@
     const quantity = ref(null);
     const data = ref(null);
     const token = sessionStorage.getItem('jwtToken');
-
+    const isDisabled = ref(false);
 
 
 
     const deleteItem = (item) => {
+        isDisabled.value = true;
         axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/delete/" + item.productId,
             {},
             {
@@ -63,6 +64,9 @@
             })
             .catch(error => {
                 console.error(error);
+            })
+            .finally(() => {
+                isDisabled.value = false;
             });
     }
 
@@ -113,7 +117,7 @@
             key: import.meta.env.VITE_STRIPE_PK,
             locale: 'auto',
             token: (stripeToken) => {
-
+                isDisabled.value = true;
                 axios.post(import.meta.env.VITE_API_LOCAL +"api/Order/place",
                     { "StripeToken":stripeToken.id },
                     {
@@ -128,6 +132,9 @@
                     })
                     .catch(error => {
                         alert(error.response.data)
+                    })
+                    .finally(() => {
+                        isDisabled.value = false;
                     });
             }
         });
