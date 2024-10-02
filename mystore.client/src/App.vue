@@ -1,9 +1,8 @@
 <script setup lang="ts">
-    
+
 </script>
 
 <template>
-
     <main >
         <div class="container" style="min-height: 80vh;">
             <router-view></router-view>

@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <NavBar />
+        <Navbar />
     </nav>
     <div v-if="data&&data.products">
         <div>
@@ -31,7 +31,7 @@
 </template>
 
 <script setup>
-    import NavBar from './NavbarView.vue'
+    import Navbar from './NavbarView.vue'
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
 

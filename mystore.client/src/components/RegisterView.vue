@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <NavBar />
+        <Navbar />
     </nav>
     <div class="container">
         <div class="row justify-content-center">
@@ -20,7 +20,7 @@
 </template>
 
 <script setup>
-    import NavBar from './NavbarView.vue'
+    import Navbar from './NavbarView.vue'
     import { ref } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
@@ -31,6 +31,16 @@
     let recaptchaToken;
     const router = useRouter();
 
+    //const loadReCaptchaScript = () => {
+    //    return new Promise((resolve) => {
+    //        const script = document.createElement('script');
+    //        script.src = 'https://www.google.com/recaptcha/api.js?render=6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN';
+    //        script.onload = () => {
+    //            resolve();
+    //        };
+    //        document.body.appendChild(script);
+    //    });
+    //};
 
     const register = () => {
         if (email.value && password.value && confirmPassword.value) {
@@ -66,4 +76,8 @@
             });
         }
     }
+
+    //onMounted(() => {
+    //    loadReCaptchaScript();
+    //})
 </script>

@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <NavBar />
+        <Navbar />
     </nav>
     <div class="container">
         <div v-if="data" class="row justify-content-center">
@@ -28,7 +28,7 @@
 </template>
 
 <script setup>
-    import NavBar from './NavbarView.vue'
+    import Navbar from './NavbarView.vue'
     import { ref, onMounted } from 'vue';
     import { useRoute,useRouter } from 'vue-router';
     import axios from 'axios';

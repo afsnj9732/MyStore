@@ -1,6 +1,6 @@
 <template>
     <nav>
-        <NavBar />
+        <Navbar />
     </nav>
     <div v-if="data&&data.products">
         <div class="btn-toolbar" role="toolbar">
@@ -11,7 +11,7 @@
             <input type="text" v-model="searchWord" />
             <button type="button" class="btn btn-primary" @click="getProductData(1)">查詢</button>
         </div>
-        <div >
+        <div>
             <table class="table">
                 <thead>
                     <tr>
@@ -27,7 +27,7 @@
                         <td>{{product.name}}</td>
                         <td>{{product.price}}</td>
                         <td>
-                            <img :src="`/images/${product.imageUrl}.jpg`" class="img-fluid"  style="width:100px">
+                            <img :src="`/images/${product.imageUrl}.jpg`" class="img-fluid" style="width:100px">
                         </td>
                         <td>{{product.stockQuantity}}</td>
                         <td>
@@ -41,12 +41,13 @@
 </template>
 
 <script setup>
-    import NavBar from './NavbarView.vue'
+    import Navbar from './NavbarView.vue'
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
 
     const data = ref(null);
     const searchWord = ref(null);
+
 
     const getProductData = (page) => {
         axios.get(import.meta.env.VITE_API_LOCAL+"api/Product/list",
