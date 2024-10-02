@@ -9,7 +9,7 @@
                     <form @submit.prevent>
                         Email:<input type="email" v-model="email " required /><br /><br />
                         密碼:<input type="password" v-model="password" required /><br /><br />
-                        <button type="submit" class="btn btn-primary" @click="login()">登入</button>
+                        <button :disabled="isDisabled" type="submit" class="btn btn-primary" @click="login()">登入</button>
                     </form>
                 </div>
             </div>
@@ -26,6 +26,7 @@
     const router = useRouter();
     const email = ref(null);
     const password = ref(null);
+    const isDisabled = ref(false);
     let recaptchaToken;
 
     //const loadReCaptchaScript = () => {
@@ -41,6 +42,7 @@
 
 
     const login = () => {
+        isDisabled.value = true;
         if (email.value && password.value) {
             grecaptcha.ready(function () {
                 grecaptcha.execute(import.meta.env.VITE_RECAPTCHA).then(function (token) {
@@ -66,10 +68,14 @@
                             } else {
                                 alert("資料格式不符規定，請重新輸入");
                             }
+                        })
+                        .finally(() => {
+                            isDisabled.value = false;
                         });
 
                 });
             });
+
         }
 
     }

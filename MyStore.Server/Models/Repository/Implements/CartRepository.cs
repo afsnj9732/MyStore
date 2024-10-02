@@ -96,7 +96,7 @@ namespace MyStore.Server.Models.Repository.Implements
 
         public async Task RemoveAllItemsAsync(int memberId)
         {
-            var RemoveItems = await _db.TCartItems.Where(item => item.Cart.MemberId == memberId).ToListAsync();
+            var RemoveItems = await _db.TCartItems.Include(item=>item.Cart).Where(item => item.Cart.MemberId == memberId).ToListAsync();
             _db.TCartItems.RemoveRange(RemoveItems);
         }
 

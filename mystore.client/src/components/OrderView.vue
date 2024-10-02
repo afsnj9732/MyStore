@@ -50,6 +50,7 @@
     const data = ref(null);
     const token = sessionStorage.getItem('jwtToken');
 
+
     const getOrderData = () => {
         axios.get(import.meta.env.VITE_API_LOCAL + "api/Order/get/",
             {
@@ -63,6 +64,10 @@
             })
             .catch(error => {
                 console.error(error);
+
+            })
+            .finally(() => {
+
             });
     }
 

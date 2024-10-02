@@ -20,7 +20,7 @@
                         <input type="number" v-model="cartItem.quantity" @blur="updateQuantity(cartItem)">
                     </td>
                     <td>
-                        <button type="button" class="btn btn-danger" @click="deleteItem(cartItem)">移除</button><br />
+                        <button :disabled="isDisabled" type="button" class="btn btn-danger" @click="deleteItem(cartItem)">移除</button><br />
 
                     </td>
                 </tr>
@@ -44,11 +44,12 @@
     const quantity = ref(null);
     const data = ref(null);
     const token = sessionStorage.getItem('jwtToken');
-
+    const isDisabled = ref(false);
 
 
 
     const deleteItem = (item) => {
+        isDisabled.value = true;
         axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/delete/" + item.productId,
             {},
             {
@@ -63,6 +64,9 @@
             })
             .catch(error => {
                 console.error(error);
+            })
+            .finally(() => {
+                isDisabled.value = false;
             });
     }
 
