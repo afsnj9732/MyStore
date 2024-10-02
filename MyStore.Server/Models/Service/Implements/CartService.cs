@@ -18,14 +18,14 @@ namespace MyStore.Server.Models.Service.Implements
         public async Task<int> GetCartTotalPriceAsync(int memberId)
         {
             var cartItemsList = await _unitOfWork.CartRepository.GetItemsEnumAsync(memberId);
-            var result = cartItemsList
-                .Sum(item=>item.Price*item.Quantity);
+            var result = cartItemsList?
+                .Sum(item=>item.Price*item.Quantity) ?? 0;
             return result;
         }
         public async Task<IEnumerable<CartResultModel>?> GetCartItemsAsync(int memberId)
         {
             var cartItemsList = await _unitOfWork.CartRepository.GetItemsEnumAsync(memberId);
-            var result = cartItemsList.Select(item => new CartResultModel
+            var result = cartItemsList?.Select(item => new CartResultModel
             {
                 ProductId = item.ProductId,
                 ProductName = item.ProductName,

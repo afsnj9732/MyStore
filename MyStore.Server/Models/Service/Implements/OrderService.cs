@@ -42,6 +42,10 @@ namespace MyStore.Server.Models.Service.Implements
                 try
                 {
                     var cartItems = await _unitOfWork.CartRepository.GetItemsEnumAsync(orderInfo.MemberId);
+                    if (cartItems == null) 
+                    {
+                        return false;
+                    }
                     var orderCondition = new OrderCondition
                     {
                         MemberId = orderInfo.MemberId,
