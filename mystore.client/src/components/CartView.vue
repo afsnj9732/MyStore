@@ -27,10 +27,10 @@
             </tbody>
         </table>
         <br />
-        總金額:{{data.totalPrice}}
+        <p class="p-2 fw-bolder">總金額:{{data.totalPrice}}</p>
         <br />
         <br />
-        <button :disabled="isDisabled" v-if="data && data.totalPrice > 0" class="btn btn-primary" @click="placeOrder">訂購</button>
+        <button :disabled="isDisabled" v-if="data && data.totalPrice > 0" class=" m-2 btn btn-primary" @click="placeOrder">訂購</button>
     </div>
 </template>
 <script setup>
@@ -50,7 +50,7 @@
 
     const deleteItem = (item) => {
         isDisabled.value = true;
-        axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/delete/" + item.productId,
+        axios.post(import.meta.env.VITE_API_LOCAL + "api/Cart/delete/" + item.productId,
             {},
             {
                 headers: {
@@ -76,7 +76,7 @@
         } else if (item.quantity > item.productStockQuantity) {
             item.quantity = item.productStockQuantity;
         } else {
-            axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/update",
+            axios.post(import.meta.env.VITE_API_LOCAL + "api/Cart/update",
                 {
                     "ProductId": item.productId,
                     "Quantity": item.quantity
@@ -97,7 +97,7 @@
     }
 
     const getCartData = () => {
-        axios.get(import.meta.env.VITE_API_LOCAL+"api/Cart/get", {
+        axios.get(import.meta.env.VITE_API_LOCAL + "api/Cart/get", {
             headers: {
                 "Authorization": `Bearer ${token}`,
                 'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
@@ -118,8 +118,8 @@
             locale: 'auto',
             token: (stripeToken) => {
                 isDisabled.value = true;
-                axios.post(import.meta.env.VITE_API_LOCAL +"api/Order/place",
-                    { "StripeToken":stripeToken.id },
+                axios.post(import.meta.env.VITE_API_LOCAL + "api/Order/place",
+                    { "StripeToken": stripeToken.id },
                     {
                         headers: {
                             "Authorization": `Bearer ${token}`,

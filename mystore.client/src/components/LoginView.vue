@@ -7,9 +7,19 @@
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
                     <form @submit.prevent>
-                        Email:<input type="email" v-model="email " required /><br /><br />
-                        密碼:<input type="password" v-model="password" required /><br /><br />
-                        <button :disabled="isDisabled" type="submit" class="btn btn-primary" @click="login()">登入</button>
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label fw-bold">Email</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" v-model="email " required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label fw-bold">密碼</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" v-model="password" required>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <button :disabled="isDisabled" type="submit" class="btn btn-primary" @click="login()">登入</button>
+                            <span v-show="isDisabled" class="spinner-border" role="status">
+                            </span>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -42,8 +52,8 @@
 
 
     const login = () => {
-        isDisabled.value = true;
         if (email.value && password.value) {
+            isDisabled.value = true;
             grecaptcha.ready(function () {
                 grecaptcha.execute(import.meta.env.VITE_RECAPTCHA).then(function (token) {
                     recaptchaToken = token;

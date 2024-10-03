@@ -2,17 +2,26 @@
     <nav>
         <Navbar />
     </nav>
-    <div v-if="loading">資料讀取中...</div>
-    <div v-if="loadFailed">讀取失敗，請嘗試重新整理</div>
-    <div v-if="data&&data.products">
-        <div class="btn-toolbar" role="toolbar">
-            <h4 class="m-1 p-1">商品頁數:</h4>
-            <button v-for="page in data.totalPage" :key="page" class="btn btn-outline-primary" @click="getProductData(page)">
-                {{page}}
-            </button>
-            <input type="text" v-model="searchWord" />
-            <button type="button" class="btn btn-primary" @click="getProductData(1)">查詢</button>
+    <div v-if="loading" class="d-flex justify-content-center p-2 m-2" >
+        <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
         </div>
+    </div>
+    <div v-if="loadFailed" class="d-flex justify-content-center p-2 fw-bold fs-5" >資料讀取失敗，請嘗試重新整理</div>
+    <div v-if="data&&data.products">
+        <nav class="navbar ">
+            <div class="container justify-content-end">
+                <span>
+                    <span class="navbar-brand fw-bold">商品頁數:</span>
+                    <button v-for="page in data.totalPage" :key="page" class="btn btn-outline-primary" @click="getProductData(page)">
+                        {{page}}
+                    </button>
+                </span>
+                <form class="d-flex">
+                    <input class="form-control me-2 border border-3" type="search" v-model="searchWord" aria-label="Search">
+                    <button class="btn btn-outline-success" type="button" @click="getProductData(1)">Search</button>
+                </form>
+            </div>
+        </nav>
         <div>
             <table class="table">
                 <thead>
@@ -53,10 +62,10 @@
     const loadFailed = ref(false);
 
     const getProductData = (page) => {
-        axios.get(import.meta.env.VITE_API_LOCAL+"api/Product/list",
+        axios.get(import.meta.env.VITE_API_LOCAL + "api/Product/list",
             {
                 params: {
-                        "Page": page,
+                    "Page": page,
                     "SearchWord": searchWord.value ? searchWord.value : null
                     //參數可以接受null，但不接受""空字串
                 },
