@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyStore.Server", "MyStore.Server\MyStore.Server.csproj", "{A453AE28-B4A7-44AE-8838-26AC79F4DFFE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyStore.Server", "MyStore.Server\MyStore.Server.csproj", "{A453AE28-B4A7-44AE-8838-26AC79F4DFFE}"
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "mystore.client", "mystore.client\mystore.client.esproj", "{D46E49E8-32F7-42B4-982B-2399147B19B9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyStore.Tests", "MyStore.Tests\MyStore.Tests.csproj", "{15FCC346-315F-472E-8DCA-CFAF05CBC1DF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{D46E49E8-32F7-42B4-982B-2399147B19B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D46E49E8-32F7-42B4-982B-2399147B19B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D46E49E8-32F7-42B4-982B-2399147B19B9}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{15FCC346-315F-472E-8DCA-CFAF05CBC1DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15FCC346-315F-472E-8DCA-CFAF05CBC1DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15FCC346-315F-472E-8DCA-CFAF05CBC1DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15FCC346-315F-472E-8DCA-CFAF05CBC1DF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
