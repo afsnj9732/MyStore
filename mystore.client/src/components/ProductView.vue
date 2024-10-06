@@ -62,11 +62,16 @@
     const loadFailed = ref(false);
 
     const getProductData = (page) => {
+        if (searchWord.value && searchWord.value.trim() == "") {
+            searchWord.value = null;
+            alert("請輸入查詢數值");
+            return;
+        }
         axios.get(import.meta.env.VITE_API_LOCAL + "api/Product/list",
             {
                 params: {
                     "Page": page,
-                    "SearchWord": searchWord.value ? searchWord.value : null
+                    "SearchWord": searchWord.value ? searchWord.value.trim() : null
                     //參數可以接受null，但不接受""空字串
                 },
                 headers: {
@@ -75,6 +80,7 @@
             })
             .then(response => {
                 data.value = response.data;
+                loadFailed.value = false;
             })
             .catch(error => {
                 console.error(error);
