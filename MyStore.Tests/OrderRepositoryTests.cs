@@ -18,7 +18,10 @@ namespace MyStore.Tests
         private readonly Mock<DbSet<TOrder>> _mockTOrderDbSet;
         private readonly Mock<DbSet<TOrderItem>> _mockTOrderItemDbSet;
         private readonly OrderRepository orderRepository;
-         public OrderRepositoryTests() 
+
+        private readonly DbStoreContext _db;
+        private readonly OrderRepository _orderRepository;
+        public OrderRepositoryTests() 
         { 
             _mockDbStoreContext = new Mock<DbStoreContext>();
             _mockTOrderDbSet = new Mock<DbSet<TOrder>>();
@@ -26,6 +29,12 @@ namespace MyStore.Tests
             _mockDbStoreContext.Setup(dbContext=>dbContext.TOrders).Returns(_mockTOrderDbSet.Object);
             _mockDbStoreContext.Setup(dbContext=>dbContext.TOrderItems).Returns(_mockTOrderItemDbSet.Object);
             orderRepository = new OrderRepository(_mockDbStoreContext.Object);
+
+            //Entity Framework In-Memory
+            var options = new DbContextOptionsBuilder<DbStoreContext>()
+                          .UseInMemoryDatabase(databaseName: "TestDatabase").Options;
+            _db = new DbStoreContext(options);
+            _orderRepository = new OrderRepository(_db);
         }
 
         [Fact]
@@ -48,6 +57,45 @@ namespace MyStore.Tests
 
         }
 
+        [Fact]
+        public async Task GetEnumAsync_ByMemberId_ReturnOrderDataModels()
+        {
+            //Arrange
+            var memberId = 1;
+            var orderDatas = new List<TOrder>
+            {
+                new TOrder
+                {
+                    TotalPrice = 100,
+                    MemberId = 1,
+                    OrderDate = DateTime.Now,
+                    OrderId = 1,
+                    TOrderItems = new List<TOrderItem>
+                    {
+                        new TOrderItem
+                        {
+                            ProductId = 1,
+                            Quantity = 1,
+                            Product = new TProduct
+                            {
+                                Name = "Test"
+                            }
+                        }
+                    }
+                }
+            }.AsQueryable();
 
+            //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.Provider).Returns(orderDatas.Provider);
+            //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.Expression).Returns(orderDatas.Expression);
+            //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.ElementType).Returns(orderDatas.ElementType);
+            //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.GetEnumerator()).Returns(orderDatas.GetEnumerator());
+
+            //Act
+            //var result = await orderRepository.GetEnumAsync(memberId);
+            var result = await _orderRepository.GetEnumAsync(memberId);
+            //Assert
+            Assert.NotNull(result);
+
+        }
     }
 }
