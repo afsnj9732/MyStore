@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using Moq;
 using MyStore.Server.Models.DbEntity;
 using MyStore.Server.Models.Repository.Dtos.Conditions;
+using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Repository.Implements;
 using System;
 using System.Collections.Generic;
@@ -83,7 +84,10 @@ namespace MyStore.Tests
                         }
                     }
                 }
-            }.AsQueryable();
+            };
+
+            await _db.TOrders.AddRangeAsync(orderDatas);
+            await _db.SaveChangesAsync();
 
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.Provider).Returns(orderDatas.Provider);
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.Expression).Returns(orderDatas.Expression);
@@ -91,10 +95,10 @@ namespace MyStore.Tests
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.GetEnumerator()).Returns(orderDatas.GetEnumerator());
 
             //Act
-            //var result = await orderRepository.GetEnumAsync(memberId);
             var result = await _orderRepository.GetEnumAsync(memberId);
             //Assert
             Assert.NotNull(result);
+            Assert.IsAssignableFrom<IEnumerable<OrderDataModel>>(result);
 
         }
     }
