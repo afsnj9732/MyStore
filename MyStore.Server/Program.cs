@@ -8,9 +8,17 @@ using MyStore.Server.Models.Repository.Interfaces;
 using MyStore.Server.Models.Service.Implements;
 using MyStore.Server.Models.Service.Interfaces;
 using MyStore.Server.Models.UnitOfWork;
+using Serilog;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+//設置Serilog
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Debug() // 設定最低層級
+    .WriteTo.Console()
+    .WriteTo.File("logs/mystore.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 
 // Add services to the container.
 builder.Services.AddDbContext<DbStoreContext>(options =>
@@ -60,6 +68,8 @@ builder.Services.AddCors(options =>
                           .AllowAnyHeader());
 });
 
+
+builder.Host.UseSerilog();
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
