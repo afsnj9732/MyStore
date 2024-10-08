@@ -1,7 +1,4 @@
 <template>
-    <nav>
-        <Navbar />
-    </nav>
     <div v-if="data&&data.products">
         <div>
             <table class="table">
@@ -31,7 +28,6 @@
 </template>
 
 <script setup>
-    import Navbar from './NavbarView.vue'
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
 

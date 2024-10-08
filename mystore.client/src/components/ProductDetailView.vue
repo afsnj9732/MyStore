@@ -1,7 +1,4 @@
 <template>
-    <nav>
-        <Navbar />
-    </nav>
     <div class="container">
         <div v-if="data" class="row justify-content-center">
             <div class="card" style="width: 25rem;">
@@ -28,8 +25,7 @@
 </template>
 
 <script setup>
-    import Navbar from './NavbarView.vue'
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted,inject } from 'vue';
     import { useRoute,useRouter } from 'vue-router';
     import axios from 'axios';
 
@@ -38,7 +34,8 @@
     const route = useRoute();
     const router = useRouter();
     const data = ref(null);
-    const token = sessionStorage.getItem("jwtToken");
+    const token = inject("jwtToken");
+    const updateCartItem = inject("getNavCartItemCount");
     const productId = route.params.productId;
 
 
@@ -51,7 +48,7 @@
     }
 
     const addProductToCart = () => {
-        if (token) {
+        if (token.value) {
             axios.post(import.meta.env.VITE_API_LOCAL+"api/Cart/add",
                 {
                     "ProductId": productId,
@@ -59,14 +56,15 @@
                 },
                 {
                     headers: {
-                        "Authorization": `Bearer ${token}`,
+                        "Authorization": `Bearer ${token.value}`,
                         'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                     }
                 }
             )
                 .then(response => {
                     alert("加入購物車成功");
-                    router.go(0);
+                    updateCartItem.value();
+                    //router.go(0);
                 })
                 .catch(error => {
                     alert("加入購物車失敗");

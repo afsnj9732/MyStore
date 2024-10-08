@@ -1,7 +1,4 @@
 <template>
-    <nav>
-        <Navbar />
-    </nav>
     <div v-if="loading" class="d-flex justify-content-center p-2 m-2" >
         <div class="spinner-border" style="width: 5rem; height: 5rem;" role="status">
         </div>
@@ -52,8 +49,7 @@
 </template>
 
 <script setup>
-    import Navbar from './NavbarView.vue'
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted,inject } from 'vue';
     import axios from 'axios';
 
     const data = ref(null);

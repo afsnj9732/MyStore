@@ -1,7 +1,4 @@
 <template>
-    <nav>
-        <Navbar />
-    </nav>
     <div v-if="data">
         <table class="table">
             <thead>
@@ -43,19 +40,18 @@
 </template>
 
 <script setup>
-    import Navbar from './NavbarView.vue'
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted,inject } from 'vue';
     import axios from 'axios';
 
     const data = ref(null);
-    const token = sessionStorage.getItem('jwtToken');
+    const token = inject("jwtToken")
 
 
     const getOrderData = () => {
         axios.get(import.meta.env.VITE_API_LOCAL + "api/Order/get/",
             {
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${token.value}`,
                     'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             })

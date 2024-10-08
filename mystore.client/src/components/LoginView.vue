@@ -1,7 +1,4 @@
 <template>
-    <nav>
-        <Navbar />
-    </nav>
     <div class="container">
         <div class="row justify-content-center">
             <div class="card" style="width: 18rem;">
@@ -28,8 +25,7 @@
 </template>
 
 <script setup>
-    import Navbar from './NavbarView.vue'
-    import { ref } from 'vue';
+    import { ref,inject } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
 
@@ -37,18 +33,10 @@
     const email = ref(null);
     const password = ref(null);
     const isDisabled = ref(false);
+    let isLogIn = inject('navIsLogIn');
+    let getCartItemCount = inject('getNavCartItemCount');
+    let getItemCount = inject('getItemCount'); 
     let recaptchaToken;
-
-    //const loadReCaptchaScript = () => {
-    //    return new Promise((resolve) => {
-    //        const script = document.createElement('script');
-    //        script.src = 'https://www.google.com/recaptcha/api.js?render=6LdoNBIqAAAAABPwyhXYJInO4cjAIh-I6l52_0PN';
-    //        script.onload = () => {
-    //            resolve();
-    //        };
-    //        document.body.appendChild(script);
-    //    });
-    //};
 
 
     const login = () => {
@@ -70,6 +58,8 @@
                         .then(response => {
                             sessionStorage.setItem("jwtToken", response.data.token);
                             alert("登入成功");
+                            isLogIn.value = true;
+                            getCartItemCount.value();
                             router.push('/');
                         })
                         .catch(error => {
@@ -89,7 +79,5 @@
         }
 
     }
-    //onMounted(() => {
-    //    loadReCaptchaScript();
-    //})
+
 </script>
