@@ -1,7 +1,4 @@
 <template>
-    <nav>
-        <Navbar />
-    </nav>
     <div v-if="data">
         <table class="table">
             <thead>
@@ -34,8 +31,7 @@
     </div>
 </template>
 <script setup>
-    import Navbar from './NavbarView.vue'
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted,inject } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
 
@@ -43,7 +39,8 @@
     const router = useRouter();
     const quantity = ref(null);
     const data = ref(null);
-    const token = sessionStorage.getItem('jwtToken');
+    const token = inject("jwtToken");
+    const updateCartItem = inject("getNavCartItemCount");
     const isDisabled = ref(false);
 
 
@@ -54,13 +51,14 @@
             {},
             {
                 headers: {
-                    "Authorization": `Bearer ${token}`,
+                    "Authorization": `Bearer ${token.value}`,
                     'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
             })
             .then(response => {
                 alert("移除成功");
-                router.go(0);
+                updateCartItem.value();
+                getCartData();
             })
             .catch(error => {
                 console.error(error);
@@ -83,12 +81,13 @@
                 },
                 {
                     headers: {
-                        "Authorization": `Bearer ${token}`,
+                        "Authorization": `Bearer ${token.value}`,
                         'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                     }
                 })
                 .then(response => {
-                    router.go(0);
+                    updateCartItem.value();
+                    getCartData();
                 })
                 .catch(error => {
                     console.error(error);
@@ -99,7 +98,7 @@
     const getCartData = () => {
         axios.get(import.meta.env.VITE_API_LOCAL + "api/Cart/get", {
             headers: {
-                "Authorization": `Bearer ${token}`,
+                "Authorization": `Bearer ${token.value}`,
                 'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
             }
         })
@@ -122,12 +121,13 @@
                     { "StripeToken": stripeToken.id },
                     {
                         headers: {
-                            "Authorization": `Bearer ${token}`,
+                            "Authorization": `Bearer ${token.value}`,
                             'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                         }
                     })
                     .then(response => {
                         alert("訂購成功")
+                        updateCartItem.value();
                         router.push('/orders');
                     })
                     .catch(error => {
@@ -149,6 +149,12 @@
 
     const loadStripeScript = () => {
         return new Promise((resolve) => {
+            //避免重覆生成
+            if (document.querySelector('script[src="https://checkout.stripe.com/checkout.js"]')) {
+                resolve();
+                return;
+            }
+
             const script = document.createElement('script');
             script.src = 'https://checkout.stripe.com/checkout.js';
             script.onload = () => {

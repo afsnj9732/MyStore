@@ -42,51 +42,56 @@
 </template>
 
 <script setup>
-    import { ref, onMounted } from 'vue';
+    import { ref, onMounted,inject,computed } from 'vue';
     import axios from 'axios'
     import { useRouter } from 'vue-router'
     import { jwtDecode } from 'jwt-decode';
 
 
-    const token = sessionStorage.getItem('jwtToken');
-    const role = ref(null);
 
-    const isLogIn = ref(!!token);
+    const role = ref(null);
+    const token = inject("jwtToken");
+    let isLogIn = inject("navIsLogIn");
+    let getCartItemCount = inject("getNavCartItemCount");
     const router = useRouter();
     const data = ref(null);
 
     const logout = () => {
         sessionStorage.removeItem("jwtToken");
         alert("登出成功");
-        isLogIn.value = !isLogIn.value;
+        isLogIn.value = false;
         router.push('/');
     }
 
-    const getCartCount = () => {
-        if (token) {
-            axios.get(import.meta.env.VITE_API_LOCAL + "api/Cart/count",
-                {
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                        'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
-                    }
-                })
-                .then(response => {
-                    data.value = response.data;
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        }
-    }
+
 
     onMounted(() => {
-        getCartCount();
-        if (token) {
-            const decoded = jwtDecode(token);
+        getCartItemCount.value = () => {
+            if (token.value) {
+                axios.get(import.meta.env.VITE_API_LOCAL + "api/Cart/count",
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token.value}`,
+                            'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
+                        }
+                    })
+                    .then(response => {
+                        data.value = response.data;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            }
+        }
+        getCartItemCount.value();
+        isLogIn.value = !!token.value;
+        if (token.value) {
+            const decoded = jwtDecode(token.value);
             if (decoded) {
                 role.value = decoded.role;
             }
         }
     })
+
+
 </script>
