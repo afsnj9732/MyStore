@@ -2,7 +2,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a href="https://github.com/afsnj9732/MyStore" target="_blank" class="navbar-brand" >GitHub</a>
+                <a href="https://github.com/afsnj9732/MyStore" target="_blank" class="navbar-brand">GitHub</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -42,15 +42,16 @@
 </template>
 
 <script setup>
-    import { ref, onMounted,inject,computed } from 'vue';
+    import { ref, onMounted, inject, computed } from 'vue';
     import axios from 'axios'
     import { useRouter } from 'vue-router'
     import { jwtDecode } from 'jwt-decode';
 
 
 
-    const role = ref(null);
-    const token = inject("jwtToken");
+
+    let role = inject("role");
+    let token = inject("jwtToken");
     let isLogIn = inject("navIsLogIn");
     let getCartItemCount = inject("getNavCartItemCount");
     const router = useRouter();
@@ -58,6 +59,7 @@
 
     const logout = () => {
         sessionStorage.removeItem("jwtToken");
+        role.value = null;
         alert("登出成功");
         isLogIn.value = false;
         router.push('/');
@@ -85,12 +87,6 @@
         }
         getCartItemCount.value();
         isLogIn.value = !!token.value;
-        if (token.value) {
-            const decoded = jwtDecode(token.value);
-            if (decoded) {
-                role.value = decoded.role;
-            }
-        }
     })
 
 

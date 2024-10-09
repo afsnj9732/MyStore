@@ -28,11 +28,14 @@
     import { ref,inject } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
+    import { jwtDecode } from 'jwt-decode';
 
     const router = useRouter();
     const email = ref(null);
     const password = ref(null);
     const isDisabled = ref(false);
+    let userRole = inject("role")
+    let jwt = inject("jwtToken");
     let isLogIn = inject('navIsLogIn');
     let getCartItemCount = inject('getNavCartItemCount');
     let getItemCount = inject('getItemCount'); 
@@ -57,6 +60,7 @@
                         })
                         .then(response => {
                             sessionStorage.setItem("jwtToken", response.data.token);
+                            userRole.value = jwtDecode(jwt.value).role;
                             alert("登入成功");
                             isLogIn.value = true;
                             getCartItemCount.value();

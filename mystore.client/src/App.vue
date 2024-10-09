@@ -2,12 +2,14 @@
     import Navbar from './components/NavbarView.vue'
     import { ref, provide,computed } from 'vue'
 
+    const role = ref(null);
     const jwtToken = computed(() => sessionStorage.getItem('jwtToken'));
     const navIsLogIn = ref(false);
     const getNavCartItemCount = ref(() => { });
     provide("navIsLogIn", navIsLogIn);
     provide("getNavCartItemCount", getNavCartItemCount)
     provide("jwtToken", jwtToken);
+    provide("role", role);
 </script>
 
 <template>
