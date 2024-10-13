@@ -11,11 +11,13 @@ namespace MyStore.Server.Models.Service.Implements
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IStripeService _stripeService;
+        private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IUnitOfWork unitOfWork, IStripeService stripeService)
+        public OrderService(IUnitOfWork unitOfWork, IStripeService stripeService, ILogger<OrderService> logger)
         {
             _unitOfWork = unitOfWork;
             _stripeService = stripeService;
+            _logger = logger;
         }
 
         public async Task<IEnumerable<OrderResultModel>> GetOrdersAsync(int memberId)
@@ -44,6 +46,7 @@ namespace MyStore.Server.Models.Service.Implements
                     var cartItems = await _unitOfWork.CartRepository.GetItemsEnumAsync(orderInfo.MemberId);
                     if (cartItems == null) 
                     {
+                        _logger.LogWarning("購物車為空");
                         return false;
                     }
                     var orderCondition = new OrderCondition
@@ -79,8 +82,9 @@ namespace MyStore.Server.Models.Service.Implements
 
                     return true;
                 }
-                catch
+                catch(Exception ex)
                 {
+                    _logger.LogError("訂單建立錯誤,參考訊息:{ Message }",ex.Message);
                     await transaction.RollbackAsync();
                     return false;
                 }

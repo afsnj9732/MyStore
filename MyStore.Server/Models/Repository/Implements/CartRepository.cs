@@ -32,7 +32,7 @@ namespace MyStore.Server.Models.Repository.Implements
             {
                     var AddItem = new TCartItem
                     {
-                        CartId = cartItem.CartId ?? throw new Exception(),
+                        CartId = cartItem.CartId ?? throw new ArgumentException("CartId 不能為 null"),
                         ProductId = cartItem.ProductId,
                         Quantity = cartItem.Quantity
                     };

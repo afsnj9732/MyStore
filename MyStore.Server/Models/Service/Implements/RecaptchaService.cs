@@ -7,10 +7,12 @@ namespace MyStore.Server.Models.Service.Implements
     {
         private readonly HttpClient _httpClient;
         private readonly IConfiguration _configuration;
-        public RecaptchaService(HttpClient httpClient,IConfiguration configuration)
+        private readonly ILogger<RecaptchaService> _logger;
+        public RecaptchaService(HttpClient httpClient,IConfiguration configuration, ILogger<RecaptchaService> logger)
         {
             _httpClient = httpClient;
             _configuration = configuration;
+            _logger = logger;
         }
 
         public async Task<bool> VerifyRecaptchaAsync(string responseToken)
@@ -23,8 +25,9 @@ namespace MyStore.Server.Models.Service.Implements
                 var result = JObject.Parse(responseResult);
                 return (bool)result["success"];
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError("Recaptcha請求失敗,參考訊息:{Message}",ex.Message);
                 return false;
             }
         }

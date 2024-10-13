@@ -10,9 +10,11 @@ namespace MyStore.Server.Models.Repository.Implements
     public class ProductRepository : IProductRepository
     {
         private readonly DbStoreContext _db;
-        public ProductRepository(DbStoreContext db)
+        private readonly ILogger<ProductRepository> _logger;
+        public ProductRepository(DbStoreContext db, ILogger<ProductRepository> logger)
         {
             _db = db;
+            _logger = logger;
         }
         public async Task UpdateAsync(ProductCondition productCondition)
         {
@@ -51,12 +53,15 @@ namespace MyStore.Server.Models.Repository.Implements
                 var target = products.Where(p => p.ProductId == product.ProductId).FirstOrDefault();
                 if(target == null)
                 {
+                    _logger.LogWarning("找不到對應的商品,商品ID:{ProductId}",product.ProductId);
                     continue;
                 }
                 target.StockQuantity -= product.ReduceQuantity;
                 if (target.StockQuantity < 0)
                 {
-                    throw new Exception();
+
+                    _logger.LogError("庫存不足, 商品ID: {ProductId}", product.ProductId);
+                    throw new InvalidOperationException("庫存不足");
                 }
             }
 

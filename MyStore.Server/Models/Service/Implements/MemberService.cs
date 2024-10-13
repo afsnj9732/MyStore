@@ -9,10 +9,11 @@ namespace MyStore.Server.Models.Service.Implements
     public class MemberService : IMemberService
     {
         private readonly IUnitOfWork _unitOfWork;
-
-        public MemberService(IUnitOfWork unitOfWork)
+        private readonly ILogger<MemberService> _logger;
+        public MemberService(IUnitOfWork unitOfWork, ILogger<MemberService> logger)
         {
             _unitOfWork = unitOfWork;
+            _logger = logger;
         }
 
         public async Task<bool> CreateMemberAsync(MemberAuthInfo memberInfo)
@@ -20,6 +21,7 @@ namespace MyStore.Server.Models.Service.Implements
             var member = await _unitOfWork.MemberRepository.GetAsync(memberInfo.Email);
             if (member != null)
             {
+                _logger.LogWarning("會員帳號已經註冊");
                 return false;
             }
             var memberCondition = new MemberCondition
@@ -38,8 +40,9 @@ namespace MyStore.Server.Models.Service.Implements
                     await transaction.CommitAsync();
                     return true;
                 }
-                catch
+                catch(Exception ex) 
                 {
+                    _logger.LogError("會員新增錯誤,參考訊息:{Message}",ex.Message);
                     await transaction.RollbackAsync();
                     return false;
                 }

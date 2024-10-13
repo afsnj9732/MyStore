@@ -60,6 +60,7 @@ namespace MyStore.Server.Controllers
                   new Claim(ClaimTypes.Email, memberResultModel.Email),
                   new Claim(ClaimTypes.NameIdentifier,memberResultModel.MemberId.ToString())
                  };
+
             if (memberResultModel.Email == "afsnj9732@gmail.com")
             {
                 claims.Add(new Claim("role", "Admin"));
