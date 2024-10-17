@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyStore.Server.Models.DbEntity;
 using MyStore.Server.Models.Repository.Dtos.Conditions;
@@ -20,6 +21,7 @@ namespace MyStore.Tests
     {
         private readonly Mock<IUnitOfWork> _mockUnitOfWork;
         private readonly Mock<IStripeService> _mockStripeService;
+        private readonly Mock<ILogger<OrderService>> _mockLogger;
         private readonly IOrderService orderService;
         private readonly Mock<IDbContextTransaction> _mockTransaction;
         public OrderServiceTests()
@@ -27,7 +29,8 @@ namespace MyStore.Tests
             _mockUnitOfWork = new Mock<IUnitOfWork>();
             _mockStripeService = new Mock<IStripeService>();
             _mockTransaction = new Mock<IDbContextTransaction>();
-            orderService = new OrderService(_mockUnitOfWork.Object, _mockStripeService.Object);
+            _mockLogger = new Mock<ILogger<OrderService>>();
+            orderService = new OrderService(_mockUnitOfWork.Object, _mockStripeService.Object,_mockLogger.Object);
         }
 
         [Fact]

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using MyStore.Server.Models.Repository.Dtos.DataModels;
 
 namespace MyStore.Server.Models.DbEntity;
 
@@ -26,12 +27,14 @@ public partial class DbStoreContext : DbContext
     public virtual DbSet<TOrderItem> TOrderItems { get; set; }
 
     public virtual DbSet<TProduct> TProducts { get; set; }
+    public virtual DbSet<CartItemDataModel> CartItemDTO { get; set; }
 
     //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     //    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DefaultConnection");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<CartItemDataModel>().HasNoKey();
         modelBuilder.Entity<TCart>(entity =>
         {
             entity.HasKey(e => e.CartId).HasName("PK_Cart");
