@@ -44,6 +44,10 @@
 
     const login = () => {
         if (email.value && password.value) {
+            if (typeof grecaptcha === 'undefined') {
+                alert("reCAPTCHA 載入失敗，請重新嘗試，或檢查網路狀況");
+                return;
+            }
             isDisabled.value = true;
             grecaptcha.ready(function () {
                 grecaptcha.execute(import.meta.env.VITE_RECAPTCHA).then(function (token) {
