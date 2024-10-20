@@ -43,21 +43,25 @@
 
     const register = () => {
         if (email.value && password.value && confirmPassword.value) {
+            if (typeof grecaptcha === 'undefined') {
+                alert("reCAPTCHA 載入失敗，請重新嘗試，或檢查網路狀況");
+                return;
+            }
             isDisabled.value = true;
             grecaptcha.ready(function () {
                 grecaptcha.execute(import.meta.env.VITE_RECAPTCHA).then(function (token) {
                     recaptchaToken = token;
-                    axios.post(import.meta.env.VITE_API_LOCAL +"api/Member/register",
+                    axios.post(import.meta.env.VITE_API_LOCAL + "api/Member/register",
                         {
                             "Email": email.value,
                             "Password": password.value,
                             "ConfirmPassword": confirmPassword.value,
                             "RecaptchaToken": recaptchaToken
                         }, {
-                            headers: {
-                                'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
-                            }
+                        headers: {
+                            'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                         }
+                    }
 
                     )
                         .then(response => {
