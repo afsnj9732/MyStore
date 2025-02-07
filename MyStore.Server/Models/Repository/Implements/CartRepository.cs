@@ -53,24 +53,28 @@ namespace MyStore.Server.Models.Repository.Implements
 
         public async Task<IEnumerable<CartItemDataModel>?> GetItemsEnumAsync(int memberId)
         {
-            var cart = await _db.TCarts.Where(cart=>cart.MemberId == memberId).FirstOrDefaultAsync();
-            if(cart == null)
-            {
-                return null;
-            }
-            var cartItemsEnum = await _db.TCartItems
-                .Where(cartItem => cartItem.CartId == cart.CartId)
-                .Include(cartItem => cartItem.Product)
-                .ToListAsync();
+            //var cart = await _db.TCarts.Where(cart=>cart.MemberId == memberId).FirstOrDefaultAsync();
+            //if(cart == null)
+            //{
+            //    return null;
+            //}
+            //var cartItemsEnum = await _db.TCartItems
+            //    .Where(cartItem => cartItem.CartId == cart.CartId)
+            //    .Include(cartItem => cartItem.Product)
+            //    .ToListAsync();
 
-            var result = cartItemsEnum.Select(item => new CartItemDataModel
-            {
-                ProductId = item.ProductId,
-                ProductName = item.Product?.Name ?? "",
-                ProductStockQuantity = item.Product?.StockQuantity ?? 0,
-                Quantity = item.Quantity,
-                Price = item.Product?.Price ?? 0 
-            });
+            //var result = cartItemsEnum.Select(item => new CartItemDataModel
+            //{
+            //    ProductId = item.ProductId,
+            //    ProductName = item.Product?.Name ?? "",
+            //    ProductStockQuantity = item.Product?.StockQuantity ?? 0,
+            //    Quantity = item.Quantity,
+            //    Price = item.Product?.Price ?? 0 
+            //});
+
+
+            var result = await _db.CartItemDTO.FromSqlRaw("EXEC usp_GetCartItems @MemberId"
+, new SqlParameter("@MemberId", memberId)).ToListAsync();
             return result;
         }
 
