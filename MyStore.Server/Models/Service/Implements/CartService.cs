@@ -1,4 +1,5 @@
 ﻿using MyStore.Server.Models.Repository.Dtos.Conditions;
+using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Dtos.ResultModels;
 using MyStore.Server.Models.Service.Interfaces;
@@ -78,5 +79,12 @@ namespace MyStore.Server.Models.Service.Implements
             await _unitOfWork.CartRepository.RemoveItemAsync(condition);
             await _unitOfWork.SaveChangeAsync();
         }
+
+        public async Task<IEnumerable<CartItemDataModel>> CallStripeCheckOut(int memberId)
+        {
+            var cartItems = await _unitOfWork.CartRepository.GetItemsEnumAsync(memberId);
+            return cartItems;
+        }
+
     }
 }

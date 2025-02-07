@@ -1,4 +1,5 @@
-﻿using MyStore.Server.Models.Service.Dtos.Infos;
+﻿using MyStore.Server.Models.Repository.Dtos.DataModels;
+using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Dtos.ResultModels;
 
 namespace MyStore.Server.Models.Service.Interfaces
@@ -13,5 +14,7 @@ namespace MyStore.Server.Models.Service.Interfaces
 
         Task UpdateCartItemAsync(CartItemInfo cartItem);
         Task RemoveCartItemAsync(CartItemInfo cartItem);
+        Task<IEnumerable<CartItemDataModel>> CallStripeCheckOut(int memberId);
+
     }
 }

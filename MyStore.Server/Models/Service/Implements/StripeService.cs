@@ -1,6 +1,7 @@
 ﻿using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Interfaces;
 using Stripe;
+using Stripe.Checkout;
 
 namespace MyStore.Server.Models.Service.Implements
 {
@@ -12,19 +13,33 @@ namespace MyStore.Server.Models.Service.Implements
             _configuration = configuration;
         }
 
-        public void CreateOrder(StripeInfo stripeInfo)
+        public string CreateOrder(StripeInfo stripeInfo)
         {
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
-            var options = new ChargeCreateOptions
+            var OrderItems = new List<SessionLineItemOptions>();
+            foreach(var item in stripeInfo.CartItems)
             {
-                Amount = stripeInfo.TotalPrice * 100,
-                Currency = "twd",
-                Description = "付款",
-                Source = stripeInfo.StripeToken,
+                var orderItem = new SessionLineItemOptions
+                {
+                    Price = item.StripePriceID.TrimEnd(),
+                    Quantity = item.Quantity,
+                };
+                OrderItems.Add(orderItem);
+            }
+            
+            var options = new SessionCreateOptions
+            {
+                LineItems = OrderItems,
+                Mode = "payment",
+                SuccessUrl = _configuration["Domain:local"] + "/orders",
+                CancelUrl = _configuration["Domain:local"] + "/cart",
             };
 
-            var service = new ChargeService();
-            service.Create(options);
+            var service = new SessionService();
+            Session session = service.Create(options);
+
+            return session.Url;
+            
         }
     }
 }

@@ -1,8 +1,9 @@
-﻿namespace MyStore.Server.Models.Service.Dtos.Infos
+﻿using MyStore.Server.Models.Repository.Dtos.DataModels;
+
+namespace MyStore.Server.Models.Service.Dtos.Infos
 {
     public class StripeInfo
     {
-        public int TotalPrice { get; set; }
-        public string StripeToken { get; set; }
+        public IEnumerable<CartItemDataModel> CartItems { get; set; }
     }
 }

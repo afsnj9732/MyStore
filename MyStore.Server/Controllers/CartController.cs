@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Controllers.Dtos.ViewModels;
+using MyStore.Server.Models.DbEntity;
 using MyStore.Server.Models.Service.Dtos.Infos;
+using MyStore.Server.Models.Service.Implements;
 using MyStore.Server.Models.Service.Interfaces;
 using System.Security.Claims;
 
@@ -13,9 +15,11 @@ namespace MyStore.Server.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
-        public CartController(ICartService cartService)
+        private readonly IStripeService _stripeService;
+        public CartController(ICartService cartService, IStripeService stripeService)
         {
             _cartService = cartService;
+            _stripeService = stripeService;
         }
 
         [Authorize]
@@ -96,6 +100,25 @@ namespace MyStore.Server.Controllers
             };
             await _cartService.RemoveCartItemAsync(itemInfo);
             return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("stripe")]
+        public async Task<IActionResult> CallStripeCheckoutAsync()
+        {
+            var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var cartItems = await _cartService.CallStripeCheckOut(memberId);
+            //建立Stripe頁面
+            var stripeInfo = new StripeInfo { CartItems = cartItems };
+            var stripeUrl =  _stripeService.CreateOrder(stripeInfo);
+            if (stripeUrl != null)
+            {
+                return Ok(stripeUrl);
+                //Response.Headers.Add("Location", stripeUrl);
+                //return new StatusCodeResult(303);
+            }
+            return BadRequest();
+
         }
 
     }
