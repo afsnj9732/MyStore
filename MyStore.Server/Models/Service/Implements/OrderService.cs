@@ -10,13 +10,13 @@ namespace MyStore.Server.Models.Service.Implements
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IStripeService _stripeService;
+        //private readonly IStripeService _stripeService;
         private readonly ILogger<OrderService> _logger;
 
         public OrderService(IUnitOfWork unitOfWork, IStripeService stripeService, ILogger<OrderService> logger)
         {
             _unitOfWork = unitOfWork;
-            _stripeService = stripeService;
+            //_stripeService = stripeService;
             _logger = logger;
         }
 
@@ -58,6 +58,9 @@ namespace MyStore.Server.Models.Service.Implements
                     var newOrder = await _unitOfWork.OrderRepository.CreateAsync(orderCondition);
                     await _unitOfWork.SaveChangeAsync();//關聯式資料庫需先透過SaveChanges()才能獲得識別項主鍵
 
+
+
+
                     var orderItems = cartItems.Select(item => new OrderItemCondition
                     {
                         OrderId = newOrder.OrderId,//透過SaveChanges()返回的識別項主鍵
@@ -74,9 +77,6 @@ namespace MyStore.Server.Models.Service.Implements
                     await _unitOfWork.ProductRepository.ReduceStockAsync(productsCondition);
                     await _unitOfWork.CartRepository.RemoveAllItemsAsync(orderInfo.MemberId);
                     await _unitOfWork.SaveChangeAsync();
-
-                    var stripeInfo = new StripeInfo { TotalPrice = newOrder.TotalPrice, StripeToken = orderInfo.StripeToken };
-                    _stripeService.CreateOrder(stripeInfo);
 
                     await transaction.CommitAsync();
 

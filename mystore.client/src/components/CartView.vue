@@ -112,61 +112,34 @@
 
 
     const placeOrder = () => {
-        const handler = window.StripeCheckout.configure({
-            key: import.meta.env.VITE_STRIPE_PK,
-            locale: 'auto',
-            token: (stripeToken) => {
                 isDisabled.value = true;
-                axios.post(import.meta.env.VITE_API_LOCAL + "api/Order/place",
-                    { "StripeToken": stripeToken.id },
+        axios.post(import.meta.env.VITE_API_LOCAL + "api/Cart/stripe",
+            {},
+            //axios 的post格式和get稍有不同，post的headers在第三個選項
                     {
                         headers: {
                             "Authorization": `Bearer ${token.value}`,
                             'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                         }
                     })
-                    .then(response => {
-                        alert("訂購成功")
-                        updateCartItem.value();
-                        router.push('/orders');
+            .then(response => {
+                let stripeUrl = response.data;
+                if (stripeUrl) {
+                    window.location.href = stripeUrl;
+                    //window.open(stripeUrl, '_blank');
+                }
                     })
                     .catch(error => {
-                        alert(error.response.data)
+                        alert("error")
+                        //alert(error.response.data)
                     })
                     .finally(() => {
                         isDisabled.value = false;
                     });
             }
-        });
-
-        handler.open({
-            name: 'Stripe金流API測試',
-            description: '測試卡號4242 4242 4242 4242',
-            amount: data.value.totalPrice * 100,
-            currency: 'twd'
-        });
-    };
-
-    const loadStripeScript = () => {
-        return new Promise((resolve) => {
-            //避免重覆生成
-            if (document.querySelector('script[src="https://checkout.stripe.com/checkout.js"]')) {
-                resolve();
-                return;
-            }
-
-            const script = document.createElement('script');
-            script.src = 'https://checkout.stripe.com/checkout.js';
-            script.onload = () => {
-                resolve();
-            };
-            document.body.appendChild(script);
-        });
-    };
 
 
     onMounted(async () => {
         getCartData();
-        await loadStripeScript();
     });
 </script>

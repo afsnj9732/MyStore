@@ -41,16 +41,17 @@ namespace MyStore.Server.Controllers
 
         [Authorize]
         [HttpPost("place")]
-        public async Task<IActionResult> PlaceOrderAsync(PlaceOrderParameter placeOrderParameter)
+        public async Task<IActionResult> PlaceOrderAsync()
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var orderInfo = new CreateOrderInfo { MemberId = memberId, StripeToken = placeOrderParameter.StripeToken };
+
+            var orderInfo = new CreateOrderInfo { MemberId = memberId };
             var isSuccess = await _orderService.CreateOrderAsync(orderInfo);
             if (isSuccess)
             {
                 return Ok();
             }
-            return BadRequest("訂購失敗，請確認庫存或連線");        
+            return BadRequest("訂購失敗，請確認庫存或連線");
         }
     }
 

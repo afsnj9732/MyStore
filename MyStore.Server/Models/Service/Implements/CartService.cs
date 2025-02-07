@@ -1,4 +1,5 @@
 ﻿using MyStore.Server.Models.Repository.Dtos.Conditions;
+using MyStore.Server.Models.Repository.Dtos.DataModels;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Dtos.ResultModels;
 using MyStore.Server.Models.Service.Interfaces;
@@ -31,7 +32,8 @@ namespace MyStore.Server.Models.Service.Implements
                 ProductName = item.ProductName,
                 ProductStockQuantity = item.ProductStockQuantity,
                 Quantity = item.Quantity,
-                Price = item.Price
+                Price = item.Price,
+                StripePriceID = item.StripePriceID
             });
             return result;
         }
@@ -78,5 +80,6 @@ namespace MyStore.Server.Models.Service.Implements
             await _unitOfWork.CartRepository.RemoveItemAsync(condition);
             await _unitOfWork.SaveChangeAsync();
         }
+
     }
 }
