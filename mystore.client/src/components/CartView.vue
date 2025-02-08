@@ -29,9 +29,10 @@
         <br />
         <button :disabled="isDisabled" v-if="data && data.totalPrice > 0" class=" m-2 btn btn-primary" @click="placeOrder">訂購</button>
     </div>
+    <div id="checkout"></div>
 </template>
 <script setup>
-    import { ref, onMounted,inject } from 'vue';
+    import { ref, onMounted, inject } from 'vue';
     import axios from 'axios';
     import { useRouter } from 'vue-router';
 
@@ -111,32 +112,39 @@
     }
 
 
-    const placeOrder = () => {
-                isDisabled.value = true;
-        axios.post(import.meta.env.VITE_API_LOCAL + "api/Cart/stripe",
+
+    const stripe = Stripe("pk_test_51Pesm02La0H5PIYutJuIiEkUXFXagRryVad9x9fhP4WDFqjjzPhO0shoZqRQMhdXxvtEfGxmb7gruzpjkVCKDXA00012AZZjHg");
+
+    const stripeAxios = () => {
+        return axios.post(import.meta.env.VITE_API_LOCAL + "api/Cart/stripe",
             {},
             //axios 的post格式和get稍有不同，post的headers在第三個選項
-                    {
-                        headers: {
-                            "Authorization": `Bearer ${token.value}`,
-                            'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
-                        }
-                    })
-            .then(response => {
-                let stripeUrl = response.data;
-                if (stripeUrl) {
-                    window.location.href = stripeUrl;
-                    //window.open(stripeUrl, '_blank');
+            {
+                headers: {
+                    "Authorization": `Bearer ${token.value}`,
+                    'Ocp-Apim-Subscription-Key': import.meta.env.VITE_API_KEY
                 }
-                    })
-                    .catch(error => {
-                        alert("error")
-                        //alert(error.response.data)
-                    })
-                    .finally(() => {
-                        isDisabled.value = false;
-                    });
-            }
+            })
+            .then(response => {
+                const { clientSecret } = response.data
+                return clientSecret
+            })
+    }
+
+
+    const placeOrder = async() => {
+        isDisabled.value = true;
+        const checkout = await stripe.initEmbeddedCheckout({
+            fetchClientSecret: stripeAxios
+        });
+        // Mount Checkout
+        checkout.mount('#checkout');
+        isDisabled.value = false;
+    }
+
+
+
+
 
 
     onMounted(async () => {

@@ -102,12 +102,13 @@ namespace MyStore.Server.Controllers
             return Ok();
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost("stripe")]
         public async Task<IActionResult> CallStripeCheckoutAsync()
         {
-            var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var cartItems = await _cartService.GetCartItemsAsync(memberId);
+            //var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var cartItems = await _cartService.GetCartItemsAsync(35);
             if(cartItems == null) { return BadRequest("購物車為空"); }
 
             //建立Stripe頁面
@@ -115,7 +116,7 @@ namespace MyStore.Server.Controllers
             var stripeUrl =  _stripeService.CreateOrder(stripeInfo);
             if (stripeUrl != null)
             {
-                return Ok(stripeUrl);
+                return Ok(new { clientSecret=stripeUrl});
                 //Response.Headers.Add("Location", stripeUrl);
                 //return new StatusCodeResult(303);
             }

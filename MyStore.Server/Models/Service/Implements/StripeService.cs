@@ -29,17 +29,18 @@ namespace MyStore.Server.Models.Service.Implements
             
             var options = new SessionCreateOptions
             {
+                UiMode = "embedded",
                 LineItems = OrderItems,
                 Mode = "payment",
-                ClientReferenceId=Guid.NewGuid().ToString(),
-                SuccessUrl = _configuration["Domain:local"] + "/orders",
-                CancelUrl = _configuration["Domain:local"] + "/cart",
+                //ClientReferenceId=Guid.NewGuid().ToString(),
+                ReturnUrl = _configuration["Domain:local"] + "/orders",
+                //CancelUrl = _configuration["Domain:local"] + "/cart",
             };
 
             var service = new SessionService();
             Session session = service.Create(options);
 
-            return session.Url;
+            return session.ClientSecret;
             
         }
     }
