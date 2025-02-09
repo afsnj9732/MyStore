@@ -17,6 +17,8 @@ public partial class TProduct
 
     public int StockQuantity { get; set; }
 
+    public string StripePriceId { get; set; } = null!;
+
     public virtual ICollection<TCartItem> TCartItems { get; set; } = new List<TCartItem>();
 
     public virtual ICollection<TOrderItem> TOrderItems { get; set; } = new List<TOrderItem>();

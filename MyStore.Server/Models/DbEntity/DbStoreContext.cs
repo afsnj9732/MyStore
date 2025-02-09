@@ -27,10 +27,13 @@ public partial class DbStoreContext : DbContext
     public virtual DbSet<TOrderItem> TOrderItems { get; set; }
 
     public virtual DbSet<TProduct> TProducts { get; set; }
-    public virtual DbSet<CartItemDataModel> CartItemDTO { get; set; }
 
-    //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    //    => optionsBuilder.UseSqlServer("Name=ConnectionStrings:DefaultConnection");
+    public virtual DbSet<CartItemDataModel> CartItemDTO { get; set; }
+    //預存程序調用特定資料使用
+
+    //    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+    //        => optionsBuilder.UseSqlServer("Data Source=.;Initial Catalog=dbStore;Integrated Security=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -136,6 +139,8 @@ public partial class DbStoreContext : DbContext
 
             entity.ToTable("tProducts");
 
+            entity.HasIndex(e => e.Name, "IX_tProducts_Name");
+
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.Description).HasColumnType("text");
             entity.Property(e => e.ImageUrl)
@@ -145,6 +150,11 @@ public partial class DbStoreContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(50)
                 .IsUnicode(false);
+            entity.Property(e => e.StripePriceId)
+                .HasMaxLength(50)
+                .IsUnicode(false)
+                .IsFixedLength()
+                .HasColumnName("StripePriceID");
         });
 
         OnModelCreatingPartial(modelBuilder);

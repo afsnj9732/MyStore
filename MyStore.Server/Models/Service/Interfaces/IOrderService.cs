@@ -5,7 +5,7 @@ namespace MyStore.Server.Models.Service.Interfaces
 {
     public interface IOrderService
     {
-        Task<bool> CreateOrderAsync(CreateOrderInfo orderInfo);
+        Task<OrderResultModel> CreateOrderAsync(CreateOrderInfo orderInfo);
         Task<IEnumerable<OrderResultModel>> GetOrdersAsync(int memberId);
     }
 }

@@ -10,13 +10,11 @@ namespace MyStore.Server.Models.Service.Implements
     public class OrderService : IOrderService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IStripeService _stripeService;
         private readonly ILogger<OrderService> _logger;
 
-        public OrderService(IUnitOfWork unitOfWork, IStripeService stripeService, ILogger<OrderService> logger)
+        public OrderService(IUnitOfWork unitOfWork, ILogger<OrderService> logger)
         {
             _unitOfWork = unitOfWork;
-            _stripeService = stripeService;
             _logger = logger;
         }
 
@@ -37,7 +35,7 @@ namespace MyStore.Server.Models.Service.Implements
             return result;
         }
 
-        public async Task<bool> CreateOrderAsync(CreateOrderInfo orderInfo)
+        public async Task<OrderResultModel> CreateOrderAsync(CreateOrderInfo orderInfo)
         {
             using (var transaction = await _unitOfWork.BeginTransactionAsync())
             {
@@ -47,7 +45,7 @@ namespace MyStore.Server.Models.Service.Implements
                     if (cartItems == null) 
                     {
                         _logger.LogWarning("購物車為空");
-                        return false;
+                        return null;
                     }
                     var orderCondition = new OrderCondition
                     {
@@ -57,6 +55,9 @@ namespace MyStore.Server.Models.Service.Implements
                     };
                     var newOrder = await _unitOfWork.OrderRepository.CreateAsync(orderCondition);
                     await _unitOfWork.SaveChangeAsync();//關聯式資料庫需先透過SaveChanges()才能獲得識別項主鍵
+
+
+
 
                     var orderItems = cartItems.Select(item => new OrderItemCondition
                     {
@@ -75,18 +76,28 @@ namespace MyStore.Server.Models.Service.Implements
                     await _unitOfWork.CartRepository.RemoveAllItemsAsync(orderInfo.MemberId);
                     await _unitOfWork.SaveChangeAsync();
 
-                    var stripeInfo = new StripeInfo { TotalPrice = newOrder.TotalPrice, StripeToken = orderInfo.StripeToken };
-                    _stripeService.CreateOrder(stripeInfo);
-
                     await transaction.CommitAsync();
 
-                    return true;
+                    var latestOrder = new OrderResultModel()
+                    {
+                        OrderDate = newOrder.OrderDate,
+                        TotalPrice = newOrder.TotalPrice,
+                        TOrderItems = cartItems.Select(item => new OrderItemResultModel
+                        {
+                            ProductId = item.ProductId,
+                            ProductName = item.ProductName,
+                            Quantity = item.Quantity,
+                            Price = item.Price
+                        })
+                    };
+
+                    return latestOrder;
                 }
                 catch(Exception ex)
                 {
                     _logger.LogError("訂單建立錯誤,參考訊息:{ Message }",ex.Message);
                     await transaction.RollbackAsync();
-                    return false;
+                    return null;
                 }
             }
         }

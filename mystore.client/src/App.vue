@@ -3,7 +3,7 @@
     import { ref, provide,computed } from 'vue'
 
     const role = ref(null);
-    const jwtToken = computed(() => sessionStorage.getItem('jwtToken'));
+    const jwtToken = computed(() => localStorage.getItem('jwtToken'));
     const navIsLogIn = ref(false);
     const getNavCartItemCount = ref(() => { });
     provide("navIsLogIn", navIsLogIn);

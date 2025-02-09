@@ -32,7 +32,7 @@
     import axios from 'axios';
 
     const data = ref(null);
-    const token = sessionStorage.getItem('jwtToken');
+    const token = localStorage.getItem('jwtToken');
 
     const updateProduct = (item) => {
         axios.post(import.meta.env.VITE_API_LOCAL+"api/Product/update",
