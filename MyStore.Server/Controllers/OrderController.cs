@@ -13,11 +13,14 @@ namespace MyStore.Server.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
+        private readonly IStripeService _stripeService;
+        private readonly ICartService _cartService;
 
-        public OrderController(IOrderService orderService)
+        public OrderController(IOrderService orderService,IStripeService stripeService, ICartService cartService)
         {
             _orderService = orderService;
-
+            _stripeService = stripeService;
+            _cartService = cartService;
         }
         [Authorize]
         [HttpGet("get")]
@@ -40,20 +43,24 @@ namespace MyStore.Server.Controllers
         }
 
         [Authorize]
-        [HttpPost("place")]
-        public async Task<IActionResult> PlaceOrderAsync()
+        [HttpPost("fullfill")]
+        public async Task<IActionResult> PlaceOrderAsync(StripeParameter stripeParameter)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var isGetPayment = await _stripeService.CheckPayment(stripeParameter.SessionId);
+            if (!isGetPayment) { return BadRequest("付款未完成"); }
 
             var orderInfo = new CreateOrderInfo { MemberId = memberId };
-            var isSuccess = await _orderService.CreateOrderAsync(orderInfo);
-            if (isSuccess)
+            var orderDetail = await _orderService.CreateOrderAsync(orderInfo);
+       
+            if (orderDetail!=null)
             {
-                return Ok();
+                //回傳訂單資料
+                return Ok(orderDetail);
             }
             return BadRequest("訂購失敗，請確認庫存或連線");
         }
     }
 
-    
+
 }

@@ -6,7 +6,7 @@ import Order from './components/OrderView.vue';
 import Login from './components/LoginView.vue';
 import Register from './components/RegisterView.vue';
 import Dashboard from './components/DashboardVue.vue';
-
+import StripeSuccess from './components/StripeSuccessView.vue';
 
 const routes = [
     { path: '/', redirect: '/products' },
@@ -16,7 +16,8 @@ const routes = [
     { path: '/orders', component: Order },
     { path: '/login', component: Login },
     { path: '/register', component: Register },
-    { path: '/dashboard', component: Dashboard }
+    { path: '/dashboard', component: Dashboard },
+    { path: '/stripe', component: StripeSuccess },
 ];
 
 const router = createRouter({
