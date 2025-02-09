@@ -13,7 +13,7 @@ namespace MyStore.Server.Models.Service.Implements
             _configuration = configuration;
         }
 
-        public string CreateOrder(StripeInfo stripeInfo)
+        public async Task<string> CreateStripeAsync(StripeInfo stripeInfo)
         {
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
             var OrderItems = new List<SessionLineItemOptions>();
@@ -32,12 +32,12 @@ namespace MyStore.Server.Models.Service.Implements
                 LineItems = OrderItems,
                 Mode = "payment",
                 ClientReferenceId=Guid.NewGuid().ToString(),
-                SuccessUrl = _configuration["Domain:local"] + "/orders",
-                CancelUrl = _configuration["Domain:local"] + "/cart",
+                SuccessUrl = _configuration["Domain:local"] + "/products",
+                CancelUrl = _configuration["Domain:local"] + "/products",
             };
 
             var service = new SessionService();
-            Session session = service.Create(options);
+            Session session = await service.CreateAsync(options);
 
             return session.Url;
             

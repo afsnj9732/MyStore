@@ -58,7 +58,7 @@
     const data = ref(null);
 
     const logout = () => {
-        sessionStorage.removeItem("jwtToken");
+        localStorage.removeItem("jwtToken");
         role.value = null;
         alert("登出成功");
         isLogIn.value = false;

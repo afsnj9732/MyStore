@@ -63,7 +63,7 @@
                             }
                         })
                         .then(response => {
-                            sessionStorage.setItem("jwtToken", response.data.token);
+                            localStorage.setItem("jwtToken", response.data.token);
                             userRole.value = jwtDecode(jwt.value).role;
                             alert("登入成功");
                             isLogIn.value = true;

@@ -4,6 +4,6 @@ namespace MyStore.Server.Models.Service.Interfaces
 {
     public interface IStripeService
     {
-        string CreateOrder(StripeInfo stripeInfo);
+        Task<string> CreateStripeAsync(StripeInfo stripeInfo);
     }
 }

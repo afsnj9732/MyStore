@@ -112,12 +112,10 @@ namespace MyStore.Server.Controllers
 
             //建立Stripe頁面
             var stripeInfo = new StripeInfo { CartItems = cartItems };
-            var stripeUrl =  _stripeService.CreateOrder(stripeInfo);
+            var stripeUrl = await _stripeService.CreateStripeAsync(stripeInfo);
             if (stripeUrl != null)
             {
                 return Ok(stripeUrl);
-                //Response.Headers.Add("Location", stripeUrl);
-                //return new StatusCodeResult(303);
             }
             return BadRequest();
 
