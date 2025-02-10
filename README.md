@@ -3,7 +3,7 @@
     結合 Vue.js、.NET Core API 和 Microsoft SQL Server 撰寫的前後端分離全端商城網站
 
 
-    後端   使用非同步語法與三層式架構撰寫
+    後端   使用非同步語法與三層式架構撰寫的Web API
 
 
     資料庫 使用關聯式資料表設計，並使用Entity Framework 進行資料存取，減少遭受隱碼攻擊的風險
