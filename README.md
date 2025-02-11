@@ -1,6 +1,6 @@
 專案簡介:
 
-    結合 Vue.js、.NET Core API 和 Microsoft SQL Server 撰寫的前後端分離全端商城網站
+    結合 Vue.js、.NET Core Web API 和 Microsoft SQL Server 撰寫的前後端分離全端商城網站
 
 
     後端   使用非同步語法與三層式架構撰寫的Web API
@@ -12,7 +12,7 @@
     前端   使用Vue語法，自動進行Html編碼，並避免直接嵌入後端回傳值，以減少XSS攻擊的風險
 
 
-    會員   註冊、登入、登出，使用reCAPTCHA自動進行機器人辨識
+    會員   註冊、登入、登出，串接reCAPTCHA自動進行機器人辨識
 
            身分驗證使用JWT，以降低CSRF攻擊的風險
 
