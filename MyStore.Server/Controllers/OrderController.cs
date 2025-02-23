@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Controllers.Dtos.ViewModels;
+using MyStore.Server.Models.Factories.Interfaces;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Interfaces;
 using System.Security.Claims;
@@ -13,13 +14,13 @@ namespace MyStore.Server.Controllers
     public class OrderController : ControllerBase
     {
         private readonly IOrderService _orderService;
-        private readonly IStripeService _stripeService;
+        private readonly IPaymentFactory _paymentFactory;
         private readonly ICartService _cartService;
 
-        public OrderController(IOrderService orderService,IStripeService stripeService, ICartService cartService)
+        public OrderController(IOrderService orderService,IPaymentFactory paymentFactory, ICartService cartService)
         {
             _orderService = orderService;
-            _stripeService = stripeService;
+            _paymentFactory = paymentFactory;
             _cartService = cartService;
         }
         [Authorize]
@@ -47,7 +48,8 @@ namespace MyStore.Server.Controllers
         public async Task<IActionResult> PlaceOrderAsync(StripeParameter stripeParameter)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            var isGetPayment = await _stripeService.CheckPayment(stripeParameter.SessionId);
+            var _paymentService = _paymentFactory.CreatePaymentService(stripeParameter.PaymentMode);
+            var isGetPayment = _paymentService.CheckPayment(stripeParameter.SessionId);
             if (!isGetPayment) { return BadRequest("付款未完成"); }
 
             var orderInfo = new CreateOrderInfo { MemberId = memberId };

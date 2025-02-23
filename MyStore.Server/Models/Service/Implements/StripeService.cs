@@ -5,14 +5,14 @@ using Stripe.Checkout;
 
 namespace MyStore.Server.Models.Service.Implements
 {
-    public class StripeService : IStripeService
+    public class StripeService : IPaymentService
     {
         private readonly IConfiguration _configuration;
         public StripeService(IConfiguration configuration)
         {
             _configuration = configuration;
         }
-        public async Task<bool> CheckPayment(string sessionId)
+        public bool CheckPayment(string sessionId)
         {
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
             var options = new SessionGetOptions
@@ -49,7 +49,7 @@ namespace MyStore.Server.Models.Service.Implements
                 Mode = "payment",
                 ClientReferenceId = Guid.NewGuid().ToString(),
                 SuccessUrl = _configuration["Domain:local"] + "/stripe"
-                + "?session_id={CHECKOUT_SESSION_ID}",
+                + "?session_id={CHECKOUT_SESSION_ID}"+ "&payment_mode=stripe",
                 CancelUrl = _configuration["Domain:local"] + "/cart",
             };
 
