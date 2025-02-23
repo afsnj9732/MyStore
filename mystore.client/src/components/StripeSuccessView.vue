@@ -50,12 +50,12 @@
     const token = inject("jwtToken")
     const urlParams = new URLSearchParams(window.location.search);
     const sessionId = urlParams.get('session_id');
-
+    const paymentMode = urlParams.get('payment_mode');
 
 
     const fullfillOrder = () => {
         axios.post(import.meta.env.VITE_API_LOCAL + "api/Order/fullfill",
-            {"SessionId":sessionId},
+            { "SessionId": sessionId, "PaymentMode": paymentMode },
             {
                 headers: {
                     "Authorization": `Bearer ${token.value}`,

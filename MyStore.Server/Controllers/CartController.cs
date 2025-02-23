@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MyStore.Server.Controllers.Dtos.Parameters;
 using MyStore.Server.Controllers.Dtos.ViewModels;
 using MyStore.Server.Models.DbEntity;
+using MyStore.Server.Models.Factories;
+using MyStore.Server.Models.Factories.Interfaces;
 using MyStore.Server.Models.Service.Dtos.Infos;
 using MyStore.Server.Models.Service.Implements;
 using MyStore.Server.Models.Service.Interfaces;
@@ -15,11 +17,11 @@ namespace MyStore.Server.Controllers
     public class CartController : ControllerBase
     {
         private readonly ICartService _cartService;
-        private readonly IStripeService _stripeService;
-        public CartController(ICartService cartService, IStripeService stripeService)
+        private readonly IPaymentFactory _paymentFactory;
+        public CartController(ICartService cartService, IPaymentFactory paymentFactory)
         {
             _cartService = cartService;
-            _stripeService = stripeService;
+            _paymentFactory = paymentFactory;
         }
 
         [Authorize]
@@ -104,15 +106,15 @@ namespace MyStore.Server.Controllers
 
         [Authorize]
         [HttpPost("stripe")]
-        public async Task<IActionResult> CallStripeCheckoutAsync()
+        public async Task<IActionResult> CallStripeCheckoutAsync(PaymentParameter paymentParameter)
         {
             var memberId = Convert.ToInt32(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var cartItems = await _cartService.GetCartItemsAsync(memberId);
             if(cartItems == null) { return BadRequest("購物車為空"); }
-
+            var _paymentService = _paymentFactory.CreatePaymentService(paymentParameter.PaymentMode);
             //建立Stripe頁面
             var stripeInfo = new StripeInfo { CartItems = cartItems };
-            var stripeUrl = await _stripeService.CreateStripeAsync(stripeInfo);
+            var stripeUrl = await _paymentService.CreateStripeAsync(stripeInfo);
             if (stripeUrl != null)
             {
                 return Ok(stripeUrl);
