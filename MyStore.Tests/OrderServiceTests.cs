@@ -131,7 +131,7 @@ namespace MyStore.Tests
             _mockUnitOfWork.Setup(unitOfWork => unitOfWork.SaveChangeAsync())
                 .Returns(Task.CompletedTask).Verifiable();
 
-            _mockStripeService.Setup(unitOfWork => unitOfWork.CreateOrder(It.IsAny<StripeInfo>()))
+            _mockStripeService.Setup(unitOfWork => unitOfWork.CreateOrder(It.IsAny<PaymentInfo>()))
                 .Verifiable();
 
             _mockTransaction.Setup(unitOfWork => unitOfWork.CommitAsync(default));
@@ -141,7 +141,7 @@ namespace MyStore.Tests
 
             //Assert
             Assert.True(result);
-            _mockStripeService.Verify(unitOfWork => unitOfWork.CreateOrder(It.IsAny<StripeInfo>()), Times.Once);
+            _mockStripeService.Verify(unitOfWork => unitOfWork.CreateOrder(It.IsAny<PaymentInfo>()), Times.Once);
             _mockUnitOfWork.Verify(unitOfWork => unitOfWork.SaveChangeAsync(),Times.Exactly(2));//調用2次，若不符則失敗
 
 

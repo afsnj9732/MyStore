@@ -112,12 +112,12 @@ namespace MyStore.Server.Controllers
             var cartItems = await _cartService.GetCartItemsAsync(memberId);
             if(cartItems == null) { return BadRequest("購物車為空"); }
             var _paymentService = _paymentFactory.CreatePaymentService(paymentParameter.PaymentMode);
-            //建立Stripe頁面
-            var stripeInfo = new StripeInfo { CartItems = cartItems };
-            var stripeUrl = await _paymentService.CreateStripeAsync(stripeInfo);
-            if (stripeUrl != null)
+            //根據支付類別建立付款頁面
+            var paymentInfo = new PaymentInfo { CartItems = cartItems };
+            var paymentUrl = await _paymentService.CreatePaymentAsync(paymentInfo);
+            if (paymentUrl != null)
             {
-                return Ok(stripeUrl);
+                return Ok(paymentUrl);
             }
             return BadRequest();
 

@@ -6,14 +6,12 @@ namespace MyStore.Server.Models.Factories.Implements
 {
     public class PaymentFactory : IPaymentFactory
     {
-        //private readonly IServiceProvider _serviceProvider;
         private readonly StripeService _stripeService;
         private readonly StripeEmbeddedService _stripeEmbeddedService;
-        public PaymentFactory(StripeService stripeService, StripeEmbeddedService stripeEmbeddedService/*IServiceProvider serviceProvider*/)
+        public PaymentFactory(StripeService stripeService, StripeEmbeddedService stripeEmbeddedService)
         {
             _stripeService = stripeService;
             _stripeEmbeddedService = stripeEmbeddedService;
-            //_serviceProvider = serviceProvider;
         }
 
         public IPaymentService CreatePaymentService(string paymentMethod)
@@ -22,12 +20,10 @@ namespace MyStore.Server.Models.Factories.Implements
             {
                 case "stripe":
                     return _stripeService;
-                    //return _serviceProvider.GetRequiredService<StripeService>();
                 case "stripeEmbedded":
                     return _stripeEmbeddedService;
-                    //return _serviceProvider.GetRequiredService<StripeEmbeddedService>();
                 default:
-                    throw new NotImplementedException();
+                    throw new NotImplementedException(paymentMethod+"錯誤");
             }
         }
     }

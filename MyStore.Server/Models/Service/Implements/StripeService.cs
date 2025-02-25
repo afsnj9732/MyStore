@@ -29,7 +29,7 @@ namespace MyStore.Server.Models.Service.Implements
             return false;
         }
 
-        public async Task<string> CreateStripeAsync(StripeInfo stripeInfo)
+        public async Task<string> CreatePaymentAsync(PaymentInfo stripeInfo)
         {
             StripeConfiguration.ApiKey = _configuration["Stripe:SecretKey"];
             var OrderItems = new List<SessionLineItemOptions>();
