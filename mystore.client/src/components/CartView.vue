@@ -27,7 +27,7 @@
         <p class="p-2 fw-bolder">總金額:{{data.totalPrice}}</p>
         <br />
         <br />
-        <button :disabled="isDisabled" v-if="data && data.totalPrice > 0" class=" m-2 btn btn-primary" @click="placeOrder">訂購</button>
+        <button :disabled="isDisabled" v-if="data && data.totalPrice > 0" class=" m-2 btn btn-primary" @click="placeOrder('stripe')">訂購</button>
     </div>
 </template>
 <script setup>
@@ -111,10 +111,10 @@
     }
 
 
-    const placeOrder = () => {
+    const placeOrder = (paymentMethod) => {
                 isDisabled.value = true;
         axios.post(import.meta.env.VITE_API_LOCAL + "api/Cart/stripe",
-            {},
+            { "PaymentMode": paymentMethod },
             //axios 的post格式和get稍有不同，post的headers在第三個選項
                     {
                         headers: {

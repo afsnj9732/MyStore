@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using MyStore.Server.Models.DbEntity;
+using MyStore.Server.Models.Factories.Implements;
+using MyStore.Server.Models.Factories.Interfaces;
 using MyStore.Server.Models.Repository.Implements;
 using MyStore.Server.Models.Repository.Interfaces;
 using MyStore.Server.Models.Service.Implements;
@@ -32,9 +34,14 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>()
                 .AddScoped<ICartService, CartService>()
                 .AddScoped<IOrderRepository, OrderRepository>()
                 .AddScoped<IOrderService, OrderService>()
-                .AddScoped<IStripeService, StripeService>()
+                .AddTransient<StripeService>()
+                .AddTransient<StripeEmbeddedService>()
+                .AddTransient<IPaymentFactory,PaymentFactory>()
+                //.AddScoped<IStripeService, StripeService>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .AddHttpClient<IRecaptchaService, RecaptchaService>();
+                
+
 
 //builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 //                .AddCookie();
