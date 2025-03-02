@@ -45,6 +45,7 @@ namespace MyStore.Tests
             _mockUnitOfWork.Setup(unitOfWork => 
                  unitOfWork.OrderRepository.GetEnumAsync(mockMemberId))
                  .ReturnsAsync(mockOrderList.Object);
+            //Mock.Setup().Return() 是在對該類別的方法和方法的返回值做設定
             //這個單元的行為在於，將mockOrderList的型別轉換成OrderResultModel
             //因此並不關注OrderList的具體資料
 
