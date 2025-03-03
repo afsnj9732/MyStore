@@ -3,7 +3,7 @@ using MyStore.Server.Models.Service.Dtos.ResultModels;
 
 namespace MyStore.Server.Models.Service.Dtos.Infos
 {
-    public class StripeInfo
+    public class PaymentInfo
     {
         public IEnumerable<CartResultModel> CartItems { get; set; }
     }

@@ -39,26 +39,6 @@ namespace MyStore.Tests
         }
 
         [Fact]
-        public async Task CreateItemsAsync_ByOrderItemConditions()
-        {
-            //Arrange
-            var orderItems = new List<OrderItemCondition>
-            {
-                new OrderItemCondition
-                {
-                    OrderId = 1,
-                    ProductId = 1,
-                    Quantity = 1
-                }
-            };
-            //Act
-            await orderRepository.CreateItemsAsync(orderItems);
-            //Assert
-            _mockTOrderItemDbSet.Verify(dbSet=>dbSet.AddRangeAsync(It.IsAny<IEnumerable<TOrderItem>>(),default),Times.Once);
-
-        }
-
-        [Fact]
         public async Task GetEnumAsync_ByMemberId_ReturnOrderDataModels()
         {
             //Arrange
@@ -79,7 +59,8 @@ namespace MyStore.Tests
                             Quantity = 1,
                             Product = new TProduct
                             {
-                                Name = "Test"
+                                Name = "Test",
+                                StripePriceId = "test_1234567890"
                             }
                         }
                     }
@@ -88,11 +69,14 @@ namespace MyStore.Tests
 
             await _db.TOrders.AddRangeAsync(orderDatas);
             await _db.SaveChangesAsync();
+            //先將一筆假資料加入，讓測試單元可以查詢(因為測試單元本身的行為就是在查詢
+
 
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.Provider).Returns(orderDatas.Provider);
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.Expression).Returns(orderDatas.Expression);
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.ElementType).Returns(orderDatas.ElementType);
             //_mockTOrderDbSet.As<IQueryable<TOrder>>().Setup(dbSet => dbSet.GetEnumerator()).Returns(orderDatas.GetEnumerator());
+            //因為使用EF Include，Moq疑似無法模擬，改用EF In-Memory模擬實際運作
 
             //Act
             var result = await _orderRepository.GetEnumAsync(memberId);
@@ -100,6 +84,19 @@ namespace MyStore.Tests
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IEnumerable<OrderDataModel>>(result);
 
+        }
+
+
+        [Fact]
+        public async Task CreateItemsAsync_ByOrderItemConditions()
+        {
+            //Arrange
+            var orderItems = new Mock<List<OrderItemCondition>>();
+            //Act
+            await orderRepository.CreateItemsAsync(orderItems.Object);
+            //Assert
+            _mockTOrderItemDbSet.Verify(dbSet => dbSet.AddRangeAsync(It.IsAny<IEnumerable<TOrderItem>>(), default), Times.Once);
+            //因為這個單元沒有SaveChange，因此沒辦法使用EF-InMemory模擬，只能使用Moq
         }
     }
 }

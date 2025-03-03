@@ -5,6 +5,6 @@ namespace MyStore.Server.Models.Service.Interfaces
     public interface IPaymentService
     {
         bool CheckPayment(string session_id);
-        Task<string> CreateStripeAsync(StripeInfo stripeInfo);
+        Task<string> CreatePaymentAsync(PaymentInfo stripeInfo);
     }
 }
